@@ -1,0 +1,12 @@
+.db/
+
+*.cgo*.go
+*.cgo*.c
+.DS_Store
+*.ao
+*.so
+*.pyc
+._*
+.nfs.*
+*~
+*.orig
