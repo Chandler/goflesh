@@ -27,8 +27,8 @@ revel - http://robfig.github.io/revel/
       revel run flesh # if you added $GOPATH/bin to your path as per revel install instructions
 
 ## Other
-  #useful syntax highlighting
-    cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages #something close to this
-    git clone git://github.com/jashkenas/coffee-script-tmbundle CoffeeScript
-    git clone https://github.com/LearnBoost/stylus.git Stylus
+    #useful syntax highlighting
+      cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages #something close to this
+      git clone git://github.com/jashkenas/coffee-script-tmbundle CoffeeScript
+      git clone https://github.com/LearnBoost/stylus.git Stylus
 
