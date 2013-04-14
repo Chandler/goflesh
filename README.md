@@ -32,3 +32,11 @@ revel - http://robfig.github.io/revel/
       git clone git://github.com/jashkenas/coffee-script-tmbundle CoffeeScript
       git clone https://github.com/LearnBoost/stylus.git Stylus
 
+
+## Heroku
+
+We have a staging server at `flesh.herokuapp.com`. The config should look like this
+    BUILDPACK_URL=https://github.com/robfig/heroku-buildpack-go-revel
+    GOPATH=/app/.go
+    GOROOT=/app/.goroot
+    PATH=bin:node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/app/.goroot/bin
