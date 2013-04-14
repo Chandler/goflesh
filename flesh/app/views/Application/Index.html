@@ -1,7 +1,8 @@
-{{set . "title" "Home"}}
+Hello World
+
+{{append . "styles" "css/application.css"}}
+{{append . "scripts" "js/vendor.js"}}
+{{append . "scripts" "js/templates.js"}}
+{{append . "scripts" "js/application.js"}}
+
 {{template "header.html" .}}
-
-<h1>Your Application Is Ready</h1>
-
-{{template "footer.html" .}}
-
