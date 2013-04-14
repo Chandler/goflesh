@@ -1,4 +1,0 @@
-(function() {
-  debugger;
-
-}).call(this);

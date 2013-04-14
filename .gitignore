@@ -1,6 +1,7 @@
 .db/
 
 node_modules/
+jam/
 app/tmp/
 
 *.cgo*.go
