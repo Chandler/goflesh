@@ -1,5 +1,7 @@
 .db/
 
+node_modules/
+
 *.cgo*.go
 *.cgo*.c
 .DS_Store

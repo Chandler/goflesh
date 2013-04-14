@@ -11,6 +11,7 @@ revel - http://robfig.github.io/revel/
 ## Setup
     #node
       brew install npm
+      npm -g install grunt-cli
       npm install
 
     #db
