@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          'flesh/public/js/application.js': ['flesh/client/*.coffee']
+          'public/js/application.js': ['client/**/*.coffee']
         }
       }
     },
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
       },
       compile: {
         files: {
-          "flesh/public/js/templates.js": ["flesh/client/templates/*.handlebars"]
+          "public/js/templates.js": ["client/templates/*.handlebars"]
         }
       }
     },
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          'flesh/public/css/application.css': ['flesh/client/stylesheets/*.styl']
+          'public/css/application.css': ['client/stylesheets/*.styl']
         }
       }
     },
@@ -37,25 +37,25 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [ //you must specify these individually because they must be in the correct order
-          'flesh/public/js/lib/jquery-1.9.1.min.js',
-          'flesh/public/js/lib/handlebars.runtime.js',
-          'flesh/public/js/lib/ember.js'
+          'public/js/lib/jquery-1.9.1.min.js',
+          'public/js/lib/handlebars.runtime.js',
+          'public/js/lib/ember.js'
         ],
-        dest: 'flesh/public/js/vendor.js'
+        dest: 'public/js/vendor.js'
       }
     },
 
     watch: {
       coffee: {
-        files: ['flesh/client/*.coffee'],
+        files: ['client/*.coffee'],
         tasks: 'coffee'
       },
       handlebars: {
-        files: ['flesh/client/templates/*.handlebars'],
+        files: ['client/templates/*.handlebars'],
         tasks: 'handlebars'
       },
       stylus: {
-        files: ['flesh/client/stylesheets/*.styl'],
+        files: ['client/stylesheets/*.styl'],
         tasks: 'handlebars'
       }
     },
@@ -76,6 +76,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   grunt.registerTask('compile', ['coffee', 'handlebars', 'stylus']);
-  grunt.registerTask('server', ['watch','shell']);
+  grunt.registerTask('w', ['compile','watch']);
 
 };

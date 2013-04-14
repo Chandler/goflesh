@@ -1,8 +1,5 @@
 # flesh
 
-./compile.sh to compile assets
-
-
 ## Requirements
 go - http://golang.org/
 revel - http://robfig.github.io/revel/
@@ -12,6 +9,7 @@ revel - http://robfig.github.io/revel/
     #node
       brew install npm
       npm -g install grunt-cli
+      npm -g install jamjs #client package manager
       npm install
 
     #db
