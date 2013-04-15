@@ -1,2 +1,2 @@
-require ["jquery","game"], ($, game) ->
-  console.log "the best"
+require ["jquery","homeView"], ($, homeView) ->
+  console.log "it works"
