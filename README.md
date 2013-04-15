@@ -9,8 +9,9 @@ revel - http://robfig.github.io/revel/
     #node
       brew install npm
       npm -g install grunt-cli
-      npm -g install jamjs #client package manager
+      npm -g install jamjs
       npm install
+      jam install
 
     #db
       brew install postgres
@@ -22,6 +23,13 @@ revel - http://robfig.github.io/revel/
       postgres -D .db -r /tmp/flesh-postgres.log -p 5454 & # start the server, hit enter twice
       createdb -p 5454 -O postgres -U postgres flesh_local
       ln -s ~/flesh $GOPATH/src/flesh # assuming you cloned to ~/flesh
+
+## Running Locally
+    #assets (check gruntfile.js for all the availiable tasks)
+      grunt compile #build assets once
+      grunt w #build assets once and then watch for file changes
+
+    #server
       revel run flesh # if you added $GOPATH/bin to your path as per revel install instructions
 
 ## Other

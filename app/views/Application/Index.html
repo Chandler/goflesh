@@ -1,8 +1,7 @@
 Hello World
 
 {{append . "styles" "css/application.css"}}
-{{append . "scripts" "js/vendor.js"}}
-{{append . "scripts" "js/templates.js"}}
-{{append . "scripts" "js/application.js"}}
+{{append . "scripts" "js/lib/require.js"}}
+{{append . "scripts" "js/main.js"}}
 
 {{template "header.html" .}}
