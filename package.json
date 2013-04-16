@@ -19,7 +19,6 @@
     "baseUrl": "public/js",
     "dependencies": {
       "jquery": null,
-      "ember": null,
       "handlebars.runtime": null
     }
   }

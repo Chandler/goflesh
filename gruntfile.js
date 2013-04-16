@@ -49,16 +49,16 @@ module.exports = function(grunt) {
     },
     watch: {
       coffee: {
-        files: ['client/*.coffee'],
+        files: ['client/**/*.coffee'],
         tasks: 'coffee'
       },
       handlebars: {
-        files: ['client/templates/*.handlebars'],
+        files: ['client/templates/**/*.handlebars'],
         tasks: 'handlebars'
       },
       stylus: {
         files: ['client/stylesheets/*.styl'],
-        tasks: 'handlebars'
+        tasks: 'stylus'
       }
     }
   });

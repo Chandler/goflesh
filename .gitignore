@@ -3,7 +3,7 @@
 node_modules/
 public/js/
 app/tmp/
-
+*.sublime-project
 *.cgo*.go
 *.cgo*.c
 .DS_Store
