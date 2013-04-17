@@ -1,7 +1,7 @@
 .db/
 
 node_modules/
-public/js/
+public/js/*.js
 app/tmp/
 *.sublime-project
 *.cgo*.go
