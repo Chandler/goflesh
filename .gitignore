@@ -2,17 +2,16 @@
 
 
 node_modules/
-public/js/*.js
 public/js/jam
-!public/js/lib
+public/js/*.js
 
 app/tmp/
+!public/js/lib
 *.sublime-project
 *.cgo*.go
 *.cgo*.c
 .DS_Store
-*.ao
-public/js/jam
+*.a
 *.so
 *.pyc
 ._*
