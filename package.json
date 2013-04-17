@@ -16,7 +16,7 @@
     "mocha": "~1.9.0"
   },
   "jam": {
-    "packageDir": "public/js/lib",
+    "packageDir": "public/js/jam",
     "baseUrl": "public/js",
     "dependencies": {
       "jquery": "1.9.1",

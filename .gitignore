@@ -3,6 +3,7 @@
 
 node_modules/
 public/js/*.js
+public/js/jam
 !public/js/lib
 
 app/tmp/
@@ -11,6 +12,7 @@ app/tmp/
 *.cgo*.c
 .DS_Store
 *.ao
+public/js/jam
 *.so
 *.pyc
 ._*
