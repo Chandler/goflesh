@@ -3,6 +3,7 @@
 node_modules/
 public/js/
 app/tmp/
+jam/
 
 *.cgo*.go
 *.cgo*.c
