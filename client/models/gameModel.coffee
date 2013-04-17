@@ -1,10 +1,10 @@
-define ["ember", "templates", "ember-data"], (Em, Templates, Ed) ->
-  debugger
-  Store = DS.Store.extend ->
+define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
+
+  Store = DS.Store.extend
     revision: 11
-    adapter: 'DS.asdf'
+    adapter: 'DS.fixtureAdapter'
     
-  Game = DS.Model.extend
+  Game = DS.Model.extend()
 
   Game.FIXTURES = [
     id: 1

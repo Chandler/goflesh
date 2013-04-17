@@ -1,3 +1,13 @@
+
+Hello World
+
+
+
+{{append . "scripts" "js/handlebars.js"}}
+{{append . "scripts" "js/lib/ember.js"}}
+{{append . "scripts" "js/test.js"}}
+
+
 <html>
   <head>
     <title>{{.title}}</title>
@@ -6,10 +16,10 @@
       <link rel="stylesheet" type="text/css" href="/public/{{.}}">
     {{end}}
 
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
     {{range .scripts}}
       <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
     {{end}}
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
   </head>
