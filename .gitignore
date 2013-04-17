@@ -1,7 +1,10 @@
 .db/
 
+
 node_modules/
-public/js/*.js #hacky
+public/js/*.js
+!public/js/lib
+
 app/tmp/
 *.sublime-project
 *.cgo*.go
