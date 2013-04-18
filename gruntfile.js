@@ -65,7 +65,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-amd-dist');
 
 
-  grunt.registerTask('compile', ['clean:assets', 'coffee', 'ember_handlebars','stylus']);
+  grunt.registerTask('compile', ['clean:assets','coffee','ember_handlebars','stylus']);
   grunt.registerTask('c', ['compile']);
   grunt.registerTask('w', ['compile','watch']);
 

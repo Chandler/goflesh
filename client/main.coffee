@@ -29,7 +29,7 @@ require.config
       exports: 'this["Ember"]["TEMPLATES"]'
     
 require ["jquery", "app", "gameModel", "templates", "ember"], ($, App, GameModel, Templates, Em) ->
-  debugger
+
   App.Router.map ->
     this.route 'discovery'
 
