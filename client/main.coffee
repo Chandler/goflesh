@@ -3,52 +3,58 @@ require.config
   baseUrl: "public/js"
   packages: [
       {
-          name: "handlebars",
-          location: "lib",
+          name: "handlebars"
+          location: "lib"
           main: "handlebars.js"
       },
       {
-          name: "ember",
-          location: "lib",
+          name: "ember"
+          location: "lib"
           main: "ember.js"
       },
       {
-          name: "ember-data",
-          location: "lib",
+          name: "ember-data"
+          location: "lib"
           main: "ember-data.js"
       }
-  ]
-
-require ["jquery", "app", "gameModel", "templates"], ($, App, GameModel, Templates) ->
-
+      {
+          name: "templates"
+          location: "."
+          main: "templates.js"
+      }
+  ],
+  shim:
+    "templates":
+      deps: ['jquery']
+      exports: 'this["Ember"]["TEMPLATES"]'
+    
+require ["jquery", "app", "gameModel", "templates", "ember"], ($, App, GameModel, Templates, Em) ->
+  debugger
   App.Router.map ->
     this.route 'discovery'
 
   App.IndexRoute = Ember.Route.extend(redirect: ->
-    @transitionTo "discovery"
+    @transitionTo 'discovery'
   )
 
-  App.ApplicationView = Ember.View.extend
-    template: 'willy wonka'
+  App.ApplicationController = Ember.Controller.extend
+    message: "this is the APPLICATION CONTROLLER"
 
-  App.ApplicationController = Ember.Controller.extend()
-
-  App.DiscoveryRouter = Ember.Route.extend
-    model: -> 
-      GameModel.find()
-    setupController:  (controller, model) ->
-      controller.set('content', model)
+  App.DiscoveryRoute = Ember.Route.extend
+    setupController: (controller) ->
+      controller.set('message', 'sup')
+    # model: ->
+    #   GameModel.find()
     renderTemplate: ->
-      render('disovery');
-  
-  App.DiscoveryController = Em.ObjectController.extend
-    message: 'This is the discovery page' 
+      this.render
 
-  App.DiscoveryView = Ember.View.extend
-    template: (name, data) ->
-      Templates["discovery"]({message: "hey"})
+  # App.DiscoveryController = Em.ObjectController.extend
+  #   message: 'This is the discovery page'
 
-  view = App.DiscoveryView.create
-    controller: 'discovery'
+  # App.DiscoveryView = Ember.View.extend
+  #   template: Ember.Handlebars.compile('Hello {{message}}')
 
-  view.append("#app")
+  # view = App.DiscoveryView.create
+  #   controller: App.DiscoveryController
+
+  # view.append("#app")

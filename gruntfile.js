@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         ext: '.js'
       }
     },
-    handlebars: {
+    ember_handlebars: {
       options: {
         amd: true,
         processName: function(filename) {
@@ -37,21 +37,12 @@ module.exports = function(grunt) {
         }
       }
     },
-    requirejs: {
-      compile: {
-        options: {
-          baseUrl: "public/js",
-          mainConfigFile: "/public/jam/require.config.js",
-          out: "public/js/optimized.js"
-        }
-      }
-    },
     watch: {
       coffee: {
         files: ['client/**/*.coffee'],
         tasks: 'coffee'
       },
-      handlebars: {
+      ember_handlebars: {
         files: ['client/templates/**/*.handlebars'],
         tasks: 'handlebars'
       },
@@ -63,6 +54,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-ember-handlebars');
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -70,8 +62,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-requirejs');
+  grunt.loadNpmTasks('grunt-amd-dist');
 
-  grunt.registerTask('compile', ['clean:assets', 'coffee', 'handlebars', 'stylus']);
+
+  grunt.registerTask('compile', ['clean:assets', 'coffee', 'ember_handlebars','stylus']);
+  grunt.registerTask('c', ['compile']);
   grunt.registerTask('w', ['compile','watch']);
 
 };

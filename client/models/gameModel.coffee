@@ -1,13 +1,16 @@
-define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
+define ["ember", "templates", "ember-data", "app"], (Em, Templates, DS, App) ->
 
-  Store = DS.Store.extend
-    revision: 11
-    adapter: 'DS.fixtureAdapter'
+  App.Store = DS.Store.extend
+    revision: 11,
+    adapter: DS.FixtureAdapter.create()
     
-  Game = DS.Model.extend()
+  App.Game = DS.Model.extend
+    name: DS.attr 'number'
 
-  Game.FIXTURES = [
+  App.Game.FIXTURES = [
     id: 1
     id: 2
     id: 3
   ]
+
+  App.Game

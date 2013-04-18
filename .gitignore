@@ -4,10 +4,11 @@
 node_modules/
 public/js/jam
 public/js/*.js
-
+grunt-ember-handlebars/
 app/tmp/
 !public/js/lib
 *.sublime-project
+*.sublime-workspace
 *.cgo*.go
 *.cgo*.c
 .DS_Store
