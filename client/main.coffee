@@ -27,8 +27,18 @@ require.config
     "templates":
       deps: ['jquery']
       exports: 'this["Ember"]["TEMPLATES"]'
+
     
-require ["jquery", "app", "gameModel", "templates", "ember"], ($, App, GameModel, Templates, Em) ->
+require [
+  "app",
+  "discoveryRoute",
+  "ember-data"
+], (App, DiscoveryRoute, DS) ->
+  #this is where everything gets attached to our App
+
+  App.Router = Em.Router.extend
+    enableLogging: true
+    location: 'history'
 
   App.Router.map ->
     this.route 'discovery'
@@ -37,24 +47,13 @@ require ["jquery", "app", "gameModel", "templates", "ember"], ($, App, GameModel
     @transitionTo 'discovery'
   )
 
+  App.Store = DS.Store.extend
+    revision: 11,
+    adapter: DS.FixtureAdapter.create()
+
   App.ApplicationController = Ember.Controller.extend
-    message: "this is the APPLICATION CONTROLLER"
+    message: "this is the application template"
 
-  App.DiscoveryRoute = Ember.Route.extend
-    setupController: (controller) ->
-      controller.set('message', 'sup')
-    # model: ->
-    #   GameModel.find()
-    renderTemplate: ->
-      this.render
+  App.set('DiscoveryRoute', DiscoveryRoute)
 
-  # App.DiscoveryController = Em.ObjectController.extend
-  #   message: 'This is the discovery page'
 
-  # App.DiscoveryView = Ember.View.extend
-  #   template: Ember.Handlebars.compile('Hello {{message}}')
-
-  # view = App.DiscoveryView.create
-  #   controller: App.DiscoveryController
-
-  # view.append("#app")

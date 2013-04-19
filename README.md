@@ -13,6 +13,11 @@ revel - http://robfig.github.io/revel/
       npm install
       jam install
 
+      (temporary)
+      from root:
+      git clone https://github.com/Chandler/grunt-ember-handlebars.git
+      npm install grunt-ember-handlebars
+      
     #db
       brew install postgres
 

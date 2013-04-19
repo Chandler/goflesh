@@ -44,7 +44,7 @@ module.exports = function(grunt) {
       },
       ember_handlebars: {
         files: ['client/templates/**/*.handlebars'],
-        tasks: 'handlebars'
+        tasks: 'ember_handlebars'
       },
       stylus: {
         files: ['client/stylesheets/*.styl'],
