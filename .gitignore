@@ -1,5 +1,7 @@
 .db/
 
+jam/
+public/
 
 node_modules/
 public/js/jam

@@ -3,6 +3,7 @@
 # ~~~~
 
 GET     /                                       Application.Index
+GET /testjson   Organizations.List
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
