@@ -6,6 +6,7 @@ public/js/jam
 public/js/*.js
 grunt-ember-handlebars/
 app/tmp/
+app/tmp/*
 !public/js/lib
 *.sublime-project
 *.sublime-workspace
