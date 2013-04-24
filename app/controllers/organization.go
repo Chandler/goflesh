@@ -6,18 +6,9 @@ import (
 )
 
 type Organizations struct {
-	Application
+	*revel.Controller
 }
 
 func (c Organizations) List() revel.Result {
-	query := `
-    SELECT *
-    FROM organization
-    `
-
-	org, _ := dbm.Select(models.Organization{}, query)
-
-	out := make(map[string]interface{})
-	out["Organization"] = org
-	return c.RenderJson(out)
+	return GetList(models.Organization{})
 }
