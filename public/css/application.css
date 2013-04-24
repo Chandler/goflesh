@@ -1,6 +1,0 @@
-#application{background-image:url("images/blur.jpg");background-repeat:repeat;background-position:top;background-size:100%;display:block;}
-#application .navbar-inner{background-color:rgba(20,146,245,0.57);border-radius:0 0 0 0}
-#discovery{padding-top:150px}
-.org-search{background-color:rgba(20,146,245,0.57);width:500px;height:900px;margin-left:auto;margin-right:auto;padding-top:30px;border-radius:8px 8px 6px 6px;}
-.org-search .search-box input{height:50px;width:400px;margin-left:auto;margin-right:auto;display:block}
-.org-search .search-box .org-search-icon{float:right;position:relative;right:60px;top:-42px}

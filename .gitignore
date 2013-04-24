@@ -4,6 +4,7 @@ jam/
 public/
 
 node_modules/
+public/css/application.css
 public/js/jam
 public/js/*.js
 grunt-ember-handlebars/

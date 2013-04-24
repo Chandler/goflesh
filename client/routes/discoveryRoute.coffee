@@ -3,4 +3,4 @@ define ["ember", "gameModel"], (Em, GameModel) ->
     model: ->
       GameModel.find()
     setupController: (controller, model) ->
-      controller.set('content', model)
+      controller.set('message', model)
