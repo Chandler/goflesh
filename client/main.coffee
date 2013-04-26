@@ -25,15 +25,17 @@ require.config
   ],
   shim:
     "templates":
-      deps: ['jquery']
       exports: 'this["Ember"]["TEMPLATES"]'
 
     
 require [
   "app",
+  "DiscoveryController",
   "discoveryRoute",
+  "discoveryView",
+  "ListItemView",
   "ember-data"
-], (App, DiscoveryRoute, DS) ->
+], (App, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
   #this is where everything gets attached to our App
 
   App.Router = Em.Router.extend
@@ -54,6 +56,13 @@ require [
   App.ApplicationController = Ember.Controller.extend
     message: "this is the application template"
 
+  App.set('ListItemView', ListItemView)
+  App.set('DiscoveryView', DiscoveryView)
   App.set('DiscoveryRoute', DiscoveryRoute)
+  App.set('DiscoveryController', DiscoveryController)
+
+  Em.App = App
+
+  
 
 

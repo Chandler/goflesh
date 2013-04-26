@@ -1,6 +1,6 @@
-define ["ember", "gameModel"], (Em, GameModel) ->
+define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
   DiscoveryRoute = Ember.Route.extend
     model: ->
-      GameModel.find()
+      OrganizationModel
     setupController: (controller, model) ->
-      controller.set('message', model)
+      this.controllerFor('discovery').set('orgs', model.find())

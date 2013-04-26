@@ -1,4 +1,4 @@
 
-define ["jquery","ember"], ($, Em) ->
+define ["ember"], (Em) ->
   Em.Application.create
     rootElement: "#app"

@@ -1,7 +1,7 @@
-define('ember', ['handlebars'], function (Handlebars) {
+define('ember', ['jquery','handlebars'], function ($,Handlebars) {
 
-  // if(window !== undefined) //seems to require handlebars in the global scope; so set it up.
-  //   window.Handlebars = Handlebars;
+  if(window !== undefined) //seems to require handlebars in the global scope; so set it up.
+    window.Handlebars = Handlebars;
 
 
     // Version: v1.0.0-rc.2

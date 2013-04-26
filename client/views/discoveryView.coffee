@@ -1,3 +1,3 @@
-define ["ember","templates"], (Em, Templates) ->
-  template = Templates["discovery"]
-  exampleInterface: "test"
+define ["ember"], (Em) ->
+  DiscoveryView = Ember.View.extend
+    templateName: "discovery"

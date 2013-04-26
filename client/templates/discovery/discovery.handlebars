@@ -1,9 +1,12 @@
 <div id="discovery">
   <div class="org-search">
+    <h2 {{action "something"}} > Action! </h3>
     <div class="search-box">
       <input type="text" placeholder="hey" id="login-name">
       <label class="org-search-icon fui-menu-24"></label>
-      {{>list_item}}
+      {{#each organizations}}
+        {{view Em.App.ListItemView}}}
+      {{/each}}
     </div>
   </div>
-</div>
+</div> 
