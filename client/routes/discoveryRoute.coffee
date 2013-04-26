@@ -4,3 +4,4 @@ define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
       OrganizationModel
     setupController: (controller, model) ->
       this.controllerFor('discovery').set('content', model.find())
+      this.controllerFor('discovery').set('filterString', "")
