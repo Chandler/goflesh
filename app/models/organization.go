@@ -5,7 +5,7 @@ import (
 )
 
 type Organization struct {
-	Id   int
-	Name string
-	Slug string
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+	Slug string `json:"slug"`
 }
