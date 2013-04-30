@@ -1,5 +1,7 @@
 .db/
 
+jam/
+public/
 
 node_modules/
 public/css/application.css
@@ -7,6 +9,7 @@ public/js/jam
 public/js/*.js
 grunt-ember-handlebars/
 app/tmp/
+app/tmp/*
 !public/js/lib
 *.sublime-project
 *.sublime-workspace

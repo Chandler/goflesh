@@ -3,6 +3,8 @@
 # ~~~~
 
 GET     /                                       Application.Index
+GET /organization/   Organizations.ReadList
+PUT /organization/   Organizations.Create
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
