@@ -6,6 +6,7 @@ import (
 	"github.com/robfig/revel"
 	controllers "flesh/app/controllers"
 	tests "flesh/tests"
+	_ "github.com/bmizerany/pq"
 	controllers0 "github.com/robfig/revel/modules/static/app/controllers"
 	controllers1 "github.com/robfig/revel/modules/testrunner/app/controllers"
 )
@@ -34,6 +35,52 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 					10: []string{ 
 					},
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Organizations)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "ReadList",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.GorpController)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Begin",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Commit",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Rollback",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
 				},
 			},
 			
