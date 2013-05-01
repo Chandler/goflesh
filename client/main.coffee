@@ -44,6 +44,7 @@ require [
 
   App.Router.map ->
     this.route 'discovery'
+    this.route 'organizations', path: "/orgs"
 
   App.IndexRoute = Ember.Route.extend(redirect: ->
     @transitionTo 'discovery'
@@ -51,7 +52,7 @@ require [
 
   App.Store = DS.Store.extend
     revision: 11,
-    adapter: DS.FixtureAdapter.create()
+    adapter: DS.RESTAdapter.create()
 
   App.ApplicationController = Ember.Controller.extend
     message: "this is the application template"
