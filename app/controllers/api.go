@@ -33,7 +33,7 @@ func GetList(model interface{}) revel.Result {
 	}
 
 	out := make(map[string]interface{})
-	out[name] = result
+	out[name+"s"] = result
 
 	return c.RenderJson(out)
 }
