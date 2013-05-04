@@ -16,6 +16,11 @@ type User struct {
 	Api_key     string // TODO: don't send back
 }
 
+type UserGetAuthenticate struct {
+	Id      int    `json:"id"`
+	Api_key string // TODO: don't send back
+}
+
 /*
 Hash the password that has been set in the User model,
 and also generate a random ApiKey
