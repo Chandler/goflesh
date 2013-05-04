@@ -23,7 +23,7 @@ func GetList(model interface{}) revel.Result {
 
 	template := `
     SELECT *
-    FROM %s 
+    FROM "%s"
     `
 	query := fmt.Sprintf(template, name)
 

@@ -2,8 +2,6 @@ package controllers
 
 import (
 	"database/sql"
-	// "github.com/bmizerany/pq"
-	// "code.google.com/p/go.crypto/bcrypt"
 	"flesh/app/models"
 	"github.com/coopernurse/gorp"
 	r "github.com/robfig/revel"
@@ -23,6 +21,7 @@ func (p GorpPlugin) OnAppStart() {
 	dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 
 	dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
+	dbm.AddTable(models.User{}).SetKeys(true, "Id")
 	dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
 
 	// Create tables (ok if they exist, move on)
