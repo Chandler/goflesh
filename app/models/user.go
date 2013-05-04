@@ -1,10 +1,8 @@
 package models
 
 import (
-	"code.google.com/p/go.crypto/bcrypt"
-	"flesh/app/types"
+	"flesh/app/utils"
 	uuid "github.com/nu7hatch/gouuid"
-	"github.com/robfig/revel"
 )
 
 type User struct {
@@ -14,6 +12,7 @@ type User struct {
 	Last_name   string `json:"last_name"`
 	Screen_name string `json:"screen_name"`
 	Password    string // TODO: don't send back
+	Salt        string // TODO: don't send back
 	Api_key     string // TODO: don't send back
 }
 
@@ -21,25 +20,24 @@ type User struct {
 Hash the password that has been set in the User model,
 and also generate a random ApiKey
 */
-func (u *User) HashPassword() error {
-	bcryptCost, existed := revel.Config.Int("user.bcrypt.cost")
-	if !existed {
-		return &types.ValueNotSetError{"user.bcrypt.cost"}
-	}
-
-	var err error
-	bytesPassword := []byte(u.Password)
-	bytesPassword, err = bcrypt.GenerateFromPassword(bytesPassword, bcryptCost)
-	u.Password = string(bytesPassword)
-	if err != nil {
-		return err
-	}
+func (u *User) ChangePassword(plaintext string) error {
 
 	keyObj, err := uuid.NewV4()
 	if err != nil {
 		return err
 	}
 	u.Api_key = keyObj.String()
+
+	saltObj, err := uuid.NewV4()
+	if err != nil {
+		return err
+	}
+	u.Salt = saltObj.String()
+
+	u.Password, err = utils.HashPassword(plaintext + u.Salt)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

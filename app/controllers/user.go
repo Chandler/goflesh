@@ -25,7 +25,7 @@ func (c Users) Create(data string) revel.Result {
 	// Prepare for bulk insert (only way to do it, promise)
 	userInterfaces := make([]interface{}, len(users))
 	for i, user := range users {
-		user.HashPassword()
+		user.ChangePassword(user.Password)
 		userInterfaces[i] = interface{}(&user)
 	}
 	// do the bulk insert
