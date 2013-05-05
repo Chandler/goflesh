@@ -10,12 +10,12 @@ require.config
       {
           name: "ember"
           location: "lib"
-          main: "ember.js"
+          main: "new-ember.js"
       },
       {
           name: "ember-data"
           location: "lib"
-          main: "ember-data.js"
+          main: "new-ember-data.js"
       }
       {
           name: "templates"
@@ -47,13 +47,13 @@ require [
   App.Router.map ->
     this.route 'discovery'
     this.route 'organizations', path: "/orgs"
-
+    this.route 'signup'
   App.IndexRoute = Ember.Route.extend(redirect: ->
     @transitionTo 'discovery'
   )
 
   App.Store = DS.Store.extend
-    revision: 11,
+    revision: 12,
     adapter: DS.RESTAdapter.create()
 
   App.ApplicationController = Ember.Controller.extend

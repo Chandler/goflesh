@@ -1,3 +1,39 @@
-hello!
-
-<div {{action "go"}}> Click Me </div>
+<div class="creation-page">
+  <div class="fields">
+    <div class="row">
+      <div class="fname text-field">
+        {{view Ember.TextField
+          type="text"
+          placeholder="First Name"
+        }}
+      </div>
+      <div class="lname text-field">
+        {{view Ember.TextField
+          type="text"
+          placeholder="Last Name"
+        }}
+      </div>
+    </div>
+    <div class="row screenname text-field">
+      {{view Ember.TextField
+        type="text"
+        placeholder="Screen Name"
+      }}
+    </div>
+    <div class="row email text-field">
+      {{view Ember.TextField
+        type="text"
+        placeholder="Email Address"
+      }}
+    </div>
+    <div class="row password text-field">
+      {{view Ember.TextField
+        type="password"
+        placeholder="Password"
+      }}
+    </div>
+    <div class="btn btn-large btn-block btn-info row signup-btn" {{action "go"}}> Sign Up! </div>
+  </div>
+    <span class="clearfix"></span>
+  <div {{action "go"}}> Click Me </div>
+</div>

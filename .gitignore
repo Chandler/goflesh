@@ -1,8 +1,5 @@
 .db/
 
-jam/
-public/
-
 node_modules/
 public/css/application.css
 public/js/jam

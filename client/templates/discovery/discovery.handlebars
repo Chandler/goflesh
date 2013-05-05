@@ -1,5 +1,5 @@
 <div id="discovery">
-  <div class="org-search">
+  <div class="org-search content-well span6 offset1">
     <div class="search-box">
       {{view Ember.TextField
         type="text"
@@ -8,9 +8,11 @@
         valueBinding="filterString"
       }}
       <label class="org-search-icon fui-menu-24"></label>
-      {{#each organizations}}
-        {{view Em.App.ListItemView}}
-      {{/each}}
+
     </div>
+  </div>
+  <div class="top-orgs content-well span5 offset1">
+    <h2> Top Orgs </h2>
+
   </div>
 </div> 

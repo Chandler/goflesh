@@ -26,26 +26,6 @@ func main() {
 	revel.Init(*runMode, *importPath, *srcPath)
 	revel.INFO.Println("Running revel server")
 	
-	revel.RegisterController((*controllers.Organizations)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "ReadList",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "Create",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.GorpController)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -65,6 +45,26 @@ func main() {
 			&revel.MethodType{
 				Name: "Rollback",
 				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Organizations)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "ReadList",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},

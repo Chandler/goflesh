@@ -1,26 +1,73 @@
-primary_green = rgba(20, 146, 245, 0.57)
+primary_theme = rgb(20, 146, 245)
+secondary_theme = rgb(72, 66, 73)
 navy_blue = rgb(29, 74, 131)
 sea_green = rgb(53, 175, 112)
+small_signup_field_width = 225px
+large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
 #application
-  background-image: url('images/blur.jpg')
+  height: 100%
+  background-color: secondary_theme
+  // background-image: url('images/blur.jpg')
+
   background-repeat: repeat
   background-position: top
   background-size: 100%
   display: block
+  .navbar
+    margin-bottom: 0
   .navbar-inner
-    background-color: primary_green
+    height: 75px
+    background-color: primary_theme
     border-radius: 0px 0px 0px 0px
+    margin-bottom: -75px
+    padding-left: 100px
+    .nav-button
+      margin-top: 30px
+      margin-right: 10px
+    .right-nav
+      float: right
+
+.creation-page
+  height: 100%
+  .row
+    clear: both
+  .fields
+    float: left
+    margin-top: 200px
+    margin-left: 200px
+  .text-field
+    float: left
+  input
+    height: 50px
+    font-size: 22px
+    line-height: 25px
+  .fname, .lname
+    input
+      width: small_signup_field_width
+      margin-left: auto
+      margin-right: auto
+      display: block
+      margin-right: 15px
+  .email, .password, .screenname
+    input
+      width: large_signup_field_width
+  .signup-btn
+    width: large_signup_field_width
+
+
 
 #discovery
   padding-top: 150px
-.org-search
-  background-color: primary_green
-  width: 500px
-  height: 700px
-  margin-left: auto
-  margin-right: auto
-  padding-top: 30px
+
+.content-well
   border-radius: 8px 8px 6px 6px
+  padding-top: 30px
+  background-color: primary_theme
+
+.top-orgs
+  height: 500px
+.org-search
+  min-height: 200px
   .search-box
     input
       height: 50px
@@ -54,6 +101,29 @@ sea_green = rgb(53, 175, 112)
     margin-right: 10px
   .clearfix
     clear: both
+
+
+#footer
+  float: left
+  bottom:0
+  width:100%
+  background-color: primary_theme
+  height: 200px
+  margin-top: -200px
+  .footer-item
+    margin-left: 30px
+    margin-top: 20px
+    a
+      color: #fff
+      font-size: 25px
+
+
+
+
+
+
+
+
 
 
 

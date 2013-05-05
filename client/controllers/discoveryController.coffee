@@ -1,5 +1,7 @@
 define ["ember"], (Em) ->
   DiscoveryController = Ember.ObjectController.extend
+
+
     organizations: (->
       string = this.get 'filterString'
       if string == ""
