@@ -11,13 +11,13 @@ type User struct {
 	First_name  string `json:"first_name"`
 	Last_name   string `json:"last_name"`
 	Screen_name string `json:"screen_name"`
-	Password    string // TODO: don't send back
-	Api_key     string // TODO: don't send back
+	Password    string `json:"password,omitempty"`
+	Api_key     string `json:"api_key,omitempty"`
 }
 
 type UserGetAuthenticate struct {
 	Id      int    `json:"id"`
-	Api_key string // TODO: don't send back
+	Api_key string `json:"api_key,omitempty"`
 }
 
 /*

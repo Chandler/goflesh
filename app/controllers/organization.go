@@ -11,7 +11,7 @@ type Organizations struct {
 }
 
 func (c Organizations) ReadList() revel.Result {
-	return GetList(models.Organization{})
+	return GetList(models.Organization{}, nil)
 }
 
 func (c Organizations) Create(data string) revel.Result {
