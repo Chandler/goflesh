@@ -12,7 +12,6 @@ type User struct {
 	Last_name   string `json:"last_name"`
 	Screen_name string `json:"screen_name"`
 	Password    string // TODO: don't send back
-	Salt        string // TODO: don't send back
 	Api_key     string // TODO: don't send back
 }
 
@@ -33,13 +32,7 @@ func (u *User) ChangePassword(plaintext string) error {
 	}
 	u.Api_key = keyObj.String()
 
-	saltObj, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
-	u.Salt = saltObj.String()
-
-	u.Password, err = utils.HashPassword(plaintext + u.Salt)
+	u.Password, err = utils.HashPassword(plaintext)
 	if err != nil {
 		return err
 	}

@@ -52,6 +52,11 @@ type UserAuthenticateInput struct {
 	Password    string `json:"password"`
 }
 
+type UserAuthenticateOutput struct {
+	Id      int    `json:"id"`
+	Api_key string `json:"api_key"`
+}
+
 func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 	template := `
     SELECT *
@@ -85,12 +90,14 @@ func (c Users) Authenticate(data string) revel.Result {
 		return c.RenderError(err)
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(authInfo.Password+user.Salt))
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(authInfo.Password))
 
 	if err != nil {
 		c.Response.Status = 401
 		return c.RenderText("")
 	}
 
-	return c.RenderJson(user)
+	out := UserAuthenticateOutput{user.Id, user.Api_key}
+
+	return c.RenderJson(out)
 }
