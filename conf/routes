@@ -6,6 +6,7 @@ GET     /                                       Application.Index
 
 GET  /organizations/   Organizations.ReadList
 POST /organizations/   Organizations.Create
+GET  /organizations/{organization_id}/games/ Organizations.ListGames
 
 GET  /games/            Games.ReadList
 POST /games/            Games.Create
