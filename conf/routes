@@ -7,6 +7,9 @@ GET     /                                       Application.Index
 GET  /organizations/   Organizations.ReadList
 POST /organizations/   Organizations.Create
 
+GET  /games/            Games.ReadList
+POST /games/            Games.Create
+
 GET /users/           Users.ReadList
 POST /users/           Users.Create
 

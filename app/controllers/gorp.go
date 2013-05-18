@@ -3,9 +3,12 @@ package controllers
 import (
 	"database/sql"
 	"flesh/app/models"
+	"fmt"
 	"github.com/coopernurse/gorp"
 	r "github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
+	"math/rand"
+	"time"
 )
 
 var (
@@ -21,6 +24,7 @@ func (p GorpPlugin) OnAppStart() {
 	dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 
 	dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
+	dbm.AddTable(models.Game{}).SetKeys(true, "Id")
 	dbm.AddTable(models.User{}).SetKeys(true, "Id")
 	dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
 
@@ -29,13 +33,31 @@ func (p GorpPlugin) OnAppStart() {
 	dbm.CreateTables()
 
 	organizations := []*models.Organization{
-		&models.Organization{0, "UIdaho", "vandals"},
-		&models.Organization{0, "Boise State", "broncs"},
-		&models.Organization{0, "Berkeley", "cal"},
+		&models.Organization{0, "UIdaho", "vandals", "US/Pacific"},
+		&models.Organization{0, "Boise State", "broncs", "US/Mountain"},
+		&models.Organization{0, "Berkeley", "cal", "US/Pacific"},
 	}
 
 	for _, organization := range organizations {
 		if err := dbm.Insert(organization); err != nil {
+			// panic(err)
+		}
+		randGameNum := rand.Int()
+		now := time.Now().UTC()
+		later := now.Add(12 * time.Hour)
+		tomorrow := now.Add(24 * time.Hour)
+		tomorrowLater := later.Add(24 * time.Hour)
+		game := &models.Game{0,
+			fmt.Sprintf("Game number %d", randGameNum),
+			fmt.Sprintf("game-%d", randGameNum),
+			organization.Id,
+			organization.Default_timezone,
+			&now,
+			&tomorrow, //&time.Now() + time.Hour,
+			&later,
+			&tomorrowLater,
+		}
+		if err := dbm.Insert(game); err != nil {
 			// panic(err)
 		}
 	}
