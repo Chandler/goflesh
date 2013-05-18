@@ -25,9 +25,10 @@ func (c Organizations) Create(data string) revel.Result {
 
 	// Prepare for bulk insert (only way to do it, promise)
 	orgInterfaces := make([]interface{}, len(orgs))
-	for i, org := range orgs {
-		orgInterfaces[i] = interface{}(&org)
+	for i := range orgs {
+		orgInterfaces[i] = interface{}(&orgs[i])
 	}
+
 	// do the bulk insert
 	err = dbm.Insert(orgInterfaces...)
 	if err != nil {
