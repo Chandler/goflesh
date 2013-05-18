@@ -36,3 +36,21 @@ func (c Organizations) Create(data string) revel.Result {
 	// Return a copy of the data with id's set
 	return c.RenderJson(orgInterfaces)
 }
+
+func (c Organizations) ListGames(organization_id int) revel.Result {
+	template := `
+		SELECT *
+		FROM game
+		WHERE organization_id = %d
+		`
+	query := fmt.Sprintf(template, organization_id)
+
+	result, err := dbm.Select(models.Game{}, query)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	out := make(map[string]interface{})
+	out["games"] = result
+
+	return c.RenderJson(out)
+}
