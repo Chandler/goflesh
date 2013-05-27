@@ -33,9 +33,9 @@ func (p GorpPlugin) OnAppStart() {
 	dbm.CreateTables()
 
 	organizations := []*models.Organization{
-		&models.Organization{0, "UIdaho", "vandals", "US/Pacific"},
-		&models.Organization{0, "Boise State", "broncs", "US/Mountain"},
-		&models.Organization{0, "Berkeley", "cal", "US/Pacific"},
+		&models.Organization{0, "UIdaho", "vandals", "US/Pacific", nil, nil},
+		&models.Organization{0, "Boise State", "broncs", "US/Mountain", nil, nil},
+		&models.Organization{0, "Berkeley", "cal", "US/Pacific", nil, nil},
 	}
 
 	for _, organization := range organizations {
@@ -56,6 +56,8 @@ func (p GorpPlugin) OnAppStart() {
 			&tomorrow, //&time.Now() + time.Hour,
 			&later,
 			&tomorrowLater,
+			nil,
+			nil,
 		}
 		if err := dbm.Insert(game); err != nil {
 			// panic(err)

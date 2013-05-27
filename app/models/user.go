@@ -2,6 +2,7 @@ package models
 
 import (
 	"flesh/app/utils"
+	"github.com/coopernurse/gorp"
 	uuid "github.com/nu7hatch/gouuid"
 	"time"
 )
@@ -15,6 +16,21 @@ type User struct {
 	Password    string     `json:"password,omitempty"`
 	Api_key     string     `json:"api_key,omitempty"`
 	Last_login  *time.Time `json:"last_login"`
+	Created     *time.Time `json:"created"`
+	Updated     *time.Time `json:"updated"`
+}
+
+func (model *User) PreInsert(s gorp.SqlExecutor) error {
+	now := time.Now().UTC()
+	model.Created = &now
+	model.Updated = model.Created
+	return nil
+}
+
+func (model *User) PreUpdate(s gorp.SqlExecutor) error {
+	now := time.Now().UTC()
+	model.Updated = &now
+	return nil
 }
 
 type UserGetAuthenticate struct {
