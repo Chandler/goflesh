@@ -13,8 +13,10 @@ POST /games/            Games.Create
 
 GET /users/           Users.ReadList
 POST /users/           Users.Create
-
 POST /users/authenticate/ Users.Authenticate
+
+GET  /players/            Players.ReadList
+POST /players/            Players.Create
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

@@ -21,6 +21,7 @@ func TestInit() {
 	dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
 	dbm.AddTable(models.Game{}).SetKeys(true, "Id")
 	dbm.AddTable(models.User{}).SetKeys(true, "Id")
+	dbm.AddTable(models.Player{}).SetKeys(true, "Id")
 	dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
 
 	testMode, _ := r.Config.Bool("mode.test")
