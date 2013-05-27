@@ -13,12 +13,12 @@ type UserTest struct {
 // generate some number of user objects in JSON
 func generateUserJson() string {
 	jsn := GenerateJson(
-		map[string]func() string{
+		map[string]func() interface{}{
 			"email":       GenerateEmail,
 			"first_name":  GenerateWord,
 			"last_name":   GenerateWord,
 			"screen_name": GenerateSlug,
-			"password":    func() string { return GenerateString(4, "-X-") },
+			"password":    func() interface{} { return GenerateString(4, "-X-") },
 		},
 		-1,
 	)

@@ -13,10 +13,10 @@ type OrganizationTest struct {
 // generate some number of organization objects in JSON
 func generateOrganizationJson() string {
 	jsn := GenerateJson(
-		map[string]func() string{
+		map[string]func() interface{}{
 			"name":             GenerateWord,
 			"slug":             GenerateSlug,
-			"default_timezone": func() string { return "US/Pacific" },
+			"default_timezone": func() interface{} { return "US/Pacific" },
 		},
 		-1,
 	)

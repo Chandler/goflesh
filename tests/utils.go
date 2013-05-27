@@ -48,34 +48,34 @@ func GenerateRandomWordArray(numWords int) []string {
 	return words
 }
 
-func GenerateString(numWords int, sep string) string {
+func GenerateString(numWords int, sep string) interface{} {
 	words := GenerateRandomWordArray(numWords)
 	return strings.Join(words, sep)
 }
 
-func GenerateWord() string {
+func GenerateWord() interface{} {
 	return GenerateRandomWordArray(1)[0]
 }
 
-func GenerateName() string {
+func GenerateName() interface{} {
 	return GenerateString(0, " ")
 }
 
-func GenerateSlug() string {
+func GenerateSlug() interface{} {
 	return GenerateString(2, "_")
 }
 
-func GenerateEmail() string {
-	return GenerateString(0, "-") + "@" + GenerateString(1, "")
+func GenerateEmail() interface{} {
+	return GenerateString(0, "-").(string) + "@" + GenerateString(1, "").(string)
 }
 
-func GenerateJson(keyToGenerator map[string]func() string, numEntries int) string {
+func GenerateJson(keyToGenerator map[string]func() interface{}, numEntries int) string {
 	if numEntries < 0 {
 		numEntries = rand.Intn(5)
 	}
-	userStructure := make([]map[string]string, rand.Intn(5)+1)
+	userStructure := make([]map[string]interface{}, rand.Intn(5)+1)
 	for i := 0; i < len(userStructure); i++ {
-		userStructure[i] = make(map[string]string)
+		userStructure[i] = make(map[string]interface{})
 		for key, valFunc := range keyToGenerator {
 			userStructure[i][key] = valFunc()
 		}
