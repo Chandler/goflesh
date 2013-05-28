@@ -67,7 +67,5 @@ func (t PlayerTest) TestListWorks() {
 }
 
 func (t PlayerTest) After() {
-	if testMode {
-		dbm.Exec("TRUNCATE player CASCADE")
-	}
+	TestClean()
 }

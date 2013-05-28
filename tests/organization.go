@@ -45,7 +45,5 @@ func (t OrganizationTest) TestListWorks() {
 }
 
 func (t OrganizationTest) After() {
-	if testMode {
-		dbm.Exec("TRUNCATE organization CASCADE")
-	}
+	TestClean()
 }
