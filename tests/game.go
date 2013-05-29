@@ -2,6 +2,7 @@ package tests
 
 import (
 	"flesh/app/models"
+	"flesh/app/routes"
 	"github.com/robfig/revel"
 	"net/url"
 	"strings"
@@ -25,6 +26,11 @@ func getOrganizationId() interface{} {
 
 // generate some number of user objects in JSON
 func generateGameJson() string {
+	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", nil, nil}
+	err := dbm.Insert(&testOrg)
+	if err != nil {
+		panic(err)
+	}
 	now := time.Now().UTC()
 	later := now.Add(12 * time.Hour)
 	tomorrow := now.Add(24 * time.Hour)
@@ -53,7 +59,7 @@ func (t *GameTest) Before() {
 func (t *GameTest) TestCreateWorks() {
 	orgs := url.Values{}
 	orgs.Add("data", generateGameJson())
-	t.PostForm("/games/", orgs)
+	t.PostForm(routes.Games.Create(""), orgs)
 	t.AssertOk()
 	t.AssertContentType("application/json")
 	body := string(t.ResponseBody)
@@ -61,7 +67,7 @@ func (t *GameTest) TestCreateWorks() {
 }
 
 func (t *GameTest) TestListWorks() {
-	t.Get("/games/")
+	t.Get(routes.Games.ReadList())
 	t.AssertOk()
 	t.AssertContentType("application/json")
 }

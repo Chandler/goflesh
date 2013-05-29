@@ -19,6 +19,7 @@ public/
 
 app/tmp/
 app/tmp/*
+app/routes/
 grunt-ember-handlebars/
 node_modules/
 public/css/application.css

@@ -19,6 +19,7 @@ func (c Games) Create(data string) revel.Result {
 	var games []models.Game
 	err := json.Unmarshal([]byte(data), &games)
 	if err != nil {
+		revel.ERROR.Print(err)
 		return c.RenderError(err)
 	}
 
@@ -28,8 +29,11 @@ func (c Games) Create(data string) revel.Result {
 		gameInterfaces[i] = interface{}(&games[i])
 	}
 	// do the bulk insert
+	revel.INFO.Print(dbm)
 	err = dbm.Insert(gameInterfaces...)
 	if err != nil {
+		revel.ERROR.Print("MARKE")
+		revel.ERROR.Print(err)
 		return c.RenderError(err)
 	}
 

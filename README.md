@@ -25,7 +25,7 @@ revel - http://robfig.github.io/revel/
       brew install go --devel
       #install revel as per site instructions
       # then, install go packages
-      cat goPackages.txt | xargs go get
+      cat goPackages.txt | xargs -t go get -u
       initdb .db -U postgres
       postgres -D .db -r /tmp/flesh-postgres.log -p 5454 & # start the server, hit enter twice
       createdb -p 5454 -O postgres -U postgres flesh_local
