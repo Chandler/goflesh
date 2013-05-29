@@ -16,23 +16,24 @@ func (c Players) ReadList() revel.Result {
 
 func (c Players) Create(data string) revel.Result {
 	// read JSON into models or error out
-	var games []models.Player
-	err := json.Unmarshal([]byte(data), &games)
+	var dat map[string][]models.Player
+	err := json.Unmarshal([]byte(data), &dat)
 	if err != nil {
 		return c.RenderError(err)
 	}
+	players := dat["players"]
 
 	// Prepare for bulk insert (only way to do it, promise)
-	gameInterfaces := make([]interface{}, len(games))
-	for i := range games {
-		gameInterfaces[i] = interface{}(&games[i])
+	playerInterfaces := make([]interface{}, len(players))
+	for i := range players {
+		playerInterfaces[i] = interface{}(&players[i])
 	}
 	// do the bulk insert
-	err = dbm.Insert(gameInterfaces...)
+	err = dbm.Insert(playerInterfaces...)
 	if err != nil {
 		return c.RenderError(err)
 	}
 
 	// Return a copy of the data with id's set
-	return c.RenderJson(gameInterfaces)
+	return c.RenderJson(playerInterfaces)
 }
