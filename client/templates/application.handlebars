@@ -2,11 +2,10 @@
     <div class="navbar navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
-          <a href= "/discovery" class="nav-button btn"> Find Organization </a>
-<!--           <span class="nav-button btn"> My Profile </span>
-          <span class="nav-button btn"> Settings </span> -->
-          <a href= "/orgs" class="nav-button btn right-nav"> Signup </a>
-
+          {{#linkTo discovery class="nav-button btn"}} Find Organizations {{/linkTo}}
+          {{#linkTo discovery class="nav-button btn"}} My Profile {{/linkTo}}
+          {{#linkTo discovery class="nav-button btn"}} Settings {{/linkTo}}
+          {{#linkTo signup class="nav-button btn right-nav"}} Signup {{/linkTo}}
         </div>
       </div>
   </div>

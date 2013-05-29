@@ -8,11 +8,10 @@
         valueBinding="filterString"
       }}
       <label class="org-search-icon fui-menu-24"></label>
-
+      {{#each organizations}}
+        {{view Em.App.ListItemView}}
+      {{/each}}
+    </div>
     </div>
   </div>
-  <div class="top-orgs content-well span5 offset1">
-    <h2> Top Orgs </h2>
-
-  </div>
-</div> 
+</div>

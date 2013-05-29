@@ -48,6 +48,7 @@ require [
     this.route 'discovery'
     this.route 'organizations', path: "/orgs"
     this.route 'signup'
+  
   App.IndexRoute = Ember.Route.extend(redirect: ->
     @transitionTo 'discovery'
   )
