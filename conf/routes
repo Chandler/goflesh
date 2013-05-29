@@ -3,8 +3,20 @@
 # ~~~~
 
 GET     /                                       Application.Index
-GET /organizations   Organizations.ReadList
+
+GET  /organizations   Organizations.ReadList
 POST /organizations   Organizations.Create
+GET  /organizations/{organization_id}/games Organizations.ListGames
+
+GET  /games            Games.ReadList
+POST /games            Games.Create
+
+GET /users           Users.ReadList
+POST /users           Users.Create
+POST /users/authenticate Users.Authenticate
+
+GET  /players            Players.ReadList
+POST /players            Players.Create
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

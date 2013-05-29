@@ -1,0 +1,6 @@
+github.com/coopernurse/gorp
+github.com/robfig/revel
+github.com/bmizerany/pq
+code.google.com/p/go.crypto/bcrypt
+github.com/nu7hatch/gouuid
+github.com/bitly/go-simplejson
