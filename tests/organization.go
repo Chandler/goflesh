@@ -24,11 +24,11 @@ func generateOrganizationJson() string {
 	return jsn
 }
 
-func (t OrganizationTest) Before() {
+func (t *OrganizationTest) Before() {
 	TestInit()
 }
 
-func (t OrganizationTest) TestCreateWorks() {
+func (t *OrganizationTest) TestCreateWorks() {
 	orgs := url.Values{}
 	orgs.Add("data", generateOrganizationJson())
 	t.PostForm("/organizations/", orgs)
@@ -38,12 +38,12 @@ func (t OrganizationTest) TestCreateWorks() {
 	t.Assert(strings.Index(body, "default_timezone") != -1)
 }
 
-func (t OrganizationTest) TestListWorks() {
+func (t *OrganizationTest) TestListWorks() {
 	t.Get("/organizations/")
 	t.AssertOk()
 	t.AssertContentType("application/json")
 }
 
-func (t OrganizationTest) After() {
+func (t *OrganizationTest) After() {
 	TestClean()
 }

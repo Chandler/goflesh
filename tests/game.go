@@ -46,11 +46,11 @@ func generateGameJson() string {
 	return jsn
 }
 
-func (t GameTest) Before() {
+func (t *GameTest) Before() {
 	TestInit()
 }
 
-func (t GameTest) TestCreateWorks() {
+func (t *GameTest) TestCreateWorks() {
 	orgs := url.Values{}
 	orgs.Add("data", generateGameJson())
 	t.PostForm("/games/", orgs)
@@ -60,12 +60,12 @@ func (t GameTest) TestCreateWorks() {
 	t.Assert(strings.Index(body, "registration_start_time") != -1)
 }
 
-func (t GameTest) TestListWorks() {
+func (t *GameTest) TestListWorks() {
 	t.Get("/games/")
 	t.AssertOk()
 	t.AssertContentType("application/json")
 }
 
-func (t GameTest) After() {
+func (t *GameTest) After() {
 	TestClean()
 }
