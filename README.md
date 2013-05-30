@@ -54,3 +54,6 @@ We have a staging server at `flesh.herokuapp.com`. The config should look like t
     GOPATH=/app/.go
     GOROOT=/app/.goroot
     PATH=bin:node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/app/.goroot/bin
+
+##Useful postgres commands
+  connect with psql: psql -p 5454 -U postgres -d flesh_local

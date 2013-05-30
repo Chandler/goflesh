@@ -26,34 +26,6 @@ func main() {
 	revel.Init(*runMode, *importPath, *srcPath)
 	revel.INFO.Println("Running revel server")
 	
-	revel.RegisterController((*controllers.Users)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "ReadList",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "Create",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "Authenticate",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.Organizations)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -66,7 +38,6 @@ func main() {
 			&revel.MethodType{
 				Name: "Create",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -82,7 +53,7 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Games)(nil),
+	revel.RegisterController((*controllers.Players)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "ReadList",
@@ -102,21 +73,7 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Application)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					10: []string{ 
-					},
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Players)(nil),
+	revel.RegisterController((*controllers.Games)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "ReadList",
@@ -155,6 +112,48 @@ func main() {
 			&revel.MethodType{
 				Name: "Rollback",
 				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Application)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					10: []string{ 
+					},
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Users)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "ReadList",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Authenticate",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -223,11 +222,11 @@ func main() {
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 	}
 	revel.TestSuites = []interface{}{ 
-		(*tests.PlayerTest)(nil),
-		(*tests.ApplicationTest)(nil),
 		(*tests.GameTest)(nil),
 		(*tests.OrganizationTest)(nil),
 		(*tests.UserTest)(nil),
+		(*tests.PlayerTest)(nil),
+		(*tests.ApplicationTest)(nil),
 	}
 
 	revel.Run(*port)

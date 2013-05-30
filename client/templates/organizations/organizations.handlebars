@@ -1,3 +1,32 @@
-<div class="main">
-  <div class="btn btn-danger" {{action "go"}}> Create a new org</div>
+<div class="creation-page">
+  <div class="fields">
+    <div class="row name field">
+      {{view Ember.TextField
+        type="text"
+        placeholder="Name"
+        valueBinding="orgname"
+      }}
+    </div>
+    <div class="row slug field">
+      {{view Ember.TextField
+        type="text"
+        placeholder="Slug"
+        valueBinding="slug"
+      }}
+    </div>
+<!--     <div class="row description field">
+      {{view Ember.TextArea
+        type="textArea"
+        placeholder="Description"
+      }}
+    </div> -->
+    <div class="row location field">
+      {{view Ember.TextField
+        valueBinding="location"
+        placeholder="Location"
+      }}
+    </div>
+    <div class="btn btn-large btn-block btn-danger row signup-btn" {{action "go"}}> Create Org </div>
+  </div>
+    <span class="clearfix"></span>
 </div>

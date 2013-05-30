@@ -5833,7 +5833,7 @@ DS.Serializer = Ember.Object.extend({
     this.addAttributes(serialized, record);
     this.addRelationships(serialized, record);
 
-    return [serialized];
+    return serialized;
   },
 
   /**
@@ -8574,12 +8574,14 @@ DS.RESTAdapter = DS.Adapter.extend({
     }
   },
 
+  /*chandler changes*/
   createRecord: function(store, type, record) {
-    var root = this.rootForType(type);
+    var root = this.rootForType(type),
+        plural = this.pluralize(root);
     var adapter = this;
     var data = {};
 
-    data[root] = this.serialize(record, { includeId: true });
+    data[plural] = [this.serialize(record, { includeId: true })];
 
     return this.ajax(this.buildURL(root), "POST", {
       data: data
