@@ -16,11 +16,12 @@ func (c Games) ReadList() revel.Result {
 
 func (c Games) Create(data string) revel.Result {
 	// read JSON into models or error out
-	var games []models.Game
-	err := json.Unmarshal([]byte(data), &games)
+	var dat map[string][]models.Game
+	err := json.Unmarshal([]byte(data), &dat)
 	if err != nil {
 		return c.RenderError(err)
 	}
+	games := dat["games"]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	gameInterfaces := make([]interface{}, len(games))

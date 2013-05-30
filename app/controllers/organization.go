@@ -17,11 +17,13 @@ func (c Organizations) ReadList() revel.Result {
 
 func (c Organizations) Create(data string) revel.Result {
 	// read JSON into models or error out
-	var orgs []models.Organization
-	err := json.Unmarshal([]byte(data), &orgs)
+
+	var dat map[string][]models.Organization
+	err := json.Unmarshal([]byte(data), &dat)
 	if err != nil {
 		return c.RenderError(err)
 	}
+	orgs := dat["organizations"]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	orgInterfaces := make([]interface{}, len(orgs))

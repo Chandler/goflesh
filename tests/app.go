@@ -9,6 +9,7 @@ type ApplicationTest struct {
 }
 
 func (t ApplicationTest) Before() {
+	TestInit()
 }
 
 func (t ApplicationTest) TestIndexPageWorks() {
@@ -18,4 +19,5 @@ func (t ApplicationTest) TestIndexPageWorks() {
 }
 
 func (t ApplicationTest) After() {
+	TestClean()
 }

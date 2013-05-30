@@ -47,7 +47,5 @@ func (t UserTest) TestListWorks() {
 }
 
 func (t UserTest) After() {
-	if testMode {
-		dbm.Exec("TRUNCATE user CASCADE")
-	}
+	TestClean()
 }

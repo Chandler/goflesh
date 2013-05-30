@@ -23,10 +23,12 @@ func (c Users) ReadList() revel.Result {
 
 func (c Users) Create(data string) revel.Result {
 	// read JSON into models or error out
-	var users []models.User
-	if err := json.Unmarshal([]byte(data), &users); err != nil {
+	var dat map[string][]models.User
+	err := json.Unmarshal([]byte(data), &dat)
+	if err != nil {
 		return c.RenderError(err)
 	}
+	users := dat["users"]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	userInterfaces := make([]interface{}, len(users))
