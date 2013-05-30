@@ -6,6 +6,6 @@ define ["ember", "ember-data"], (Em, DS) ->
       record = model.createRecord
         name: "aaaaa"
         slug: "aslug"
-      # console.log record.get('name')
-      # record.transaction.commit()
-      # console.log model.find(1)
+      console.log record.get('name')
+      record.transaction.commit()
+      console.log model.find(1)

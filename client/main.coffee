@@ -53,9 +53,10 @@ require [
     @transitionTo 'discovery'
   )
 
+  JSONAPIAdapter = DS.RESTAdapter.extend()
+
   App.Store = DS.Store.extend
-    revision: 12,
-    adapter: DS.RESTAdapter.create()
+    adapter: JSONAPIAdapter.create()
 
   App.ApplicationController = Ember.Controller.extend
     message: "this is the application template"
