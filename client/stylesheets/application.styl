@@ -4,11 +4,11 @@ navy_blue = rgb(29, 74, 131)
 sea_green = rgb(53, 175, 112)
 small_signup_field_width = 225px
 large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
+
 #application
   height: 100%
   background-color: secondary_theme
   // background-image: url('images/blur.jpg')
-
   background-repeat: repeat
   background-position: top
   background-size: 100%
@@ -30,17 +30,44 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
 .main
   margin: 200px
 
-.creation-page
-  height: 100%
+.simple-page
+  margin-top: 85px
+  margin-left: 200px
+  min-height: 300px
+  .alert
+    top: 85px
+    left: 180px
+    width: 450px
+    position: absolute
+    height: 25px
+#createorg
+  margin-top: 150px
   .row
     clear: both
   .fields
     float: left
-    margin-top: 200px
-    margin-left: 200px
-
+    // margin-top: 200px
+    // margin-left: 200px
   .field
     float: left
+  input
+    width: large_signup_field_width
+    height: 50px
+    font-size: 22px
+    line-height: 25px
+  textarea
+    width: large_signup_field_width
+    height: 100px
+  .signup-btn
+    width: large_signup_field_width
+
+#signup  
+  .row
+    clear: both
+  .fields
+    float: left
+    // margin-top: 200px
+    // margin-left: 200px
   input
     width: large_signup_field_width
     height: 50px
@@ -66,12 +93,10 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
 
 #discovery
   padding-top: 150px
-
   .content-well
     border-radius: 8px 8px 6px 6px
     padding-top: 30px
     background-color: primary_theme
-
   .top-orgs
     height: 500px
   .org-search
@@ -88,7 +113,6 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
         position: relative
         right: 60px
         top: -42px
-
   .org-search-item
     color: #fff
     padding: 2px
@@ -116,8 +140,8 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
   bottom:0
   width:100%
   background-color: primary_theme
-  height: 200px
-  margin-top: -200px
+  height: 150px
+  margin-top: -150px
   .footer-item
     margin-left: 30px
     margin-top: 20px

@@ -5,7 +5,7 @@ import (
 	"flesh/app/models"
 	"fmt"
 	"github.com/robfig/revel"
-	"io/ioutil"
+	// "io/ioutil"
 )
 
 type Organizations struct {
@@ -16,12 +16,12 @@ func (c Organizations) ReadList() revel.Result {
 	return GetList(models.Organization{}, nil)
 }
 
-func (c Organizations) Create() revel.Result {
+func (c Organizations) Create(data string) revel.Result {
 	// read JSON into models or error out
 
-	request_json, err := ioutil.ReadAll(c.Request.Body)	
+	// request_json, err := ioutil.ReadAll(c.Request.Body)	
 	var dat map[string][]models.Organization
-	err = json.Unmarshal([]byte(request_json), &dat)
+	err := json.Unmarshal([]byte(data), &dat)
 	if err != nil {
 		return c.RenderError(err)
 	}
