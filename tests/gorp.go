@@ -97,12 +97,6 @@ func TestInit() {
 		revel.ERROR.Fatal(err)
 	}
 
-	// // Close creation connection
-	// err = create_conn.Close()
-	// if err != nil {
-	// 	revel.ERROR.Fatal(err)
-	// }
-
 	// Open a connection to the template DB
 	template_conn, err := sql.Open(driver, template_spec)
 	if err != nil {
@@ -153,9 +147,12 @@ func MakeDbFromTemplate() {
 }
 
 func TestClean() {
-	db.Db.Close()
+	err := db.Db.Close()
+	if err != nil {
+		revel.ERROR.Print(err)
+	}
 
-	_, err := create_conn.Exec(drop_query)
+	_, err = create_conn.Exec(drop_query)
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}

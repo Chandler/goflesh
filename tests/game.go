@@ -25,6 +25,11 @@ func getOrganizationId() interface{} {
 
 // generate some number of user objects in JSON
 func generateGameJson() string {
+	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", nil, nil}
+	err := dbm.Insert(&testOrg)
+	if err != nil {
+		panic(err)
+	}
 	now := time.Now().UTC()
 	later := now.Add(12 * time.Hour)
 	tomorrow := now.Add(24 * time.Hour)
