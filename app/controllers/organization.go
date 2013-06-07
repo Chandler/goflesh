@@ -5,6 +5,7 @@ import (
 	"flesh/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"io/ioutil"
 )
 
 type Organizations struct {
@@ -15,30 +16,36 @@ func (c Organizations) ReadList() revel.Result {
 	return GetList(models.Organization{}, nil)
 }
 
-func (c Organizations) Create(data string) revel.Result {
-	// read JSON into models or error out
+func (c Organizations) Create() revel.Result {
+	tableName := "organizations"
+	var typedJson map[string][]models.Organization
 
-	var dat map[string][]models.Organization
-	err := json.Unmarshal([]byte(data), &dat)
+	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	orgs := dat["organizations"]
+
+	modelObjects := typedJson[tableName]
+
+	err = json.Unmarshal([]byte(data), &typedJson)
+	if err != nil {
+		return c.RenderError(err)
+	}
 
 	// Prepare for bulk insert (only way to do it, promise)
-	orgInterfaces := make([]interface{}, len(orgs))
-	for i := range orgs {
-		orgInterfaces[i] = interface{}(&orgs[i])
+	interfaces := make([]interface{}, len(modelObjects))
+	for i := range modelObjects {
+		interfaces[i] = interface{}(&modelObjects[i])
 	}
 
 	// do the bulk insert
-	err = dbm.Insert(orgInterfaces...)
+	err = dbm.Insert(interfaces...)
 	if err != nil {
 		return c.RenderError(err)
 	}
 
 	// Return a copy of the data with id's set
-	return c.RenderJson(orgInterfaces)
+	return c.RenderJson(interfaces)
 }
 
 func (c Organizations) ListGames(organization_id int) revel.Result {

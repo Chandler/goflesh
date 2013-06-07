@@ -3,12 +3,9 @@ package controllers
 import (
 	"database/sql"
 	"flesh/app/models"
-	"fmt"
 	"github.com/coopernurse/gorp"
 	r "github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
-	"math/rand"
-	"time"
 )
 
 var (

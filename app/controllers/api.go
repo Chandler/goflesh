@@ -16,10 +16,7 @@ var (
 
 // Expose a list view for a given model, with zeroed blacklisted field names
 func GetList(model interface{}, blacklist []string) revel.Result {
-	// get the model name using introspection
-	// for example, models.Organization -> Organization
-	fullName := reflect.TypeOf(model).String()
-	name := strings.ToLower(strings.SplitN(fullName, ".", 2)[1])
+	name := GetObjectName(model)
 
 	template := `
     SELECT *
@@ -48,4 +45,12 @@ func ZeroOutBlacklist(item interface{}, blacklist []string) {
 		zero := reflect.Zero(val.Type())
 		val.Set(zero)
 	}
+}
+
+// get an object name using introspection
+// for example, models.Organization -> organization
+func GetObjectName(obj interface{}) string {
+	fullName := reflect.TypeOf(obj).String()
+	name := strings.ToLower(strings.SplitN(fullName, ".", 2)[1])
+	return name
 }
