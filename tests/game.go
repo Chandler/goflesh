@@ -62,7 +62,7 @@ func (t GameTest) TestCreateWorks() {
 	orgs.Add("data", generateGameJson())
 	t.PostForm("/games/", orgs)
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "registration_start_time") != -1)
 }
@@ -70,7 +70,7 @@ func (t GameTest) TestCreateWorks() {
 func (t GameTest) TestListWorks() {
 	t.Get("/games/")
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 }
 
 func (t GameTest) After() {

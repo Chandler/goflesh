@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flesh/app/models"
 	"github.com/robfig/revel"
+	"io/ioutil"
 )
 
 type Players struct {
@@ -14,26 +15,34 @@ func (c Players) ReadList() revel.Result {
 	return GetList(models.Player{}, nil)
 }
 
-func (c Players) Create(data string) revel.Result {
-	// read JSON into models or error out
-	var dat map[string][]models.Player
-	err := json.Unmarshal([]byte(data), &dat)
+func (c Players) Create() revel.Result {
+	tableName := "players"
+	var typedJson map[string][]models.Player
+
+	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	players := dat["players"]
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	modelObjects := typedJson[tableName]
 
 	// Prepare for bulk insert (only way to do it, promise)
-	playerInterfaces := make([]interface{}, len(players))
-	for i := range players {
-		playerInterfaces[i] = interface{}(&players[i])
+	interfaces := make([]interface{}, len(modelObjects))
+	for i := range modelObjects {
+		interfaces[i] = interface{}(&modelObjects[i])
 	}
+
 	// do the bulk insert
-	err = Dbm.Insert(playerInterfaces...)
+	err = Dbm.Insert(interfaces...)
 	if err != nil {
 		return c.RenderError(err)
 	}
 
 	// Return a copy of the data with id's set
-	return c.RenderJson(playerInterfaces)
+	return c.RenderJson(interfaces)
 }

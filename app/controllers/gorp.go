@@ -6,6 +6,8 @@ import (
 	"github.com/coopernurse/gorp"
 	r "github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
+	"math/rand"
+	"time"
 )
 
 var (
@@ -13,6 +15,7 @@ var (
 )
 
 func Init() {
+	rand.Seed(time.Now().UTC().UnixNano())
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 

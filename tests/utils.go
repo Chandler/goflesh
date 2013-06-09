@@ -2,6 +2,8 @@ package tests
 
 import (
 	"encoding/json"
+	"flesh/app/controllers"
+	"flesh/app/models"
 	sjs "github.com/bitly/go-simplejson"
 	"github.com/robfig/revel"
 	"io/ioutil"
@@ -9,9 +11,12 @@ import (
 	"strings"
 )
 
-var (
-	cachedData   *sjs.Json
+const (
 	JSON_CONTENT string = "application/json"
+)
+
+var (
+	cachedData *sjs.Json
 )
 
 func GetTestData() *sjs.Json {
@@ -75,9 +80,9 @@ func GenerateEmail() interface{} {
 
 func GenerateStructArray(keyToGenerator map[string]func() interface{}, numEntries int) []map[string]interface{} {
 	if numEntries < 0 {
-		numEntries = rand.Intn(5)
+		numEntries = rand.Intn(5) + 1
 	}
-	userStructure := make([]map[string]interface{}, rand.Intn(5)+1)
+	userStructure := make([]map[string]interface{}, numEntries)
 	for i := 0; i < len(userStructure); i++ {
 		userStructure[i] = make(map[string]interface{})
 		for key, valFunc := range keyToGenerator {
@@ -97,11 +102,71 @@ func GenerateJsonBytes(underKey string, keyToGenerator map[string]func() interfa
 		panic(err)
 	}
 
-	revel.WARN.Print(string(jsonBytes))
-
 	return jsonBytes
 }
 
 func GenerateJson(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) string {
 	return string(GenerateJsonBytes(underKey, keyToGenerator, numEntries))
+}
+
+func InsertTestUser() *models.User {
+	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, nil, nil}
+	err := controllers.Dbm.Insert(user)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return user
+}
+
+func InsertTestOrganization() *models.Organization {
+	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), "US/Pacific", nil, nil}
+	err := controllers.Dbm.Insert(org)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return org
+}
+
+func InsertTestGame() *models.Game {
+	org := SelectTestOrganization()
+	// make sure you have an organization available!
+	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, nil, nil}
+	err := controllers.Dbm.Insert(game)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return game
+}
+
+func SelectTestUser() *models.User {
+	query := `
+    SELECT *
+    FROM "user"
+    LIMIT 1
+    `
+	users, _ := controllers.Dbm.Select(models.User{}, query)
+	user := users[0].(*models.User)
+	return user
+}
+
+func SelectTestGame() *models.Game {
+	query := `
+    SELECT *
+    FROM "game"
+    LIMIT 1
+    `
+	games, _ := controllers.Dbm.Select(models.Game{}, query)
+	game := games[0].(*models.Game)
+	return game
+}
+
+func SelectTestOrganization() *models.Organization {
+	query := `
+    SELECT *
+    FROM "organization"
+    LIMIT 1
+    `
+	organizations, _ := controllers.Dbm.Select(models.Organization{}, query)
+	organization := organizations[0].(*models.Organization)
+	return organization
 }

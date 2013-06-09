@@ -28,10 +28,8 @@ func TestInit() {
 	defer MakeDbFromTemplate()
 
 	if configured {
-		revel.INFO.Print("wil nil")
 		return
 	}
-	revel.INFO.Print("was not nil")
 
 	// Read configuration.
 	var found bool
@@ -123,10 +121,8 @@ func TestInit() {
 
 func MakeDbFromTemplate() {
 	var err error
-	revel.INFO.Print("1")
 
 	if db_exists {
-		revel.INFO.Print("2")
 		TestClean()
 	}
 
@@ -135,38 +131,18 @@ func MakeDbFromTemplate() {
 		revel.ERROR.Fatal(err)
 	}
 	db_exists = true
-	revel.INFO.Print("3")
 
 	db.Db, err = sql.Open(driver, db_spec)
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}
-	err = db.Db.Ping()
-	if err != nil {
-		revel.INFO.Print(err)
-	}
-	revel.INFO.Print("4")
-	// _, err = controllers.Dbm.Select(models.Game{}, "SELECT * from game")
-	revel.INFO.Print("5")
-	revel.INFO.Print("Rebuilding DB connection")
-	revel.INFO.Print("6")
+
 	controllers.Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 	controllers.Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
 	controllers.Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
 	controllers.Dbm.AddTable(models.User{}).SetKeys(true, "Id")
 	controllers.Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
 	controllers.Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", revel.INFO)
-	_, err = controllers.Dbm.Select(models.Game{}, "SELECT * from game")
-	if err != nil {
-		revel.INFO.Print("7")
-		revel.INFO.Print(err)
-	}
-	revel.INFO.Print("YES")
-
-	err = controllers.Dbm.Db.Ping()
-	if err != nil {
-		revel.INFO.Print(err)
-	}
 }
 
 func TestClean() {

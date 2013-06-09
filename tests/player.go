@@ -1,10 +1,7 @@
 package tests
 
 import (
-	"flesh/app/controllers"
-	"flesh/app/models"
 	"github.com/robfig/revel"
-	"net/url"
 	"strings"
 )
 
@@ -12,37 +9,18 @@ type PlayerTest struct {
 	revel.TestSuite
 }
 
-func getUserId() interface{} {
-	query := `
-    SELECT *
-    FROM "user"
-    LIMIT 1
-    `
-	users, _ := controllers.Dbm.Select(models.User{}, query)
-	user := users[0].(*models.User)
-	return user.Id
-}
-
-func getGameId() interface{} {
-	query := `
-    SELECT *
-    FROM "game"
-    LIMIT 1
-    `
-	games, _ := controllers.Dbm.Select(models.Game{}, query)
-	game := games[0].(*models.Game)
-	return game.Id
-}
-
 // generate some number of organization objects in JSON
 func generatePlayerJson() string {
+	InsertTestUser()
+	InsertTestOrganization()
+	InsertTestGame()
 	jsn := GenerateJson(
 		"players",
 		map[string]func() interface{}{
-			"user_id": getUserId,
-			"game_id": getGameId,
+			"user_id": func() interface{} { return SelectTestUser().Id },
+			"game_id": func() interface{} { return SelectTestGame().Id },
 		},
-		-1,
+		1,
 	)
 
 	return jsn
@@ -53,11 +31,10 @@ func (t PlayerTest) Before() {
 }
 
 func (t PlayerTest) TestCreateWorks() {
-	orgs := url.Values{}
-	orgs.Add("data", generatePlayerJson())
-	t.PostForm("/players/", orgs)
+	jsn := generatePlayerJson()
+	t.Post("/players/", JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "game_id") != -1)
 }
@@ -65,7 +42,7 @@ func (t PlayerTest) TestCreateWorks() {
 func (t PlayerTest) TestListWorks() {
 	t.Get("/players/")
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 }
 
 func (t PlayerTest) After() {

@@ -36,7 +36,7 @@ func (t UserTest) TestCreateWorks() {
 	orgs.Add("data", generateUserJson())
 	t.PostForm("/users/", orgs)
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "first_name") != -1)
 }
@@ -44,7 +44,7 @@ func (t UserTest) TestCreateWorks() {
 func (t UserTest) TestListWorks() {
 	t.Get("/users/")
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 }
 
 func (t UserTest) After() {
