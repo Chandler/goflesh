@@ -25,16 +25,12 @@ func (c Organizations) Create() revel.Result {
 		return c.RenderError(err)
 	}
 
-	modelObjects := typedJson[tableName]
-
-	revel.INFO.Print(c.Request.Body)
-	revel.INFO.Print(data)
-
-	err = json.Unmarshal([]byte(data), &typedJson)
+	err = json.Unmarshal(data, &typedJson)
 	if err != nil {
-		revel.ERROR.Print("ERR OUTJt")
 		return c.RenderError(err)
 	}
+
+	modelObjects := typedJson[tableName]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	interfaces := make([]interface{}, len(modelObjects))

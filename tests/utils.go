@@ -9,7 +9,10 @@ import (
 	"strings"
 )
 
-var cachedData *sjs.Json
+var (
+	cachedData   *sjs.Json
+	JSON_CONTENT string = "application/json"
+)
 
 func GetTestData() *sjs.Json {
 	if cachedData != nil {
@@ -85,7 +88,7 @@ func GenerateStructArray(keyToGenerator map[string]func() interface{}, numEntrie
 	return userStructure
 }
 
-func GenerateJson(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) string {
+func GenerateJsonBytes(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) []byte {
 	userStructure := GenerateStructArray(keyToGenerator, numEntries)
 	underJsonKey := make(map[string][]map[string]interface{})
 	underJsonKey[underKey] = userStructure
@@ -96,5 +99,9 @@ func GenerateJson(underKey string, keyToGenerator map[string]func() interface{},
 
 	revel.WARN.Print(string(jsonBytes))
 
-	return string(jsonBytes)
+	return jsonBytes
+}
+
+func GenerateJson(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) string {
+	return string(GenerateJsonBytes(underKey, keyToGenerator, numEntries))
 }

@@ -2,7 +2,6 @@ package tests
 
 import (
 	"github.com/robfig/revel"
-	"net/url"
 	"strings"
 )
 
@@ -30,13 +29,13 @@ func (t OrganizationTest) Before() {
 }
 
 func (t OrganizationTest) TestCreateWorks() {
-	orgs := url.Values{}
-	orgs.Add("organizations", generateOrganizationJson())
-	revel.INFO.Print(orgs)
-	t.PostForm("/organizations/", orgs)
+	orgs := generateOrganizationJson()
+	revel.WARN.Print(orgs)
+	t.Post("/organizations/", JSON_CONTENT, strings.NewReader(orgs))
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
+	revel.WARN.Print(body)
 	t.Assert(strings.Index(body, "default_timezone") != -1)
 }
 
