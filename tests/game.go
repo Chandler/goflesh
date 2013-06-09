@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"flesh/app/controllers"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"net/url"
@@ -18,7 +19,7 @@ func getOrganizationId() interface{} {
     FROM "organization"
     LIMIT 1
     `
-	organizations, _ := dbm.Select(models.Organization{}, query)
+	organizations, _ := controllers.Dbm.Select(models.Organization{}, query)
 	organization := organizations[0].(*models.Organization)
 	return organization.Id
 }
@@ -26,7 +27,7 @@ func getOrganizationId() interface{} {
 // generate some number of user objects in JSON
 func generateGameJson() string {
 	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", nil, nil}
-	err := dbm.Insert(&testOrg)
+	err := controllers.Dbm.Insert(&testOrg)
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +36,7 @@ func generateGameJson() string {
 	tomorrow := now.Add(24 * time.Hour)
 	tomorrowLater := later.Add(24 * time.Hour)
 	jsn := GenerateJson(
+		"games",
 		map[string]func() interface{}{
 			"name":                    GenerateWord,
 			"slug":                    GenerateSlug,

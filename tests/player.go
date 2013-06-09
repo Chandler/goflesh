@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"flesh/app/controllers"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"net/url"
@@ -17,7 +18,7 @@ func getUserId() interface{} {
     FROM "user"
     LIMIT 1
     `
-	users, _ := dbm.Select(models.User{}, query)
+	users, _ := controllers.Dbm.Select(models.User{}, query)
 	user := users[0].(*models.User)
 	return user.Id
 }
@@ -28,7 +29,7 @@ func getGameId() interface{} {
     FROM "game"
     LIMIT 1
     `
-	games, _ := dbm.Select(models.Game{}, query)
+	games, _ := controllers.Dbm.Select(models.Game{}, query)
 	game := games[0].(*models.Game)
 	return game.Id
 }
@@ -36,6 +37,7 @@ func getGameId() interface{} {
 // generate some number of organization objects in JSON
 func generatePlayerJson() string {
 	jsn := GenerateJson(
+		"players",
 		map[string]func() interface{}{
 			"user_id": getUserId,
 			"game_id": getGameId,

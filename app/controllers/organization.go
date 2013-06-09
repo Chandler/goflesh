@@ -27,8 +27,12 @@ func (c Organizations) Create() revel.Result {
 
 	modelObjects := typedJson[tableName]
 
+	revel.INFO.Print(c.Request.Body)
+	revel.INFO.Print(data)
+
 	err = json.Unmarshal([]byte(data), &typedJson)
 	if err != nil {
+		revel.ERROR.Print("ERR OUTJt")
 		return c.RenderError(err)
 	}
 
@@ -39,7 +43,7 @@ func (c Organizations) Create() revel.Result {
 	}
 
 	// do the bulk insert
-	err = dbm.Insert(interfaces...)
+	err = Dbm.Insert(interfaces...)
 	if err != nil {
 		return c.RenderError(err)
 	}
@@ -56,7 +60,7 @@ func (c Organizations) ListGames(organization_id int) revel.Result {
 		`
 	query := fmt.Sprintf(template, organization_id)
 
-	result, err := dbm.Select(models.Game{}, query)
+	result, err := Dbm.Select(models.Game{}, query)
 	if err != nil {
 		return c.RenderError(err)
 	}

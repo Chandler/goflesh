@@ -3,6 +3,7 @@ package tests
 import (
 	"encoding/json"
 	sjs "github.com/bitly/go-simplejson"
+	"github.com/robfig/revel"
 	"io/ioutil"
 	"math/rand"
 	"strings"
@@ -69,7 +70,7 @@ func GenerateEmail() interface{} {
 	return GenerateString(0, "-").(string) + "@" + GenerateString(1, "").(string)
 }
 
-func GenerateJson(keyToGenerator map[string]func() interface{}, numEntries int) string {
+func GenerateStructArray(keyToGenerator map[string]func() interface{}, numEntries int) []map[string]interface{} {
 	if numEntries < 0 {
 		numEntries = rand.Intn(5)
 	}
@@ -81,10 +82,19 @@ func GenerateJson(keyToGenerator map[string]func() interface{}, numEntries int) 
 		}
 	}
 
-	jsonBytes, err := json.Marshal(userStructure)
+	return userStructure
+}
+
+func GenerateJson(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) string {
+	userStructure := GenerateStructArray(keyToGenerator, numEntries)
+	underJsonKey := make(map[string][]map[string]interface{})
+	underJsonKey[underKey] = userStructure
+	jsonBytes, err := json.Marshal(underJsonKey)
 	if err != nil {
 		panic(err)
 	}
+
+	revel.WARN.Print(string(jsonBytes))
 
 	return string(jsonBytes)
 }

@@ -9,18 +9,18 @@ import (
 )
 
 var (
-	dbm *gorp.DbMap
+	Dbm *gorp.DbMap
 )
 
 func Init() {
 	db.Init()
-	dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
+	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 
-	dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
-	dbm.AddTable(models.Game{}).SetKeys(true, "Id")
-	dbm.AddTable(models.User{}).SetKeys(true, "Id")
-	dbm.AddTable(models.Player{}).SetKeys(true, "Id")
-	dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
+	Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
+	Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
 }
 
 type GorpController struct {
@@ -29,7 +29,7 @@ type GorpController struct {
 }
 
 func (c *GorpController) Begin() r.Result {
-	txn, err := dbm.Begin()
+	txn, err := Dbm.Begin()
 	if err != nil {
 		panic(err)
 	}

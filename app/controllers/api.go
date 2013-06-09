@@ -23,9 +23,14 @@ func GetList(model interface{}, blacklist []string) revel.Result {
     FROM "%s"
     `
 	query := fmt.Sprintf(template, name)
-
-	result, err := dbm.Select(model, query)
+	err := Dbm.Db.Ping()
 	if err != nil {
+		revel.INFO.Print(err)
+		return c.RenderError(err)
+	}
+	result, err := Dbm.Select(model, query)
+	if err != nil {
+		revel.INFO.Print(err)
 		return c.RenderError(err)
 	}
 	for _, item := range result {

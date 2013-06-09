@@ -13,6 +13,7 @@ type OrganizationTest struct {
 // generate some number of organization objects in JSON
 func generateOrganizationJson() string {
 	jsn := GenerateJson(
+		"organizations",
 		map[string]func() interface{}{
 			"name":             GenerateWord,
 			"slug":             GenerateSlug,
@@ -30,7 +31,8 @@ func (t OrganizationTest) Before() {
 
 func (t OrganizationTest) TestCreateWorks() {
 	orgs := url.Values{}
-	orgs.Add("data", generateOrganizationJson())
+	orgs.Add("organizations", generateOrganizationJson())
+	revel.INFO.Print(orgs)
 	t.PostForm("/organizations/", orgs)
 	t.AssertOk()
 	t.AssertContentType("application/json")

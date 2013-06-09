@@ -29,7 +29,7 @@ func (c Players) Create(data string) revel.Result {
 		playerInterfaces[i] = interface{}(&players[i])
 	}
 	// do the bulk insert
-	err = dbm.Insert(playerInterfaces...)
+	err = Dbm.Insert(playerInterfaces...)
 	if err != nil {
 		return c.RenderError(err)
 	}
