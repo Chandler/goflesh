@@ -21,25 +21,25 @@ module.exports = function(grunt) {
       options: {
         amd: true,
         processName: function(filename) {
-        //example template structure
-        //
-        // templates/
-        //   widget.handlebars
-        //   posts/
-        //     posts.handlebars
-        //     index.handlebars
-        //     new.handlebars
-        //     comments/
-        //       new.handlebars
-        //       edit.handlebars
+        /* example template structure
+            templates/
+              widget.handlebars
+              posts/
+                posts.handlebars
+                index.handlebars
+                new.handlebars
+                comments/
+                  new.handlebars
+                  edit.handlebars
 
-        // resulting ember handlebar templates.
-        //   TEMPLATES['widget']
-        //   TEMPLATES['posts']
-        //   TEMPLATES['post/index']
-        //   TEMPLATES['post/new']
-        //   TEMPLATES['comments/new']
-        //   TEMPLATES['comments/edit']
+            resulting ember handlebar templates.
+              TEMPLATES['widget']
+              TEMPLATES['posts']
+              TEMPLATES['post/index']
+              TEMPLATES['post/new']
+              TEMPLATES['comments/new']
+              TEMPLATES['comments/edit']
+          */
 
           split_path = filename.split('/')
           resource_name = split_path[split_path.length-2]

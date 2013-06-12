@@ -30,14 +30,16 @@ require.config
     
 require [
   "app",
+  "organizationModel",
+  "OrganizationIndexController",
+  "OrganizationIndexRoute",
   "organizationsController",
-  "organizationsRoute"
   "discoveryController",
   "discoveryRoute",
   "discoveryView",
   "listItemView",
   "ember-data",
-], (App, OrganizationsController, OrganizationsRoute, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
+], (App, OrganizationModel, OrganizationIndexController, OrganizationIndexRoute, OrganizationsController, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
   #this is where everything gets attached to our App
 
   App.Router = Em.Router.extend
@@ -48,7 +50,7 @@ require [
   App.Router.map ->
     @route 'discovery'
     @resource 'organizations', path: "/orgs", ->
-      @resource 'organization', path: ":org_id", ->
+      @route 'show', path: ":id", ->
       @route 'new'
     @route 'signup'
   
@@ -68,8 +70,10 @@ require [
   App.set('DiscoveryView', DiscoveryView)
   App.set('DiscoveryRoute', DiscoveryRoute)
   App.set('DiscoveryController', DiscoveryController)
+  App.set('Organization', OrganizationModel)
+  App.set('OrganizationIndexController', OrganizationIndexController)
+  App.set('OrganizationsShowRoute', OrganizationIndexRoute)
   App.set('OrganizationsController', OrganizationsController)
-  App.set('OrganizationsRoute', OrganizationsRoute)
 
   Em.App = App
 
