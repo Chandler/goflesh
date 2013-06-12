@@ -1,8 +1,9 @@
 define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
   OrganizationsShowRoute = Ember.Route.extend
     model: (params) ->
-      console.log(params)
+      OrganizationModel.find(params.id)
 
     setupController: (controller, model) ->
-      console.log('')
+      console.log(model)
+      console.log(controller)
 

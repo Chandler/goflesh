@@ -1,3 +1,3 @@
 define ["ember", "ember-data"], (Em, DS) ->
-  OrganizationIndexController = Ember.ObjectController.extend
+  OrganizationsShowController = Ember.ObjectController.extend
     orgname: "hey"
