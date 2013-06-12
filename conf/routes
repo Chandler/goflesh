@@ -26,5 +26,5 @@ GET     /public/{<.+>filepath}              Static.Serve("public")
 
 # Catch all
 #*       /{controller}/{action}                  {controller}.{action}
-*        /.{dummy}                               Application.Index 
+*        /.*                               Application.Index 
 

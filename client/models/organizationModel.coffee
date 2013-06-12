@@ -7,5 +7,4 @@ define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
   Organization.toString = -> 
     "Organization"
 
-
   Organization

@@ -11,13 +11,15 @@ define ["ember", "ember-data"], (Em, DS) ->
           name: this.orgname
           slug: this.slug
         record.transaction.commit()
-        record.becameError =  ->
-          this.set 'errors', 'SERVER ERROR'
+        record.becameError =  =>
+          @set 'errors', 'SERVER ERROR'
+        record.didCreate = =>
+          @transitionToRoute('discovery');
       else
-        this.set 'errors', 'Empty Fields'
+        @set 'errors', 'Empty Fields'
     errors: null,
     clearErrors: ->
-      this.set 'errors', null
+      @set 'errors', null
     errorMessages: (->
-      this.get 'errors'
+      @get 'errors'
     ).property 'errors' 

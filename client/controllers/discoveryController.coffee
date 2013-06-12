@@ -1,12 +1,12 @@
 define ["ember"], (Em) ->
   DiscoveryController = Ember.ObjectController.extend
     organizations: (->
-      string = this.get 'filterString'
+      string = @get 'filterString'
       if string == ""
-        return this.get 'content'
+        return @get 'content'
       else
-        this.get('content').filter (org) ->
+        @get('content').filter (org) ->
           !!(org.get('name').indexOf(string) != -1)
     ).property 'filterString'
     updateFilter: (arg) ->
-      this.set 'filterString', arg
+      @set 'filterString', arg

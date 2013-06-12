@@ -1,6 +1,6 @@
 #requireJS bootstraper.
 require.config
-  baseUrl: "public/js"
+  baseUrl: "/public/js"
   packages: [
       {
           name: "handlebars"
@@ -36,7 +36,7 @@ require [
   "discoveryRoute",
   "discoveryView",
   "listItemView",
-  "ember-data"
+  "ember-data",
 ], (App, OrganizationsController, OrganizationsRoute, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
   #this is where everything gets attached to our App
 
@@ -44,10 +44,13 @@ require [
     enableLogging: true
     location: 'history'
 
+  #http://darthdeus.github.io/blog/2013/02/01/ember-dot-js-router-and-template-naming-convention/
   App.Router.map ->
-    this.route 'discovery'
-    this.route 'organizations', path: "/orgs"
-    this.route 'signup'
+    @route 'discovery'
+    @resource 'organizations', path: "/orgs", ->
+      @resource 'organization', path: ":org_id", ->
+      @route 'new'
+    @route 'signup'
   
   App.IndexRoute = Ember.Route.extend(redirect: ->
     @transitionTo 'discovery'

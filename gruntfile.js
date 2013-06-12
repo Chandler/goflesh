@@ -21,7 +21,35 @@ module.exports = function(grunt) {
       options: {
         amd: true,
         processName: function(filename) {
-          return filename.split('/').pop().split('.')[0] // /an/annoying/path/name.handlebars => name
+        //example template structure
+        //
+        // templates/
+        //   widget.handlebars
+        //   posts/
+        //     posts.handlebars
+        //     index.handlebars
+        //     new.handlebars
+        //     comments/
+        //       new.handlebars
+        //       edit.handlebars
+
+        // resulting ember handlebar templates.
+        //   TEMPLATES['widget']
+        //   TEMPLATES['posts']
+        //   TEMPLATES['post/index']
+        //   TEMPLATES['post/new']
+        //   TEMPLATES['comments/new']
+        //   TEMPLATES['comments/edit']
+
+          split_path = filename.split('/')
+          resource_name = split_path[split_path.length-2]
+          template_name = split_path.pop().split('.')[0]
+
+          if(resource_name == template_name || resource_name == 'templates') {
+            return template_name
+          } else {
+            return resource_name + "/" + template_name
+          }
         }
       },
       compile: {

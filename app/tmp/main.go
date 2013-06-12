@@ -7,8 +7,8 @@ import (
 	controllers "flesh/app/controllers"
 	tests "flesh/tests"
 	_ "github.com/bmizerany/pq"
-	controllers1 "github.com/robfig/revel/modules/static/app/controllers"
-	controllers0 "github.com/robfig/revel/modules/testrunner/app/controllers"
+	controllers0 "github.com/robfig/revel/modules/static/app/controllers"
+	controllers1 "github.com/robfig/revel/modules/testrunner/app/controllers"
 )
 
 var (
@@ -26,7 +26,7 @@ func main() {
 	revel.Init(*runMode, *importPath, *srcPath)
 	revel.INFO.Println("Running revel server")
 	
-	revel.RegisterController((*controllers.Games)(nil),
+	revel.RegisterController((*controllers.Organizations)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "ReadList",
@@ -38,7 +38,14 @@ func main() {
 			&revel.MethodType{
 				Name: "Create",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ListGames",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "organization_id", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -60,19 +67,25 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Players)(nil),
+	revel.RegisterController((*controllers.GorpController)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "ReadList",
+				Name: "Begin",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "Create",
+				Name: "Commit",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Rollback",
+				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -80,7 +93,7 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Organizations)(nil),
+	revel.RegisterController((*controllers.Games)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "ReadList",
@@ -93,14 +106,6 @@ func main() {
 				Name: "Create",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "ListGames",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "organization_id", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -136,25 +141,19 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.GorpController)(nil),
+	revel.RegisterController((*controllers.Players)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Begin",
+				Name: "ReadList",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "Commit",
+				Name: "Create",
 				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "Rollback",
-				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "data", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -162,7 +161,31 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers0.TestRunner)(nil),
+	revel.RegisterController((*controllers0.Static)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Serve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ServeModule",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers1.TestRunner)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Index",
@@ -196,38 +219,14 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers1.Static)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Serve",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "ServeModule",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 	}
 	revel.TestSuites = []interface{}{ 
-		(*tests.UserTest)(nil),
+		(*tests.GameTest)(nil),
 		(*tests.OrganizationTest)(nil),
+		(*tests.UserTest)(nil),
 		(*tests.ApplicationTest)(nil),
 		(*tests.PlayerTest)(nil),
-		(*tests.GameTest)(nil),
 	}
 
 	revel.Run(*port)
