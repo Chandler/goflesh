@@ -137,11 +137,6 @@ func MakeDbFromTemplate() {
 		revel.ERROR.Fatal(err)
 	}
 
-	// db.Db.Exec("SET SESSION synchronous_commit TO OFF")
-	// if err != nil {
-	// 	revel.ERROR.Fatal(err)
-	// }
-
 	controllers.Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 	controllers.Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
 	controllers.Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
