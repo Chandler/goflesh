@@ -62,12 +62,9 @@ require ["underscore", "app", "ember-data"].concat(ember_namespace), (_, App, DS
   App.Store = DS.Store.extend
     adapter: JSONAPIAdapter.create({ namespace: 'api' })
 
-  App.ApplicationController = Ember.Controller.extend
-    message: "this is the application template"
-
-  
-  _.map _.zip(this.ember_namespace, ember_namespace) , (name, object) ->
-    App.set(name, object)
+  #dynamically set all the ember objects on to the App"
+  _.map _.zip(@ember_namespace, ember_namespace) , (pair) ->
+    App.set(pair[0], pair[1])
 
   Em.App = App
 
