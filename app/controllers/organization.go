@@ -12,9 +12,19 @@ type Organizations struct {
 	*revel.Controller
 }
 
+/////////////////////////////////////////////////////////////////////
+
 func (c Organizations) ReadList() revel.Result {
 	return GetList(models.Organization{}, nil)
 }
+
+/////////////////////////////////////////////////////////////////////
+
+func (c Organizations) Read(id int) revel.Result {
+	return GetById(models.Organization{}, nil, id)
+}
+
+/////////////////////////////////////////////////////////////////////
 
 func (c Organizations) Create() revel.Result {
 	tableName := "organizations"
@@ -48,6 +58,8 @@ func (c Organizations) Create() revel.Result {
 	// Return a copy of the data with id's set
 	return c.RenderJson(interfaces)
 }
+
+/////////////////////////////////////////////////////////////////////
 
 func (c Organizations) ListGames(organization_id int) revel.Result {
 	template := `

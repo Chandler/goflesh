@@ -11,9 +11,19 @@ type Games struct {
 	*revel.Controller
 }
 
+/////////////////////////////////////////////////////////////////////
+
 func (c Games) ReadList() revel.Result {
 	return GetList(models.Game{}, nil)
 }
+
+/////////////////////////////////////////////////////////////////////
+
+func (c Games) Read(id int) revel.Result {
+	return GetById(models.Game{}, nil, id)
+}
+
+/////////////////////////////////////////////////////////////////////
 
 func (c Games) Create() revel.Result {
 	tableName := "games"
