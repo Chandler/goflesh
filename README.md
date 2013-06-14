@@ -56,4 +56,16 @@ We have a staging server at `flesh.herokuapp.com`. The config should look like t
     PATH=bin:node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/app/.goroot/bin
 
 ##Useful postgres commands
-  connect with psql: psql -p 5454 -U postgres -d flesh_local
+Make postgres fast(er).
+
+Do NOT use these settings on a server, only locally!
+
+    echo "shared_buffers = 9MB"     >> .db/postgresql.conf
+    echo "work_mem = 50MB"          >> .db/postgresql.conf
+    echo "fsync = off"              >> .db/postgresql.conf
+    echo "synchronous_commit = off" >> .db/postgresql.conf
+    pg_ctl -D .db restart
+
+connect with psql
+
+    psql -p 5454 -U postgres -d flesh_local

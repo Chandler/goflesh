@@ -1,8 +1,8 @@
 package tests
 
 import (
+	"flesh/app/routes"
 	"github.com/robfig/revel"
-	"net/url"
 	"strings"
 )
 
@@ -32,9 +32,8 @@ func (t UserTest) Before() {
 }
 
 func (t UserTest) TestCreateWorks() {
-	orgs := url.Values{}
-	orgs.Add("data", generateUserJson())
-	t.PostForm("/users/", orgs)
+	jsn := generateUserJson()
+	t.Post(routes.Users.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
@@ -42,7 +41,7 @@ func (t UserTest) TestCreateWorks() {
 }
 
 func (t UserTest) TestListWorks() {
-	t.Get("/users/")
+	t.Get(routes.Users.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }

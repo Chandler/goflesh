@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"flesh/app/routes"
 	"github.com/robfig/revel"
 	"strings"
 )
@@ -30,7 +31,7 @@ func (t OrganizationTest) Before() {
 
 func (t OrganizationTest) TestCreateWorks() {
 	jsn := generateOrganizationJson()
-	t.Post("/organizations/", JSON_CONTENT, strings.NewReader(jsn))
+	t.Post(routes.Organizations.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
@@ -38,7 +39,7 @@ func (t OrganizationTest) TestCreateWorks() {
 }
 
 func (t OrganizationTest) TestListWorks() {
-	t.Get("/organizations/")
+	t.Get(routes.Organizations.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
