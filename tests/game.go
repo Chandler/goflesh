@@ -3,8 +3,8 @@ package tests
 import (
 	"flesh/app/controllers"
 	"flesh/app/models"
+	"flesh/app/routes"
 	"github.com/robfig/revel"
-	"net/url"
 	"strings"
 	"time"
 )
@@ -58,9 +58,8 @@ func (t GameTest) Before() {
 }
 
 func (t GameTest) TestCreateWorks() {
-	orgs := url.Values{}
-	orgs.Add("data", generateGameJson())
-	t.PostForm("/games/", orgs)
+	jsn := generateGameJson()
+	t.Post(routes.Games.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
@@ -68,7 +67,7 @@ func (t GameTest) TestCreateWorks() {
 }
 
 func (t GameTest) TestListWorks() {
-	t.Get("/games/")
+	t.Get(routes.Games.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }

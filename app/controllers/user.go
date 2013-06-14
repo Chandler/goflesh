@@ -7,6 +7,7 @@ import (
 	"flesh/app/types"
 	"fmt"
 	"github.com/robfig/revel"
+	"io/ioutil"
 )
 
 type Users struct {
@@ -21,29 +22,43 @@ func (c Users) ReadList() revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Users) Create(data string) revel.Result {
-	// read JSON into models or error out
-	var dat map[string][]models.User
-	err := json.Unmarshal([]byte(data), &dat)
+func (c Users) Create() revel.Result {
+	tableName := "users"
+	var typedJson map[string][]models.User
+
+	data, err := ioutil.ReadAll(c.Request.Body)
+	revel.WARN.Print(data)
+
 	if err != nil {
+		revel.ERROR.Print(err)
 		return c.RenderError(err)
 	}
-	users := dat["users"]
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		revel.ERROR.Print(err)
+		return c.RenderError(err)
+	}
+
+	modelObjects := typedJson[tableName]
 
 	// Prepare for bulk insert (only way to do it, promise)
-	userInterfaces := make([]interface{}, len(users))
-	for i := range users {
-		user := users[i]
-		user.ChangePassword(user.Password)
-		userInterfaces[i] = interface{}(&user)
+	interfaces := make([]interface{}, len(modelObjects))
+	for i := range modelObjects {
+		modelObject := modelObjects[i]
+		modelObject.ChangePassword(modelObject.Password)
+		interfaces[i] = interface{}(&modelObject)
 	}
+
 	// do the bulk insert
-	if err := Dbm.Insert(userInterfaces...); err != nil {
+	err = Dbm.Insert(interfaces...)
+	if err != nil {
+		revel.ERROR.Print(err)
 		return c.RenderError(err)
 	}
 
 	// Return a copy of the data with id's set
-	return c.RenderJson(userInterfaces)
+	return c.RenderJson(interfaces)
 }
 
 /////////////////////////////////////////////////////////////////////
