@@ -21,6 +21,7 @@ app/tmp/*
 .DS_Store
 .nfs.*
 
+app/routes/
 app/tmp/
 app/tmp/*
 grunt-ember-handlebars/

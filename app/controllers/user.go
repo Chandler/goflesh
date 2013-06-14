@@ -38,7 +38,7 @@ func (c Users) Create(data string) revel.Result {
 		userInterfaces[i] = interface{}(&user)
 	}
 	// do the bulk insert
-	if err := dbm.Insert(userInterfaces...); err != nil {
+	if err := Dbm.Insert(userInterfaces...); err != nil {
 		return c.RenderError(err)
 	}
 
@@ -70,7 +70,7 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
     `
 	query := fmt.Sprintf(template, userInfo.Email, userInfo.Screen_name)
 
-	list, err := dbm.Select(&models.User{}, query)
+	list, err := Dbm.Select(&models.User{}, query)
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}

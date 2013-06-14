@@ -2,6 +2,7 @@ package tests
 
 import (
 	"database/sql"
+	"flesh/app/controllers"
 	"flesh/app/models"
 	"fmt"
 	"github.com/coopernurse/gorp"
@@ -11,7 +12,8 @@ import (
 )
 
 var (
-	dbm         *gorp.DbMap
+	// controllers.Dbm         *gorp.controllers.Dbmap
+	// controllers.Dbm         *gorp.controllers.Dbmap = controllers.controllers.Dbm
 	create_conn *sql.DB
 	db_spec     string
 	driver      string
@@ -19,12 +21,13 @@ var (
 	copy_query  string
 	testMode    bool
 	db_exists   bool
+	configured  bool
 )
 
 func TestInit() {
 	defer MakeDbFromTemplate()
 
-	if dbm != nil {
+	if configured {
 		return
 	}
 
@@ -56,7 +59,7 @@ func TestInit() {
 	}
 
 	drop_query = fmt.Sprintf(`
-	DROP DATABASE %s;
+	DROP DATABASE IF EXISTS %s;
 	`, test_db_name)
 
 	copy_query = fmt.Sprintf(`
@@ -77,18 +80,14 @@ func TestInit() {
 	}
 
 	// Drop the template database, if there is one
-	drop_template_query := "DROP DATABASE " + template_db_name
+	drop_template_query := "DROP DATABASE IF EXISTS " + template_db_name
 	_, err = create_conn.Exec(drop_template_query)
 	if err != nil {
-		revel.INFO.Print(err)
+		revel.WARN.Print(err)
 	}
 
 	// Drop the test database, if there is one
-	db.Db.Close()
-	_, err = create_conn.Exec(drop_query)
-	if err != nil {
-		revel.INFO.Print(err)
-	}
+	TestClean()
 
 	// Create the template database
 	create_template_query := "CREATE DATABASE " + template_db_name
@@ -96,12 +95,6 @@ func TestInit() {
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}
-
-	// // Close creation connection
-	// err = create_conn.Close()
-	// if err != nil {
-	// 	revel.ERROR.Fatal(err)
-	// }
 
 	// Open a connection to the template DB
 	template_conn, err := sql.Open(driver, template_spec)
@@ -120,9 +113,10 @@ func TestInit() {
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}
-
 	testMode, _ := revel.Config.Bool("mode.test")
 	_ = testMode // testMode used by other testing modules
+
+	configured = true
 }
 
 func MakeDbFromTemplate() {
@@ -143,21 +137,25 @@ func MakeDbFromTemplate() {
 		revel.ERROR.Fatal(err)
 	}
 
-	dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
-	dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
-	dbm.AddTable(models.Game{}).SetKeys(true, "Id")
-	dbm.AddTable(models.User{}).SetKeys(true, "Id")
-	dbm.AddTable(models.Player{}).SetKeys(true, "Id")
-	dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", revel.INFO)
-
+	controllers.Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
+	controllers.Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
+	controllers.Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
+	controllers.Dbm.AddTable(models.User{}).SetKeys(true, "Id")
+	controllers.Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
+	controllers.Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", revel.INFO)
 }
 
 func TestClean() {
-	db.Db.Close()
-
-	_, err := create_conn.Exec(drop_query)
+	// close DB connection
+	err := db.Db.Close()
 	if err != nil {
-		revel.ERROR.Fatal(err)
+		revel.ERROR.Print(err)
+	}
+
+	// drop the test database
+	_, err = create_conn.Exec(drop_query)
+	if err != nil {
+		revel.ERROR.Print(err)
 	}
 	db_exists = false
 

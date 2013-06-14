@@ -17,30 +17,36 @@ func (c Organizations) ReadList() revel.Result {
 }
 
 func (c Organizations) Create() revel.Result {
-	// read JSON into models or error out
+	tableName := "organizations"
+	var typedJson map[string][]models.Organization
 
-	request_json, err := ioutil.ReadAll(c.Request.Body)	
-	var dat map[string][]models.Organization
-	err = json.Unmarshal([]byte(request_json), &dat)
+	data, err := ioutil.ReadAll(c.Request.Body)
+
 	if err != nil {
 		return c.RenderError(err)
 	}
-	orgs := dat["organizations"]
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	modelObjects := typedJson[tableName]
 
 	// Prepare for bulk insert (only way to do it, promise)
-	orgInterfaces := make([]interface{}, len(orgs))
-	for i := range orgs {
-		orgInterfaces[i] = interface{}(&orgs[i])
+	interfaces := make([]interface{}, len(modelObjects))
+	for i := range modelObjects {
+		interfaces[i] = interface{}(&modelObjects[i])
 	}
 
 	// do the bulk insert
-	err = dbm.Insert(orgInterfaces...)
+	err = Dbm.Insert(interfaces...)
 	if err != nil {
 		return c.RenderError(err)
 	}
 
 	// Return a copy of the data with id's set
-	return c.RenderJson(orgInterfaces)
+	return c.RenderJson(interfaces)
 }
 
 func (c Organizations) ListGames(organization_id int) revel.Result {
@@ -51,7 +57,7 @@ func (c Organizations) ListGames(organization_id int) revel.Result {
 		`
 	query := fmt.Sprintf(template, organization_id)
 
-	result, err := dbm.Select(models.Game{}, query)
+	result, err := Dbm.Select(models.Game{}, query)
 	if err != nil {
 		return c.RenderError(err)
 	}

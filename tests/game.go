@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"flesh/app/controllers"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"net/url"
@@ -18,18 +19,24 @@ func getOrganizationId() interface{} {
     FROM "organization"
     LIMIT 1
     `
-	organizations, _ := dbm.Select(models.Organization{}, query)
+	organizations, _ := controllers.Dbm.Select(models.Organization{}, query)
 	organization := organizations[0].(*models.Organization)
 	return organization.Id
 }
 
 // generate some number of user objects in JSON
 func generateGameJson() string {
+	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", nil, nil}
+	err := controllers.Dbm.Insert(&testOrg)
+	if err != nil {
+		panic(err)
+	}
 	now := time.Now().UTC()
 	later := now.Add(12 * time.Hour)
 	tomorrow := now.Add(24 * time.Hour)
 	tomorrowLater := later.Add(24 * time.Hour)
 	jsn := GenerateJson(
+		"games",
 		map[string]func() interface{}{
 			"name":                    GenerateWord,
 			"slug":                    GenerateSlug,
@@ -55,7 +62,7 @@ func (t GameTest) TestCreateWorks() {
 	orgs.Add("data", generateGameJson())
 	t.PostForm("/games/", orgs)
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "registration_start_time") != -1)
 }
@@ -63,7 +70,7 @@ func (t GameTest) TestCreateWorks() {
 func (t GameTest) TestListWorks() {
 	t.Get("/games/")
 	t.AssertOk()
-	t.AssertContentType("application/json")
+	t.AssertContentType(JSON_CONTENT)
 }
 
 func (t GameTest) After() {
