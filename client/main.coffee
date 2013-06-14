@@ -28,6 +28,9 @@ require.config
       exports: 'this["Ember"]["TEMPLATES"]'
 
 ember_namespace = [
+  "Router",
+  "Store",
+  "IndexRoute",
   "OrganizationsShowController",
   "OrganizationsShowRoute",
   "OrganizationsNewController",
@@ -38,31 +41,8 @@ ember_namespace = [
   "ListItemView",
 ]
     
-require ["underscore", "app", "ember-data"].concat(ember_namespace), (_, App, DS, ember_namespace...) ->
-  #this is where everything gets attached to our App
-
-  App.Router = Em.Router.extend
-    enableLogging: true
-    location: 'history'
-
-  #http://darthdeus.github.io/blog/2013/02/01/ember-dot-js-router-and-template-naming-convention/
-  App.Router.map ->
-    @route 'discovery'
-    @resource 'organizations', path: "/orgs", ->
-      @route 'show', path: ":id", ->
-      @route 'new'
-    @route 'signup'
-  
-  App.IndexRoute = Ember.Route.extend(redirect: ->
-    @transitionTo 'discovery'
-  )
-
-  JSONAPIAdapter = DS.RESTAdapter.extend()
-
-  App.Store = DS.Store.extend
-    adapter: JSONAPIAdapter.create({ namespace: 'api' })
-
-  #dynamically set all the ember objects on to the App"
+require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace...) ->
+  #This is the requirejs-ember secret sauce. Dyanamically set all ember objects to the ember App namespace.
   _.map _.zip(@ember_namespace, ember_namespace) , (pair) ->
     App.set(pair[0], pair[1])
 

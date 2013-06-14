@@ -29,5 +29,5 @@ GET     /favicon.ico                           Static.Serve("public/img/favicon.
 GET     /public/*filepath              Static.Serve("public")
 
 # Catch all
-#*        /*                               Application.Index 
+*        /*                               Application.Index 
 
