@@ -19,6 +19,7 @@
     "packageDir": "public/js/jam",
     "baseUrl": "public/js",
     "dependencies": {
+      "underscore": "1.4.4",
       "jquery": "1.9.1",
       "handlebars.runtime": null
     }
