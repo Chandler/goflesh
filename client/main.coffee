@@ -27,18 +27,18 @@ require.config
     "templates":
       exports: 'this["Ember"]["TEMPLATES"]'
 
-    
-require [
-  "app",
+ember_namespace = [
   "OrganizationsShowController",
   "OrganizationsShowRoute",
-  "organizationsNewController",
-  "discoveryController",
-  "discoveryRoute",
-  "discoveryView",
-  "listItemView",
-  "ember-data",
-], (App, OrganizationsShowController, OrganizationsShowRoute, OrganizationsNewController, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
+  "OrganizationsNewController",
+  "OrganizationsNewRoute",
+  "DiscoveryController",
+  "DiscoveryRoute",
+  "DiscoveryView",
+  "ListItemView",
+]
+    
+require ["underscore", "app", "ember-data"].concat(ember_namespace), (_, App, DS, ember_namespace...) ->
   #this is where everything gets attached to our App
 
   App.Router = Em.Router.extend
@@ -60,18 +60,14 @@ require [
   JSONAPIAdapter = DS.RESTAdapter.extend()
 
   App.Store = DS.Store.extend
-    adapter: JSONAPIAdapter.create()
+    adapter: JSONAPIAdapter.create({ namespace: 'api' })
 
   App.ApplicationController = Ember.Controller.extend
     message: "this is the application template"
 
-  App.set('ListItemView', ListItemView)
-  App.set('DiscoveryView', DiscoveryView)
-  App.set('DiscoveryRoute', DiscoveryRoute)
-  App.set('DiscoveryController', DiscoveryController)
-  App.set('OrganizationsShowRoute', OrganizationsShowRoute)
-  App.set('OrganizationsNewController', OrganizationsNewController)
-  App.set('OrganizationsShowController', OrganizationsShowController)
+  
+  _.map _.zip(this.ember_namespace, ember_namespace) , (name, object) ->
+    App.set(name, object)
 
   Em.App = App
 
