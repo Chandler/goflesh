@@ -23,10 +23,6 @@ func GetList(model interface{}, blacklist []string) revel.Result {
     FROM "%s"
     `
 	query := fmt.Sprintf(template, name)
-	err := Dbm.Db.Ping()
-	if err != nil {
-		return c.RenderError(err)
-	}
 	result, err := Dbm.Select(model, query)
 	if err != nil {
 		return c.RenderError(err)
@@ -48,6 +44,22 @@ func ZeroOutBlacklist(item interface{}, blacklist []string) {
 		zero := reflect.Zero(val.Type())
 		val.Set(zero)
 	}
+}
+
+// Expose a list view for a given model, with zeroed blacklisted field names
+func GetById(model interface{}, blacklist []string, id int) revel.Result {
+	name := GetObjectName(model)
+
+	result, err := Dbm.Get(model, id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	ZeroOutBlacklist(result, blacklist)
+
+	out := make(map[string][]interface{})
+	out[name+"s"] = []interface{}{result}
+
+	return c.RenderJson(out)
 }
 
 // get an object name using introspection

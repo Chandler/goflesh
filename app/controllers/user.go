@@ -22,6 +22,12 @@ func (c Users) ReadList() revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
+func (c Users) Read(id int) revel.Result {
+	return GetById(models.User{}, []string{"Password", "Api_key"}, id)
+}
+
+/////////////////////////////////////////////////////////////////////
+
 func (c Users) Create() revel.Result {
 	tableName := "users"
 	var typedJson map[string][]models.User

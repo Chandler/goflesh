@@ -6,17 +6,21 @@ module:testrunner
 GET     /                                       Application.Index
 
 GET  /api/organizations   Organizations.ReadList
+GET  /api/organizations/:id/   Organizations.Read
 POST /api/organizations   Organizations.Create
-GET  /api/organizations/{organization_id}/games Organizations.ListGames
+GET  /api/organizations/:organization_id/games Organizations.ListGames
 
 GET  /api/games            Games.ReadList
+GET  /api/games/:id           Games.Read
 POST /api/games            Games.Create
 
 GET /api/users           Users.ReadList
+GET /api/users/:id           Users.Read
 POST /api/users           Users.Create
 POST /api/users/authenticate Users.Authenticate
 
 GET  /api/players            Players.ReadList
+GET  /api/players/:id            Players.Read
 POST /api/players            Players.Create
 
 GET     /favicon.ico                           Static.Serve("public/img/favicon.png")
@@ -25,5 +29,5 @@ GET     /favicon.ico                           Static.Serve("public/img/favicon.
 GET     /public/*filepath              Static.Serve("public")
 
 # Catch all
-*        /*                               Application.Index 
+#*        /*                               Application.Index 
 
