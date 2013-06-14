@@ -1,5 +1,5 @@
 define ["ember", "ember-data"], (Em, DS) ->
-  OrganizationsController = Ember.ObjectController.extend
+  OrganizationsNewController = Ember.ObjectController.extend
     orgname: '',
     slug: '',
     location: '',

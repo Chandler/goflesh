@@ -32,13 +32,13 @@ require [
   "app",
   "OrganizationsShowController",
   "OrganizationsShowRoute",
-  "organizationsController",
+  "organizationsNewController",
   "discoveryController",
   "discoveryRoute",
   "discoveryView",
   "listItemView",
   "ember-data",
-], (App, OrganizationsShowController, OrganizationsShowRoute, OrganizationsController, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
+], (App, OrganizationsShowController, OrganizationsShowRoute, OrganizationsNewController, DiscoveryController, DiscoveryRoute, DiscoveryView, ListItemView, DS) ->
   #this is where everything gets attached to our App
 
   App.Router = Em.Router.extend
@@ -70,7 +70,7 @@ require [
   App.set('DiscoveryRoute', DiscoveryRoute)
   App.set('DiscoveryController', DiscoveryController)
   App.set('OrganizationsShowRoute', OrganizationsShowRoute)
-  App.set('OrganizationsController', OrganizationsController)
+  App.set('OrganizationsNewController', OrganizationsNewController)
   App.set('OrganizationsShowController', OrganizationsShowController)
 
   Em.App = App
