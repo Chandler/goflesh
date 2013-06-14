@@ -3,5 +3,3 @@ define ["ember-data"], (DS) ->
 
   Store = DS.Store.extend
     adapter: JSONAPIAdapter.create({ namespace: 'api' })
-
-  Store
