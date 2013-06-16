@@ -19,6 +19,18 @@ var (
 	cachedData *sjs.Json
 )
 
+type FleshTest struct {
+	revel.TestSuite
+}
+
+func (t *FleshTest) Before() {
+	TestInit()
+}
+
+func (t *FleshTest) After() {
+	TestClean()
+}
+
 func GetTestData() *sjs.Json {
 	if cachedData != nil {
 		return cachedData

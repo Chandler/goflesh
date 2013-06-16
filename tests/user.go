@@ -8,7 +8,7 @@ import (
 )
 
 type UserTest struct {
-	revel.TestSuite
+	FleshTest
 }
 
 // generate some number of user objects in JSON
@@ -30,14 +30,6 @@ func generateUserStructArray() []map[string]interface{} {
 func generateUserJson() string {
 	embedded := EmbedMapUnderKey("users", generateUserStructArray())
 	return ConvertMappedStructArrayToString(embedded)
-}
-
-func (t *UserTest) Before() {
-	TestInit()
-}
-
-func (t *UserTest) After() {
-	TestClean()
 }
 
 func (t *UserTest) TestCreate() {

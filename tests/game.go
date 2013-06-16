@@ -4,13 +4,12 @@ import (
 	"flesh/app/controllers"
 	"flesh/app/models"
 	"flesh/app/routes"
-	"github.com/robfig/revel"
 	"strings"
 	"time"
 )
 
 type GameTest struct {
-	revel.TestSuite
+	FleshTest
 }
 
 func getOrganizationId() interface{} {
@@ -53,10 +52,6 @@ func generateGameJson() string {
 	return jsn
 }
 
-func (t *GameTest) Before() {
-	TestInit()
-}
-
 func (t *GameTest) TestCreateWorks() {
 	jsn := generateGameJson()
 	t.Post(routes.Games.Create(), JSON_CONTENT, strings.NewReader(jsn))
@@ -70,8 +65,4 @@ func (t *GameTest) TestListWorks() {
 	t.Get(routes.Games.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
-}
-
-func (t *GameTest) After() {
-	TestClean()
 }

@@ -2,12 +2,11 @@ package tests
 
 import (
 	"flesh/app/routes"
-	"github.com/robfig/revel"
 	"strings"
 )
 
 type OrganizationTest struct {
-	revel.TestSuite
+	FleshTest
 }
 
 // generate some number of organization objects in JSON
@@ -25,10 +24,6 @@ func generateOrganizationJson() string {
 	return jsn
 }
 
-func (t *OrganizationTest) Before() {
-	TestInit()
-}
-
 func (t *OrganizationTest) TestCreateWorks() {
 	jsn := generateOrganizationJson()
 	t.Post(routes.Organizations.Create(), JSON_CONTENT, strings.NewReader(jsn))
@@ -42,8 +37,4 @@ func (t *OrganizationTest) TestListWorks() {
 	t.Get(routes.Organizations.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
-}
-
-func (t *OrganizationTest) After() {
-	TestClean()
 }
