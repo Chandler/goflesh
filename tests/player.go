@@ -2,6 +2,7 @@ package tests
 
 import (
 	"flesh/app/routes"
+	sjs "github.com/bitly/go-simplejson"
 	"strings"
 )
 
@@ -26,17 +27,30 @@ func generatePlayerJson() string {
 	return jsn
 }
 
-func (t *PlayerTest) TestCreateWorks() {
+func (t *PlayerTest) TestCreateAndRead() {
+	// create
 	jsn := generatePlayerJson()
 	t.Post(routes.Players.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "game_id") != -1)
+
+	// read
+	responseJson, err := sjs.NewJson(t.ResponseBody)
+	t.Assert(err == nil)
+	id, err := responseJson.GetIndex(0).Get("id").Int()
+	t.Assert(err == nil)
+	t.Get(routes.Players.Read(id))
+	t.AssertOk()
+	t.AssertContentType(JSON_CONTENT)
+	body = string(t.ResponseBody)
+	t.Assert(strings.Index(body, "game_id") != -1)
+
 }
 
-func (t *PlayerTest) TestListWorks() {
-	t.Get(routes.Games.ReadList())
+func (t *PlayerTest) TestList() {
+	t.Get(routes.Players.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
