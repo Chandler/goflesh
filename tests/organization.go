@@ -25,11 +25,11 @@ func generateOrganizationJson() string {
 	return jsn
 }
 
-func (t OrganizationTest) Before() {
+func (t *OrganizationTest) Before() {
 	TestInit()
 }
 
-func (t OrganizationTest) TestCreateWorks() {
+func (t *OrganizationTest) TestCreateWorks() {
 	jsn := generateOrganizationJson()
 	t.Post(routes.Organizations.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
@@ -38,12 +38,12 @@ func (t OrganizationTest) TestCreateWorks() {
 	t.Assert(strings.Index(body, "default_timezone") != -1)
 }
 
-func (t OrganizationTest) TestListWorks() {
+func (t *OrganizationTest) TestListWorks() {
 	t.Get(routes.Organizations.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
 
-func (t OrganizationTest) After() {
+func (t *OrganizationTest) After() {
 	TestClean()
 }

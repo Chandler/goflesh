@@ -53,11 +53,11 @@ func generateGameJson() string {
 	return jsn
 }
 
-func (t GameTest) Before() {
+func (t *GameTest) Before() {
 	TestInit()
 }
 
-func (t GameTest) TestCreateWorks() {
+func (t *GameTest) TestCreateWorks() {
 	jsn := generateGameJson()
 	t.Post(routes.Games.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
@@ -66,12 +66,12 @@ func (t GameTest) TestCreateWorks() {
 	t.Assert(strings.Index(body, "registration_start_time") != -1)
 }
 
-func (t GameTest) TestListWorks() {
+func (t *GameTest) TestListWorks() {
 	t.Get(routes.Games.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
 
-func (t GameTest) After() {
+func (t *GameTest) After() {
 	TestClean()
 }

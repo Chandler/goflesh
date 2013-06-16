@@ -27,11 +27,11 @@ func generateUserJson() string {
 	return jsn
 }
 
-func (t UserTest) Before() {
+func (t *UserTest) Before() {
 	TestInit()
 }
 
-func (t UserTest) TestCreateWorks() {
+func (t *UserTest) TestCreateWorks() {
 	jsn := generateUserJson()
 	t.Post(routes.Users.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
@@ -40,12 +40,12 @@ func (t UserTest) TestCreateWorks() {
 	t.Assert(strings.Index(body, "first_name") != -1)
 }
 
-func (t UserTest) TestListWorks() {
+func (t *UserTest) TestListWorks() {
 	t.Get(routes.Users.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
 
-func (t UserTest) After() {
+func (t *UserTest) After() {
 	TestClean()
 }
