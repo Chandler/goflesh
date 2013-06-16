@@ -3,6 +3,7 @@ package tests
 import (
 	"encoding/json"
 	"flesh/app/routes"
+	sjs "github.com/bitly/go-simplejson"
 	"github.com/robfig/revel"
 	"strings"
 )
@@ -32,13 +33,25 @@ func generateUserJson() string {
 	return ConvertMappedStructArrayToString(embedded)
 }
 
-func (t *UserTest) TestCreate() {
+func (t *UserTest) TestCreateAndRead() {
+	// create
 	jsn := generateUserJson()
 	t.Post(routes.Users.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "first_name") != -1)
+
+	// read
+	responseJson, err := sjs.NewJson(t.ResponseBody)
+	t.Assert(err == nil)
+	id, err := responseJson.GetIndex(0).Get("id").Int()
+	t.Assert(err == nil)
+	t.Get(routes.Users.Read(id))
+	t.AssertOk()
+	t.AssertContentType(JSON_CONTENT)
+	body = string(t.ResponseBody)
+	t.Assert(strings.Index(body, "last_name") != -1)
 }
 
 func (t *UserTest) TestList() {
