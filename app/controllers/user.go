@@ -33,7 +33,6 @@ func (c Users) Create() revel.Result {
 	var typedJson map[string][]models.User
 
 	data, err := ioutil.ReadAll(c.Request.Body)
-	revel.WARN.Print(data)
 
 	if err != nil {
 		revel.ERROR.Print(err)
@@ -103,8 +102,9 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 Endpoint: given email (or screen_name) + password,
 return user_id and api_key
 */
-func (c Users) Authenticate(data string) revel.Result {
+func (c Users) Authenticate() revel.Result {
 	var authInfo UserAuthenticateInput
+	data, err := ioutil.ReadAll(c.Request.Body)
 	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
 		return c.RenderError(err)
 	}

@@ -19,6 +19,18 @@ var (
 	cachedData *sjs.Json
 )
 
+type FleshTest struct {
+	revel.TestSuite
+}
+
+func (t *FleshTest) Before() {
+	TestInit()
+}
+
+func (t *FleshTest) After() {
+	TestClean()
+}
+
 func GetTestData() *sjs.Json {
 	if cachedData != nil {
 		return cachedData
@@ -75,7 +87,7 @@ func GenerateSlug() interface{} {
 }
 
 func GenerateEmail() interface{} {
-	return GenerateString(0, "-").(string) + "@" + GenerateString(1, "").(string)
+	return GenerateString(0, "-").(string) + "@" + GenerateString(1, "").(string) + ".com"
 }
 
 func GenerateStructArray(keyToGenerator map[string]func() interface{}, numEntries int) []map[string]interface{} {
@@ -95,8 +107,7 @@ func GenerateStructArray(keyToGenerator map[string]func() interface{}, numEntrie
 
 func GenerateJsonBytes(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) []byte {
 	userStructure := GenerateStructArray(keyToGenerator, numEntries)
-	underJsonKey := make(map[string][]map[string]interface{})
-	underJsonKey[underKey] = userStructure
+	underJsonKey := EmbedMapUnderKey(underKey, userStructure)
 	jsonBytes, err := json.Marshal(underJsonKey)
 	if err != nil {
 		panic(err)
@@ -107,6 +118,24 @@ func GenerateJsonBytes(underKey string, keyToGenerator map[string]func() interfa
 
 func GenerateJson(underKey string, keyToGenerator map[string]func() interface{}, numEntries int) string {
 	return string(GenerateJsonBytes(underKey, keyToGenerator, numEntries))
+}
+
+func EmbedMapUnderKey(underKey string, mp []map[string]interface{}) map[string][]map[string]interface{} {
+	underJsonKey := make(map[string][]map[string]interface{})
+	underJsonKey[underKey] = mp
+	return underJsonKey
+}
+
+func ConvertMappedStructArrayToBytes(mappedStructArray map[string][]map[string]interface{}) []byte {
+	jsonBytes, err := json.Marshal(mappedStructArray)
+	if err != nil {
+		panic(err)
+	}
+	return jsonBytes
+}
+
+func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]interface{}) string {
+	return string(ConvertMappedStructArrayToBytes(mappedStructArray))
 }
 
 func InsertTestUser() *models.User {
