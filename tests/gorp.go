@@ -3,9 +3,7 @@ package tests
 import (
 	"database/sql"
 	"flesh/app/controllers"
-	"flesh/app/models"
 	"fmt"
-	"github.com/coopernurse/gorp"
 	"github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
 	"io/ioutil"
@@ -137,12 +135,7 @@ func MakeDbFromTemplate() {
 		revel.ERROR.Fatal(err)
 	}
 
-	controllers.Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
-	controllers.Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
-	controllers.Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
-	controllers.Dbm.AddTable(models.User{}).SetKeys(true, "Id")
-	controllers.Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
-	controllers.Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", revel.INFO)
+	controllers.Init()
 }
 
 func TestClean() {
