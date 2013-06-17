@@ -4,13 +4,13 @@ import (
 	"flesh/app/controllers"
 	"flesh/app/models"
 	"flesh/app/routes"
-	"github.com/robfig/revel"
+	sjs "github.com/bitly/go-simplejson"
 	"strings"
 	"time"
 )
 
 type GameTest struct {
-	revel.TestSuite
+	FleshTest
 }
 
 func getOrganizationId() interface{} {
@@ -53,25 +53,30 @@ func generateGameJson() string {
 	return jsn
 }
 
-func (t GameTest) Before() {
-	TestInit()
-}
-
-func (t GameTest) TestCreateWorks() {
+func (t *GameTest) TestCreateAndRead() {
+	// create
 	jsn := generateGameJson()
 	t.Post(routes.Games.Create(), JSON_CONTENT, strings.NewReader(jsn))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "registration_start_time") != -1)
+
+	// read
+	responseJson, err := sjs.NewJson(t.ResponseBody)
+	t.Assert(err == nil)
+	id, err := responseJson.GetIndex(0).Get("id").Int()
+	t.Assert(err == nil)
+	t.Get(routes.Games.Read(id))
+	t.AssertOk()
+	t.AssertContentType(JSON_CONTENT)
+	body = string(t.ResponseBody)
+
+	t.Assert(strings.Index(body, "registration_start_time") != -1)
 }
 
-func (t GameTest) TestListWorks() {
+func (t *GameTest) TestList() {
 	t.Get(routes.Games.ReadList())
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
-}
-
-func (t GameTest) After() {
-	TestClean()
 }

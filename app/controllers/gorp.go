@@ -19,10 +19,10 @@ func Init() {
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 
-	Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
 	Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
 }
 
