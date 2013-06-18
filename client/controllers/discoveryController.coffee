@@ -1,6 +1,6 @@
 define ["ember"], (Em) ->
   DiscoveryController = Ember.ObjectController.extend
-    organizations: (->
+    orgs: (->
       string = @get 'filterString'
       if string == ""
         return @get 'content'

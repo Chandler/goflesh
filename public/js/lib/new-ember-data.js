@@ -7157,9 +7157,7 @@ DS.JSONSerializer = DS.Serializer.extend({
     @param {Object} json
     @param {String} root
   */
-  sideload: function(loader, type, json, root) {
-    var sideloadedType;
-
+  sideload: function(loader, type, json, root) {    
     this.configureSideloadMappingForType(type);
 
     for (var prop in json) {
