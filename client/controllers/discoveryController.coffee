@@ -3,9 +3,9 @@ define ["ember"], (Em) ->
     orgs: (->
       string = @get 'filterString'
       if string == ""
-        return @get 'content'
+        return @get 'model'
       else
-        @get('content').filter (org) ->
+        @get('model').filter (org) ->
           !!(org.get('name').indexOf(string) != -1)
     ).property 'filterString'
     updateFilter: (arg) ->
