@@ -1,33 +1,32 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
-# ~~~~
+
 module:testrunner
 
-GET     /                                       Application.Index
+GET		/												Application.Index
 
-GET  /api/organizations   Organizations.ReadList
-GET  /api/organizations/:id/   Organizations.Read
-POST /api/organizations   Organizations.Create
-GET  /api/organizations/:organization_id/games Organizations.ListGames
+GET		/api/organizations								Organizations.ReadList
+GET		/api/organizations/:id/							Organizations.Read
+POST	/api/organizations								Organizations.Create
+GET		/api/organizations/:organization_id/games		Organizations.ListGames
 
-GET  /api/games            Games.ReadList
-GET  /api/games/:id           Games.Read
-POST /api/games            Games.Create
+GET		/api/games										Games.ReadList
+GET		/api/games/:id									Games.Read
+POST	/api/games										Games.Create
 
-GET /api/users           Users.ReadList
-GET /api/users/:id           Users.Read
-POST /api/users           Users.Create
-POST /api/users/authenticate Users.Authenticate
+GET		/api/users										Users.ReadList
+GET					/api/users/:id						Users.Read
+POST	/api/users										Users.Create
+POST	/api/users/Authenticate							Users.Authenticate
 
-GET  /api/players            Players.ReadList
-GET  /api/players/:id            Players.Read
-POST /api/players            Players.Create
+GET		/api/players									Players.ReadList
+GET		/api/players/:id								Players.Read
+POST	/api/players									Players.Create
 
-GET     /favicon.ico                           Static.Serve("public/img/favicon.png")
+GET		/favicon.ico									Static.Serve("public/img/favicon.png")
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/*filepath              Static.Serve("public")
+GET		/public/*filepath								Static.Serve("public")
 
 # Catch all
-#*        /*                               Application.Index 
-
+*		/*												Application.Index
