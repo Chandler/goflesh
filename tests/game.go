@@ -1,10 +1,9 @@
 package tests
 
 import (
-	"flesh/app/controllers"
-	"flesh/app/models"
 	"flesh/app/routes"
 	sjs "github.com/bitly/go-simplejson"
+	"github.com/robfig/revel"
 	"strings"
 	"time"
 )
@@ -14,23 +13,13 @@ type GameTest struct {
 }
 
 func getOrganizationId() interface{} {
-	query := `
-    SELECT *
-    FROM "organization"
-    LIMIT 1
-    `
-	organizations, _ := controllers.Dbm.Select(models.Organization{}, query)
-	organization := organizations[0].(*models.Organization)
+	organization := SelectTestOrganization()
 	return organization.Id
 }
 
 // generate some number of user objects in JSON
 func generateGameJson() string {
-	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", models.TimeTrackedModel{}}
-	err := controllers.Dbm.Insert(&testOrg)
-	if err != nil {
-		panic(err)
-	}
+	InsertTestOrganization()
 	now := time.Now().UTC()
 	later := now.Add(12 * time.Hour)
 	tomorrow := now.Add(24 * time.Hour)

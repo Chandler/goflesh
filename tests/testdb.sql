@@ -96,6 +96,7 @@ CREATE TABLE organization (
     id integer NOT NULL,
     name character varying(255),
     slug character varying(255),
+    location character varying(255),
     default_timezone character varying(64),
     created timestamp without time zone,
     updated timestamp without time zone
@@ -119,6 +120,37 @@ CREATE SEQUENCE organization_id_seq
 --
 
 ALTER SEQUENCE organization_id_seq OWNED BY organization.id;
+
+
+--
+-- Name: original_zombie; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE original_zombie (
+    player_id integer NOT NULL,
+    accepted boolean DEFAULT false NOT NULL,
+    created timestamp without time zone,
+    updated timestamp without time zone
+);
+
+
+--
+-- Name: original_zombie_player_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE original_zombie_player_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: original_zombie_player_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE original_zombie_player_id_seq OWNED BY original_zombie.player_id;
 
 
 --
@@ -250,6 +282,13 @@ ALTER TABLE ONLY organization ALTER COLUMN id SET DEFAULT nextval('organization_
 
 
 --
+-- Name: player_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY original_zombie ALTER COLUMN player_id SET DEFAULT nextval('original_zombie_player_id_seq'::regclass);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -291,6 +330,14 @@ ALTER TABLE ONLY game
 
 ALTER TABLE ONLY organization
     ADD CONSTRAINT organization_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: original_zombie_pk; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY original_zombie
+    ADD CONSTRAINT original_zombie_pk PRIMARY KEY (player_id);
 
 
 --
@@ -345,11 +392,11 @@ CREATE UNIQUE INDEX user_email_idx ON "user" USING btree (email);
 
 
 --
--- Name: game_fk_organization; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: original_zombie_fk_player; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY game
-    ADD CONSTRAINT game_fk_organization FOREIGN KEY (organization_id) REFERENCES organization(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY original_zombie
+    ADD CONSTRAINT original_zombie_fk_player FOREIGN KEY (player_id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

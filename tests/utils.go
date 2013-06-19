@@ -148,7 +148,7 @@ func InsertTestUser() *models.User {
 }
 
 func InsertTestOrganization() *models.Organization {
-	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), "US/Pacific", models.TimeTrackedModel{}}
+	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
