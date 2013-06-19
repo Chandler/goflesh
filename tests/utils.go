@@ -139,7 +139,7 @@ func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]
 }
 
 func InsertTestUser() *models.User {
-	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, nil, nil}
+	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(user)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -148,7 +148,7 @@ func InsertTestUser() *models.User {
 }
 
 func InsertTestOrganization() *models.Organization {
-	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), "US/Pacific", nil, nil}
+	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), "US/Pacific", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -159,7 +159,7 @@ func InsertTestOrganization() *models.Organization {
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
 	// make sure you have an organization available!
-	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, nil, nil}
+	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(game)
 	if err != nil {
 		revel.WARN.Print(err)

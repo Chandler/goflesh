@@ -26,7 +26,7 @@ func getOrganizationId() interface{} {
 
 // generate some number of user objects in JSON
 func generateGameJson() string {
-	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", nil, nil}
+	testOrg := models.Organization{0, "test org", "test_org", "US/Pacific", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(&testOrg)
 	if err != nil {
 		panic(err)

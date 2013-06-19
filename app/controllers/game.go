@@ -32,11 +32,13 @@ func (c Games) Create() revel.Result {
 	data, err := ioutil.ReadAll(c.Request.Body)
 
 	if err != nil {
+		revel.ERROR.Print(err)
 		return c.RenderError(err)
 	}
 
 	err = json.Unmarshal(data, &typedJson)
 	if err != nil {
+		revel.ERROR.Print(err)
 		return c.RenderError(err)
 	}
 
