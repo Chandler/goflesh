@@ -12,25 +12,26 @@ import (
 )
 
 var (
-	cachedData *sjs.Json
+	cachedData sjs.Json
+	allWords   []string
 )
 
-func GetTestData() *sjs.Json {
-	if cachedData != nil {
-		return cachedData
-	}
-
+func init() {
 	jsonBytes, err := ioutil.ReadFile("tests/test.json")
 	if err != nil {
 		panic(err)
 	}
 
-	cachedData, err = sjs.NewJson(jsonBytes)
+	cd, err := sjs.NewJson(jsonBytes)
+	cachedData = *cd
 	if err != nil {
 		panic(err)
 	}
 
-	return cachedData
+	allWords, err = cachedData.GetPath("words", "all").StringArray()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func GenerateRandomWordArray(numWords int) []string {
@@ -40,14 +41,10 @@ func GenerateRandomWordArray(numWords int) []string {
 
 	words := make([]string, numWords)
 
-	nouns, err := (*GetTestData()).GetPath("words", "nouns").StringArray()
-	if err != nil {
-		panic(err)
-	}
-	lenNouns := len(nouns)
+	lenNouns := len(allWords)
 	for i := 0; i < numWords; i++ {
 		index := rand.Intn(lenNouns)
-		words[i] = nouns[index]
+		words[i] = allWords[index]
 	}
 
 	return words
