@@ -1,4 +1,4 @@
-package tests
+package testutils
 
 import (
 	"encoding/json"
@@ -11,25 +11,9 @@ import (
 	"strings"
 )
 
-const (
-	JSON_CONTENT string = "application/json"
-)
-
 var (
 	cachedData *sjs.Json
 )
-
-type FleshTest struct {
-	revel.TestSuite
-}
-
-func (t *FleshTest) Before() {
-	TestInit()
-}
-
-func (t *FleshTest) After() {
-	TestClean()
-}
 
 func GetTestData() *sjs.Json {
 	if cachedData != nil {
