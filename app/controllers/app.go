@@ -5,11 +5,11 @@ import (
 )
 
 type Application struct {
-	*revel.Controller
+	GorpController
 }
 
 func init() {
-	revel.OnAppStart(Init)
+	revel.OnAppStart(GorpInit)
 	revel.InterceptMethod((*GorpController).Begin, revel.BEFORE)
 	revel.InterceptMethod((*GorpController).Commit, revel.AFTER)
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)

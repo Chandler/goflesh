@@ -11,7 +11,7 @@ import (
 )
 
 type Users struct {
-	*revel.Controller
+	GorpController
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -27,6 +27,7 @@ func (c Users) Read(id int) revel.Result {
 }
 
 /////////////////////////////////////////////////////////////////////
+
 func createUsers(data []byte) ([]interface{}, error) {
 	const keyName string = "users"
 	var typedJson map[string][]models.User

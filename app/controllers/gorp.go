@@ -14,7 +14,7 @@ var (
 	Dbm *gorp.DbMap
 )
 
-func Init() {
+func GorpInit() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}

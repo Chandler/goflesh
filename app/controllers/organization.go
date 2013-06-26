@@ -8,7 +8,7 @@ import (
 )
 
 type Organizations struct {
-	*revel.Controller
+	GorpController
 }
 
 /////////////////////////////////////////////////////////////////////
