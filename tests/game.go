@@ -3,7 +3,6 @@ package tests
 import (
 	"flesh/app/routes"
 	sjs "github.com/bitly/go-simplejson"
-	"github.com/robfig/revel"
 	"strings"
 	"time"
 )

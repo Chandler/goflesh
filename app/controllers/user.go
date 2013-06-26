@@ -27,25 +27,16 @@ func (c Users) Read(id int) revel.Result {
 }
 
 /////////////////////////////////////////////////////////////////////
-
-func (c Users) Create() revel.Result {
-	tableName := "users"
+func createUsers(data []byte) ([]interface{}, error) {
+	const keyName string = "users"
 	var typedJson map[string][]models.User
 
-	data, err := ioutil.ReadAll(c.Request.Body)
-
+	err := json.Unmarshal(data, &typedJson)
 	if err != nil {
-		revel.ERROR.Print(err)
-		return c.RenderError(err)
+		return nil, err
 	}
 
-	err = json.Unmarshal(data, &typedJson)
-	if err != nil {
-		revel.ERROR.Print(err)
-		return c.RenderError(err)
-	}
-
-	modelObjects := typedJson[tableName]
+	modelObjects := typedJson[keyName]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	interfaces := make([]interface{}, len(modelObjects))
@@ -54,16 +45,11 @@ func (c Users) Create() revel.Result {
 		modelObject.ChangePassword(modelObject.Password)
 		interfaces[i] = interface{}(&modelObject)
 	}
+	return interfaces, nil
+}
 
-	// do the bulk insert
-	err = Dbm.Insert(interfaces...)
-	if err != nil {
-		revel.ERROR.Print(err)
-		return c.RenderError(err)
-	}
-
-	// Return a copy of the data with id's set
-	return c.RenderJson(interfaces)
+func (c Users) Create() revel.Result {
+	return CreateList(createUsers, c.Request.Body)
 }
 
 /////////////////////////////////////////////////////////////////////

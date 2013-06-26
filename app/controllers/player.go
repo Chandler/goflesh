@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flesh/app/models"
 	"github.com/robfig/revel"
-	"io/ioutil"
 )
 
 type Players struct {
@@ -25,34 +24,25 @@ func (c Players) Read(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Players) Create() revel.Result {
-	tableName := "players"
+func createPlayers(data []byte) ([]interface{}, error) {
+	const keyName string = "players"
 	var typedJson map[string][]models.Player
 
-	data, err := ioutil.ReadAll(c.Request.Body)
+	err := json.Unmarshal(data, &typedJson)
 	if err != nil {
-		return c.RenderError(err)
+		return nil, err
 	}
 
-	err = json.Unmarshal(data, &typedJson)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	modelObjects := typedJson[tableName]
+	modelObjects := typedJson[keyName]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	interfaces := make([]interface{}, len(modelObjects))
 	for i := range modelObjects {
 		interfaces[i] = interface{}(&modelObjects[i])
 	}
+	return interfaces, nil
+}
 
-	// do the bulk insert
-	err = Dbm.Insert(interfaces...)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	// Return a copy of the data with id's set
-	return c.RenderJson(interfaces)
+func (c Players) Create() revel.Result {
+	return CreateList(createPlayers, c.Request.Body)
 }
