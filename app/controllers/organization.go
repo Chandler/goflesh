@@ -5,11 +5,10 @@ import (
 	"flesh/app/models"
 	"fmt"
 	"github.com/robfig/revel"
-	"io/ioutil"
 )
 
 type Organizations struct {
-	*revel.Controller
+	GorpController
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -26,37 +25,27 @@ func (c Organizations) Read(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Organizations) Create() revel.Result {
-	tableName := "organizations"
+func createOrganizations(data []byte) ([]interface{}, error) {
+	const keyName string = "organizations"
 	var typedJson map[string][]models.Organization
 
-	data, err := ioutil.ReadAll(c.Request.Body)
-
+	err := json.Unmarshal(data, &typedJson)
 	if err != nil {
-		return c.RenderError(err)
+		return nil, err
 	}
 
-	err = json.Unmarshal(data, &typedJson)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	modelObjects := typedJson[tableName]
+	modelObjects := typedJson[keyName]
 
 	// Prepare for bulk insert (only way to do it, promise)
 	interfaces := make([]interface{}, len(modelObjects))
 	for i := range modelObjects {
 		interfaces[i] = interface{}(&modelObjects[i])
 	}
+	return interfaces, nil
+}
 
-	// do the bulk insert
-	err = Dbm.Insert(interfaces...)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	// Return a copy of the data with id's set
-	return c.RenderJson(interfaces)
+func (c Organizations) Create() revel.Result {
+	return CreateList(createOrganizations, c.Request.Body)
 }
 
 /////////////////////////////////////////////////////////////////////

@@ -17,6 +17,7 @@ func generateOrganizationJson() string {
 		map[string]func() interface{}{
 			"name":             GenerateWord,
 			"slug":             GenerateSlug,
+			"location":         GenerateName,
 			"default_timezone": func() interface{} { return "US/Pacific" },
 		},
 		-1,
