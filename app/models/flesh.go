@@ -22,7 +22,3 @@ func (model *TimeTrackedModel) PreUpdate(s gorp.SqlExecutor) error {
 	model.Updated = &now
 	return nil
 }
-
-type TableNamed interface {
-	TableName()
-}
