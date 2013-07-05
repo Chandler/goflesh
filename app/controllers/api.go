@@ -4,10 +4,12 @@ Simple tools to make basic API endpoints
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/robfig/revel"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"reflect"
 	"strings"
 )
@@ -53,6 +55,7 @@ func GetList(model interface{}, blacklist []string) revel.Result {
 		return c.RenderError(err)
 	}
 	for _, item := range result {
+		revel.WARN.Print(item)
 		ZeroOutBlacklist(item, blacklist)
 	}
 
@@ -63,6 +66,9 @@ func GetList(model interface{}, blacklist []string) revel.Result {
 }
 
 func ZeroOutBlacklist(item interface{}, blacklist []string) {
+	if item == nil {
+		return
+	}
 	concreteItem := reflect.ValueOf(item).Elem()
 	for _, toBlack := range blacklist {
 		val := concreteItem.FieldByName(toBlack)
@@ -79,7 +85,11 @@ func GetById(model interface{}, blacklist []string, id int) revel.Result {
 	if err != nil {
 		return c.RenderError(err)
 	}
-	ZeroOutBlacklist(result, blacklist)
+	if result == nil {
+		return FResponse404(FResponse404{interface{}(map[string]string{"error": "user not found"})})
+	} else {
+		ZeroOutBlacklist(result, blacklist)
+	}
 
 	out := make(map[string][]interface{})
 	out[name] = []interface{}{result}
@@ -93,4 +103,26 @@ func GetObjectName(obj interface{}) string {
 	fullName := reflect.TypeOf(obj).String()
 	name := strings.ToLower(strings.SplitN(fullName, ".", 2)[1])
 	return name
+}
+
+type FResponse404 struct {
+	obj interface{}
+}
+
+func (r FResponse404) Apply(req *revel.Request, resp *revel.Response) {
+	var b []byte
+	var err error
+	if revel.Config.BoolDefault("results.pretty", false) {
+		b, err = json.MarshalIndent(r.obj, "", "  ")
+	} else {
+		b, err = json.Marshal(r.obj)
+	}
+
+	if err != nil {
+		revel.ErrorResult{Error: err}.Apply(req, resp)
+		return
+	}
+
+	resp.WriteHeader(http.StatusNotFound, "application/json")
+	resp.Out.Write(b)
 }

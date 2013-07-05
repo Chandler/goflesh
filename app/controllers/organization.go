@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"flesh/app/models"
-	"fmt"
 	"github.com/robfig/revel"
 )
 
@@ -51,19 +50,41 @@ func (c Organizations) Create() revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c Organizations) ListGames(organization_id int) revel.Result {
-	template := `
+	query := `
 		SELECT *
 		FROM game
-		WHERE organization_id = %d
+		WHERE organization_id = ?
 		`
-	query := fmt.Sprintf(template, organization_id)
-
-	result, err := Dbm.Select(models.Game{}, query)
+	result, err := Dbm.Select(models.Game{}, query, organization_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
 	out := make(map[string]interface{})
 	out["games"] = result
 
+	return c.RenderJson(out)
+}
+
+/////////////////////////////////////////////////////////////////////
+
+type OrganizationInformation struct {
+	models.Organization
+	NumMembers int    `json:"numMembers"`
+	Image      string `json:"image"`
+}
+
+// Endpoint for discovery page organizations list
+func (c Organizations) DiscoveryInformationList() revel.Result {
+	query := `
+		SELECT *
+		FROM organization
+		`
+
+	result, err := Dbm.Select(OrganizationInformation{}, query)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	out := make(map[string]interface{})
+	out["organizations"] = result
 	return c.RenderJson(out)
 }
