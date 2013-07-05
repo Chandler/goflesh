@@ -32,6 +32,8 @@ ember_namespace = [
   "Store",
   "IndexRoute",
   "GamesShowRoute",
+  "OrganizationModel",
+  "GameModel",
   "OrganizationsShowController",
   "OrganizationsShowRoute",
   "OrganizationsNewController",
