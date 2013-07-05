@@ -19,6 +19,7 @@
       brew install npm
       npm -g install grunt-cli
       npm -g install jamjs
+      npm -g install ember-auth
       npm install
       jam install
 

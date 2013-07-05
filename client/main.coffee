@@ -10,12 +10,12 @@ require.config
       {
           name: "ember"
           location: "lib"
-          main: "new-ember.js"
+          main: "ember.js"
       },
       {
           name: "ember-data"
           location: "lib"
-          main: "new-ember-data.js"
+          main: "ember-data.js"
       }
       {
           name: "templates"
