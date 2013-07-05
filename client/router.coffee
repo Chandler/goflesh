@@ -10,16 +10,10 @@ define ["ember"], (Em) ->
     @resource 'organizations', path: "/orgs", ->
       @route 'show', path: ":organization_id"
       @route 'new'
-<<<<<<< HEAD
-    @route 'signup'
     @resource 'games', ->
       @route 'show', path: ":game_id"
       @route 'new'
-
-=======
-    # @route 'signup'
     @resource 'users', ->
       @route 'show', path: ":user_id", ->
       @route 'new', path: "/signup", ->
->>>>>>> ba9bef7f8ab53cff23bca37662814d3949a61951
   Router
