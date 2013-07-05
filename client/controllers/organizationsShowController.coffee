@@ -1,5 +1,5 @@
 define ["ember", "ember-data"], (Em, DS) ->
   OrganizationsShowController = Ember.ObjectController.extend
-    orgname: (->
+    name: (->
         console.log "ohh"
       ).property('test')
