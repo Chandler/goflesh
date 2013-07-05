@@ -1,13 +1,13 @@
 package models
 
 import (
-	"github.com/msolomon/gorp"
+	"github.com/coopernurse/gorp"
 	"time"
 )
 
 type TimeTrackedModel struct {
-	Created *time.Time `json:"created"`
-	Updated *time.Time `json:"updated"`
+	Created *time.Time `json:"created,omitempty"`
+	Updated *time.Time `json:"updated,omitempty"`
 }
 
 func (model *TimeTrackedModel) PreInsert(s gorp.SqlExecutor) error {
