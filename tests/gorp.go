@@ -135,7 +135,7 @@ func MakeDbFromTemplate() {
 		revel.ERROR.Fatal(err)
 	}
 
-	controllers.Init()
+	controllers.GorpInit()
 }
 
 func TestClean() {

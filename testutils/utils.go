@@ -1,4 +1,4 @@
-package tests
+package testutils
 
 import (
 	"encoding/json"
@@ -11,42 +11,49 @@ import (
 	"strings"
 )
 
-const (
-	JSON_CONTENT string = "application/json"
-)
-
 var (
-	cachedData *sjs.Json
+	cachedData sjs.Json
+	allWords   []string
 )
 
-type FleshTest struct {
-	revel.TestSuite
-}
-
-func (t *FleshTest) Before() {
-	TestInit()
-}
-
-func (t *FleshTest) After() {
-	TestClean()
-}
-
-func GetTestData() *sjs.Json {
-	if cachedData != nil {
-		return cachedData
-	}
-
+func init() {
 	jsonBytes, err := ioutil.ReadFile("tests/test.json")
 	if err != nil {
 		panic(err)
 	}
 
-	cachedData, err = sjs.NewJson(jsonBytes)
+	cd, err := sjs.NewJson(jsonBytes)
+	cachedData = *cd
 	if err != nil {
 		panic(err)
 	}
 
-	return cachedData
+	allWords, err = cachedData.GetPath("words", "all").StringArray()
+	if err != nil {
+		panic(err)
+	}
+}
+
+func GenerateTestData() {
+	isDev := revel.Config.BoolDefault("mode.dev", false)
+	if isDev {
+		revel.INFO.Print("Inserting random Organizations")
+		for i := 0; i < 20; i++ {
+			InsertTestOrganization()
+		}
+		revel.INFO.Print("Inserting random Users")
+		for i := 0; i < 400; i++ {
+			InsertTestUser()
+		}
+		revel.INFO.Print("Inserting random Games")
+		for i := 0; i < 40; i++ {
+			InsertTestGame()
+		}
+		revel.INFO.Print("Inserting random Players")
+		for i := 0; i < 800; i++ {
+			InsertTestPlayer()
+		}
+	}
 }
 
 func GenerateRandomWordArray(numWords int) []string {
@@ -56,14 +63,10 @@ func GenerateRandomWordArray(numWords int) []string {
 
 	words := make([]string, numWords)
 
-	nouns, err := (*GetTestData()).GetPath("words", "nouns").StringArray()
-	if err != nil {
-		panic(err)
-	}
-	lenNouns := len(nouns)
+	lenNouns := len(allWords)
 	for i := 0; i < numWords; i++ {
 		index := rand.Intn(lenNouns)
-		words[i] = nouns[index]
+		words[i] = allWords[index]
 	}
 
 	return words
@@ -139,7 +142,7 @@ func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]
 }
 
 func InsertTestUser() *models.User {
-	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, nil, nil}
+	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(user)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -148,7 +151,7 @@ func InsertTestUser() *models.User {
 }
 
 func InsertTestOrganization() *models.Organization {
-	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), "US/Pacific", nil, nil}
+	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -159,7 +162,7 @@ func InsertTestOrganization() *models.Organization {
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
 	// make sure you have an organization available!
-	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, nil, nil}
+	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(game)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -167,10 +170,23 @@ func InsertTestGame() *models.Game {
 	return game
 }
 
+func InsertTestPlayer() *models.Player {
+	user := SelectTestUser()
+	game := SelectTestGame()
+	// make sure you have an organization available!
+	player := &models.Player{0, user.Id, game.Id, models.TimeTrackedModel{}}
+	err := controllers.Dbm.Insert(player)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return player
+}
+
 func SelectTestUser() *models.User {
 	query := `
     SELECT *
     FROM "user"
+    ORDER BY random()
     LIMIT 1
     `
 	users, _ := controllers.Dbm.Select(models.User{}, query)
@@ -182,6 +198,7 @@ func SelectTestGame() *models.Game {
 	query := `
     SELECT *
     FROM "game"
+    ORDER BY random()
     LIMIT 1
     `
 	games, _ := controllers.Dbm.Select(models.Game{}, query)
@@ -193,9 +210,22 @@ func SelectTestOrganization() *models.Organization {
 	query := `
     SELECT *
     FROM "organization"
+    ORDER BY random()
     LIMIT 1
     `
 	organizations, _ := controllers.Dbm.Select(models.Organization{}, query)
 	organization := organizations[0].(*models.Organization)
 	return organization
+}
+
+func SelectTestPlayer() *models.Player {
+	query := `
+    SELECT *
+    FROM "player"
+    ORDER BY random()
+    LIMIT 1
+    `
+	players, _ := controllers.Dbm.Select(models.Player{}, query)
+	player := players[0].(*models.Player)
+	return player
 }

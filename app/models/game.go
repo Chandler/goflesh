@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/coopernurse/gorp"
 	"time"
 )
 
@@ -15,19 +14,5 @@ type Game struct {
 	Registration_end_time   *time.Time `json:"registration_end_time"`
 	Running_start_time      *time.Time `json:"running_start_time"`
 	Running_end_time        *time.Time `json:"running_end_time"`
-	Created                 *time.Time `json:"created"`
-	Updated                 *time.Time `json:"updated"`
-}
-
-func (model *Game) PreInsert(s gorp.SqlExecutor) error {
-	now := time.Now().UTC()
-	model.Created = &now
-	model.Updated = model.Created
-	return nil
-}
-
-func (model *Game) PreUpdate(s gorp.SqlExecutor) error {
-	now := time.Now().UTC()
-	model.Updated = &now
-	return nil
+	TimeTrackedModel
 }

@@ -38,14 +38,21 @@
       echo "fsync = off"              >> .db/postgresql.conf
       echo "synchronous_commit = off" >> .db/postgresql.conf
       # Start postgres and create DB
+      sudo sysctl -w kern.sysv.shmmall=1073741824
+      sudo sysctl -w kern.sysv.shmmax=16777216
       pg_ctl start -D .db -l /tmp/flesh-postgres.log -o "-p 5454"
       createdb -p 5454 -O postgres -U postgres flesh_local
+      psql -p 5454 -U postgres -d flesh_local < $FLESHLOCATION/db/schema.sql
 
     # revel
       brew install go
       cat goPackages.txt | xargs -t go get -u
       ln -s $FLESHLOCATION $GOPATH/src/flesh
 
+    # Generate test data
+      # visit localhost:9000/@tests
+      # and click Generator > TestGenerateData > Run
+      # This will create a bunch of dummy data for you
 
 ## Running Locally
     #assets (check gruntfile.js for all the availiable tasks)
@@ -83,3 +90,12 @@ start/stop/restart
 connect with psql
 
     psql -p 5454 -U postgres -d flesh_local
+
+drop/update schema/generate test data cycle:
+
+    echo "DROP DATABASE flesh_local;" | psql -p 5454 -U postgres
+    createdb -p 5454 -O postgres -U postgres flesh_local
+    psql -p 5454 -U postgres -d flesh_local < $FLESHLOCATION/db/schema.sql
+    # visit localhost:9000/@tests
+    # and click Generator > TestGenerateData > Run
+    # This will create a bunch of dummy data for you

@@ -3,6 +3,7 @@ package tests
 import (
 	"encoding/json"
 	"flesh/app/routes"
+	u "flesh/testutils"
 	sjs "github.com/bitly/go-simplejson"
 	"github.com/robfig/revel"
 	"strings"
@@ -14,13 +15,13 @@ type UserTest struct {
 
 // generate some number of user objects in JSON
 func generateUserStructArray() []map[string]interface{} {
-	structArray := GenerateStructArray(
+	structArray := u.GenerateStructArray(
 		map[string]func() interface{}{
-			"email":       GenerateEmail,
-			"first_name":  GenerateWord,
-			"last_name":   GenerateWord,
-			"screen_name": GenerateSlug,
-			"password":    func() interface{} { return GenerateString(4, "-X-") },
+			"email":       u.GenerateEmail,
+			"first_name":  u.GenerateWord,
+			"last_name":   u.GenerateWord,
+			"screen_name": u.GenerateSlug,
+			"password":    func() interface{} { return u.GenerateString(4, "-X-") },
 		},
 		-1,
 	)
@@ -29,8 +30,8 @@ func generateUserStructArray() []map[string]interface{} {
 }
 
 func generateUserJson() string {
-	embedded := EmbedMapUnderKey("users", generateUserStructArray())
-	return ConvertMappedStructArrayToString(embedded)
+	embedded := u.EmbedMapUnderKey("users", generateUserStructArray())
+	return u.ConvertMappedStructArrayToString(embedded)
 }
 
 func (t *UserTest) TestCreateAndRead() {
@@ -62,7 +63,7 @@ func (t *UserTest) TestList() {
 
 func (t *UserTest) TestAuthenticate() {
 	structArray := generateUserStructArray()
-	jsn := ConvertMappedStructArrayToString(EmbedMapUnderKey("users", structArray))
+	jsn := u.ConvertMappedStructArrayToString(u.EmbedMapUnderKey("users", structArray))
 
 	// Create the users
 	t.Post(routes.Users.Create(), JSON_CONTENT, strings.NewReader(jsn))

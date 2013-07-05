@@ -31,6 +31,9 @@ ember_namespace = [
   "Router",
   "Store",
   "IndexRoute",
+  "GamesShowRoute",
+  "OrganizationModel",
+  "GameModel",
   "OrganizationsShowController",
   "OrganizationsShowRoute",
   "OrganizationsNewController",
@@ -39,6 +42,10 @@ ember_namespace = [
   "DiscoveryRoute",
   "DiscoveryView",
   "ListItemView",
+  "UsersNewController",
+  "UsersNewRoute",
+  "UsersShowController",
+  "UsersShowRoute",
 ]
     
 require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace...) ->

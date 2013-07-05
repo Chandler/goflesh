@@ -6,6 +6,8 @@ package controllers
 import (
 	"fmt"
 	"github.com/robfig/revel"
+	"io"
+	"io/ioutil"
 	"reflect"
 	"strings"
 )
@@ -13,6 +15,29 @@ import (
 var (
 	c = new(revel.Controller)
 )
+
+type createHelper func([]byte) ([]interface{}, error)
+
+func CreateList(createModelList createHelper, body io.Reader) revel.Result {
+	data, err := ioutil.ReadAll(body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	interfaces, err := createModelList(data)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	// do the bulk insert
+	err = Dbm.Insert(interfaces...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	// Return a copy of the data with id's set
+	return c.RenderJson(interfaces)
+}
 
 // Expose a list view for a given model, with zeroed blacklisted field names
 func GetList(model interface{}, blacklist []string) revel.Result {
