@@ -72,8 +72,8 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 		SELECT *
 		FROM "user"
 		WHERE
-		email = ?
-		OR screen_name = ?
+		email = $1
+		OR screen_name = $2
 		`
 
 	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name)
