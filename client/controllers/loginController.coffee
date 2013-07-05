@@ -1,4 +1,8 @@
 define ["ember"], (Em) ->
   LoginController = Ember.ObjectController.extend
-    Login: (arg) ->
-      @set 'filterString', arg
+    login: (arg) ->
+      console.log "test"
+      Em.App.Auth.signIn
+        data:
+          email: 'cbabraham@gmail.com'
+          password: 'asdf'

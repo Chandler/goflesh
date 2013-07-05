@@ -1,4 +1,5 @@
 define ["ember"], (Em) ->
+  templateName: "login"
   LoginView = Em.View.extend
-    didInsertElement: ->
+    login: ->
       console.log "test"
