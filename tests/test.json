@@ -1,6 +1,6 @@
 {
   "words": {
-    "adjectives": [
+    "all": [
       "adorable",
       "beautiful",
       "clean",
@@ -17,9 +17,7 @@
       "sparkling",
       "ugliest",
       "unsightly",
-      "wide-eyed"
-    ],
-    "nouns": [
+      "wide-eyed",
       "able",
       "achieve",
       "acoustics",
@@ -105,9 +103,7 @@
       "wilderness",
       "wren",
       "wrist",
-      "writer"
-    ],
-    "verbs": [
+      "writer",
       "bundle",
       "bungle",
       "bunt",

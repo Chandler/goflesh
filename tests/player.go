@@ -2,6 +2,7 @@ package tests
 
 import (
 	"flesh/app/routes"
+	u "flesh/testutils"
 	sjs "github.com/bitly/go-simplejson"
 	"strings"
 )
@@ -12,14 +13,14 @@ type PlayerTest struct {
 
 // generate some number of organization objects in JSON
 func generatePlayerJson() string {
-	InsertTestUser()
-	InsertTestOrganization()
-	InsertTestGame()
-	jsn := GenerateJson(
+	u.InsertTestUser()
+	u.InsertTestOrganization()
+	u.InsertTestGame()
+	jsn := u.GenerateJson(
 		"players",
 		map[string]func() interface{}{
-			"user_id": func() interface{} { return SelectTestUser().Id },
-			"game_id": func() interface{} { return SelectTestGame().Id },
+			"user_id": func() interface{} { return u.SelectTestUser().Id },
+			"game_id": func() interface{} { return u.SelectTestGame().Id },
 		},
 		1,
 	)
