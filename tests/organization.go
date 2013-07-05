@@ -2,6 +2,7 @@ package tests
 
 import (
 	"flesh/app/routes"
+	u "flesh/testutils"
 	sjs "github.com/bitly/go-simplejson"
 	"strings"
 )
@@ -12,12 +13,12 @@ type OrganizationTest struct {
 
 // generate some number of organization objects in JSON
 func generateOrganizationJson() string {
-	jsn := GenerateJson(
+	jsn := u.GenerateJson(
 		"organizations",
 		map[string]func() interface{}{
-			"name":             GenerateWord,
-			"slug":             GenerateSlug,
-			"location":         GenerateName,
+			"name":             u.GenerateWord,
+			"slug":             u.GenerateSlug,
+			"location":         u.GenerateName,
 			"default_timezone": func() interface{} { return "US/Pacific" },
 		},
 		-1,
