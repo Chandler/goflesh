@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	c = new(revel.Controller)
+	c                      = new(revel.Controller)
+	curlyToBracketReplacer = strings.NewReplacer("{", "[", "}", "]")
 )
 
 type createHelper func([]byte) ([]interface{}, error)
@@ -86,7 +87,7 @@ func GetById(model interface{}, blacklist []string, id int) revel.Result {
 		return c.RenderError(err)
 	}
 	if result == nil {
-		return FResponse404(FResponse404{interface{}(map[string]string{"error": "user not found"})})
+		return FResponse404(FResponse404{interface{}(map[string]string{"error": "not found"})})
 	} else {
 		ZeroOutBlacklist(result, blacklist)
 	}
@@ -109,6 +110,10 @@ type FResponse404 struct {
 	obj interface{}
 }
 
+func Make404(errstring string) FResponse404 {
+	return FResponse404{map[string]string{"error": errstring}}
+}
+
 func (r FResponse404) Apply(req *revel.Request, resp *revel.Response) {
 	var b []byte
 	var err error
@@ -125,4 +130,12 @@ func (r FResponse404) Apply(req *revel.Request, resp *revel.Response) {
 
 	resp.WriteHeader(http.StatusNotFound, "application/json")
 	resp.Out.Write(b)
+}
+
+func PostgresArrayStringToIntArray(arrayString string) ([]int, error) {
+	intArrayJson := curlyToBracketReplacer.Replace(arrayString)
+	var intArray []int
+	err := json.Unmarshal([]byte(intArrayJson), &intArray)
+	return intArray, err
+
 }

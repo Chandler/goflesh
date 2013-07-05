@@ -10,16 +10,58 @@ type Organizations struct {
 	GorpController
 }
 
+type OrganizationRead struct {
+	models.Organization
+	Games    string `json:"-"`
+	Game_ids []int  `json:"game_ids"`
+}
+
 /////////////////////////////////////////////////////////////////////
 
+func (c Organizations) ReadOrganization(where string, args ...interface{}) revel.Result {
+	query := `
+	    SELECT *, array(
+			SELECT DISTINCT g.id
+			FROM game g
+			INNER JOIN organization
+				ON o.id = g.organization_id
+			) games
+	    FROM "organization" o
+    ` + where
+	name := "organizations"
+	type readObjectType OrganizationRead
+
+	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	if results == nil || len(results) == 0 {
+		return Make404("organization not found")
+	}
+	readObjects := make([]*readObjectType, len(results))
+	for i, result := range results {
+		readObject := result.(*readObjectType)
+		readObject.Game_ids, err = PostgresArrayStringToIntArray(readObject.Games)
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObjects[i] = readObject
+	}
+
+	out := make(map[string][]interface{})
+	out[name] = []interface{}{results}
+
+	return c.RenderJson(out)
+}
+
 func (c Organizations) ReadList() revel.Result {
-	return GetList(models.Organization{}, nil)
+	return c.ReadOrganization("")
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c Organizations) Read(id int) revel.Result {
-	return GetById(models.Organization{}, nil, id)
+	return c.ReadOrganization("WHERE o.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
