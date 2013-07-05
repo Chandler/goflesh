@@ -17,6 +17,8 @@ POST	/api/games										Games.Create
 GET		/api/users										Users.ReadList
 GET					/api/users/:id						Users.Read
 POST	/api/users										Users.Create
+PUT	/api/users										Users.Create
+
 POST	/api/users/Authenticate							Users.Authenticate
 
 GET		/api/players									Players.ReadList

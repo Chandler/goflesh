@@ -67,3 +67,17 @@ func (c Organizations) ListGames(organization_id int) revel.Result {
 
 	return c.RenderJson(out)
 }
+// func (c Users) CountOrgMembers(organization_id int) revel.Result {
+// 	template := `
+// 		SELECT COUNT(user.id) as member_count
+// 		FROM user
+// 		WHERE organization_id = %d
+// 		`
+// 		query := fmt.Sprintf(template, organization_id)
+// 		result, err := Dbm.Select(models.User{}, query)
+// 		if err != nil {
+// 			return c.RenderError(err)
+// 		}
+// 		out := make(map[string]interface{})
+// 		out["member_count"] = result
+// }
