@@ -6,7 +6,7 @@ define ["ember"], (Em) ->
     location: 'history'
 
   Router.map ->
-    @route 'discovery'
+    @route 'discovery' 
     @resource 'organizations', path: "/orgs", ->
       @route 'show', path: ":organization_id", ->
       @route 'new'
