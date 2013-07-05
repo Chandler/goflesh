@@ -32,6 +32,9 @@ require.config
     "templates":
       exports: 'this["Ember"]["TEMPLATES"]'
 
+#jquery-cookie needs to run once to attach itself to jquery.
+require(['jquery-cookie'])
+
 ember_namespace = [
   "Auth",
   "Router",
