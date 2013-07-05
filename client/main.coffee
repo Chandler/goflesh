@@ -13,6 +13,11 @@ require.config
           main: "ember.js"
       },
       {
+          name: "ember-auth"
+          location: "lib"
+          main: "ember-auth.js"
+      },
+      {
           name: "ember-data"
           location: "lib"
           main: "ember-data.js"
@@ -28,12 +33,14 @@ require.config
       exports: 'this["Ember"]["TEMPLATES"]'
 
 ember_namespace = [
+  "Auth",
   "Router",
   "Store",
   "IndexRoute",
   "GamesShowRoute",
   "OrganizationModel",
   "GameModel",
+  "UserModel",
   "OrganizationsShowController",
   "OrganizationsShowRoute",
   "OrganizationsNewController",

@@ -1,5 +1,5 @@
-define ["ember", "ember-data"], (Em, DS) ->
-  OrganizationsNewController = Ember.ObjectController.extend
+define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
+  OrganizationsNewController = NewController.extend
     orgname: '',
     slug: '',
     location: '',
@@ -17,9 +17,3 @@ define ["ember", "ember-data"], (Em, DS) ->
           @transitionToRoute('discovery');
       else
         @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 

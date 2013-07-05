@@ -1,5 +1,5 @@
-define ["ember", "ember-data"], (Em, DS) ->
-  UsersNewController = Ember.ObjectController.extend
+define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
+  UsersNewController = NewController.extend
     first_name: '',
     last_name: '',
     email: '',
@@ -22,9 +22,3 @@ define ["ember", "ember-data"], (Em, DS) ->
           @transitionToRoute('user/' + record.id);
       else
         @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 
