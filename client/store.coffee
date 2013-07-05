@@ -1,3 +1,4 @@
+
 define ["ember-data"], (DS) ->
   Store = DS.Store.extend
     adapter: DS.RESTAdapter.create
