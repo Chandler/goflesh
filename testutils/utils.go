@@ -34,6 +34,28 @@ func init() {
 	}
 }
 
+func GenerateTestData() {
+	isDev := revel.Config.BoolDefault("mode.dev", false)
+	if isDev {
+		revel.INFO.Print("Inserting random Organizations")
+		for i := 0; i < 20; i++ {
+			InsertTestOrganization()
+		}
+		revel.INFO.Print("Inserting random Users")
+		for i := 0; i < 400; i++ {
+			InsertTestUser()
+		}
+		revel.INFO.Print("Inserting random Games")
+		for i := 0; i < 40; i++ {
+			InsertTestGame()
+		}
+		revel.INFO.Print("Inserting random Players")
+		for i := 0; i < 800; i++ {
+			InsertTestPlayer()
+		}
+	}
+}
+
 func GenerateRandomWordArray(numWords int) []string {
 	if numWords == 0 {
 		numWords = rand.Intn(5) + 1
@@ -148,10 +170,23 @@ func InsertTestGame() *models.Game {
 	return game
 }
 
+func InsertTestPlayer() *models.Player {
+	user := SelectTestUser()
+	game := SelectTestGame()
+	// make sure you have an organization available!
+	player := &models.Player{0, user.Id, game.Id, models.TimeTrackedModel{}}
+	err := controllers.Dbm.Insert(player)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return player
+}
+
 func SelectTestUser() *models.User {
 	query := `
     SELECT *
     FROM "user"
+    ORDER BY random()
     LIMIT 1
     `
 	users, _ := controllers.Dbm.Select(models.User{}, query)
@@ -163,6 +198,7 @@ func SelectTestGame() *models.Game {
 	query := `
     SELECT *
     FROM "game"
+    ORDER BY random()
     LIMIT 1
     `
 	games, _ := controllers.Dbm.Select(models.Game{}, query)
@@ -174,9 +210,22 @@ func SelectTestOrganization() *models.Organization {
 	query := `
     SELECT *
     FROM "organization"
+    ORDER BY random()
     LIMIT 1
     `
 	organizations, _ := controllers.Dbm.Select(models.Organization{}, query)
 	organization := organizations[0].(*models.Organization)
 	return organization
+}
+
+func SelectTestPlayer() *models.Player {
+	query := `
+    SELECT *
+    FROM "player"
+    ORDER BY random()
+    LIMIT 1
+    `
+	players, _ := controllers.Dbm.Select(models.Player{}, query)
+	player := players[0].(*models.Player)
+	return player
 }
