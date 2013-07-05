@@ -68,16 +68,15 @@ type UserAuthenticateOutput struct {
 }
 
 func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
-	template := `
-    SELECT *
-    FROM "user"
-    WHERE
-    	email = '%s' 
-    	OR screen_name = '%s'
-    `
-	query := fmt.Sprintf(template, userInfo.Email, userInfo.Screen_name)
+	query := `
+		SELECT *
+		FROM "user"
+		WHERE
+		email = $1
+		OR screen_name = $2
+		`
 
-	list, err := Dbm.Select(&models.User{}, query)
+	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name)
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}

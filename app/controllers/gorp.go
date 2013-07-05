@@ -3,7 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"flesh/app/models"
-	"github.com/msolomon/gorp"
+	"github.com/coopernurse/gorp"
 	r "github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
 	"math/rand"
