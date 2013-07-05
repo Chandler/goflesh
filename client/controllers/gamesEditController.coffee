@@ -1,6 +1,6 @@
 define ["ember", "ember-data"], (Em, DS) ->
   GamesEditController = Ember.ObjectController.extend
-    editOrg: ->
+    editGame: ->
       this.clearErrors()
       if this.name != ''
         record = @get('model')
