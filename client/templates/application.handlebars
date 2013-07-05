@@ -5,7 +5,13 @@
           {{#linkTo discovery class="nav-button btn"}} Find Organizations {{/linkTo}}
           {{#linkTo discovery class="nav-button btn"}} My Profile {{/linkTo}}
           {{#linkTo discovery class="nav-button btn"}} Settings {{/linkTo}}
-          {{#linkTo users/new class="nav-button btn right-nav"}} Signup {{/linkTo}}
+
+          {{#if Em.App.Auth.signedIn}}
+            <div class="btn btn-warning right-nav" {{action "signOut"}}> Sign Out </div>
+          {{else}}
+            {{#linkTo login class="nav-button btn right-nav"}} Login {{/linkTo}}
+            {{#linkTo users.new class="nav-button btn right-nav"}} Signup {{/linkTo}}
+          {{/if}}
         </div>
       </div>
   </div>

@@ -55,6 +55,7 @@ ember_namespace = [
   "OrganizationsShowRoute",
   
   #controllers
+  "ApplicationController"
   "LoginController",
   "DiscoveryController",
   "OrganizationsShowController",
@@ -63,6 +64,7 @@ ember_namespace = [
   "UsersShowController",
   
   #views
+  "ApplicationView",
   "LoginView",
   "DiscoveryView",
   "ListItemView",
