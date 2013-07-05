@@ -51,6 +51,10 @@
       # and click Generator > TestGenerateData > Run
       # This will create a bunch of dummy data for you
 
+    # JS tests
+      rpm -g install jasmine-node
+      # run tests using jasmine-node spec/ --coffee
+
 ## Running Locally
     #assets (check gruntfile.js for all the availiable tasks)
       grunt compile #build assets once
