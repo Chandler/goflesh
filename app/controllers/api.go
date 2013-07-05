@@ -4,16 +4,19 @@ Simple tools to make basic API endpoints
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/robfig/revel"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"reflect"
 	"strings"
 )
 
 var (
-	c = new(revel.Controller)
+	c                      = new(revel.Controller)
+	curlyToBracketReplacer = strings.NewReplacer("{", "[", "}", "]")
 )
 
 type createHelper func([]byte) ([]interface{}, error)
@@ -53,6 +56,7 @@ func GetList(model interface{}, blacklist []string) revel.Result {
 		return c.RenderError(err)
 	}
 	for _, item := range result {
+		revel.WARN.Print(item)
 		ZeroOutBlacklist(item, blacklist)
 	}
 
@@ -63,6 +67,9 @@ func GetList(model interface{}, blacklist []string) revel.Result {
 }
 
 func ZeroOutBlacklist(item interface{}, blacklist []string) {
+	if item == nil {
+		return
+	}
 	concreteItem := reflect.ValueOf(item).Elem()
 	for _, toBlack := range blacklist {
 		val := concreteItem.FieldByName(toBlack)
@@ -79,10 +86,14 @@ func GetById(model interface{}, blacklist []string, id int) revel.Result {
 	if err != nil {
 		return c.RenderError(err)
 	}
-	ZeroOutBlacklist(result, blacklist)
+	if result == nil {
+		return FResponse404(FResponse404{interface{}(map[string]string{"error": "not found"})})
+	} else {
+		ZeroOutBlacklist(result, blacklist)
+	}
 
 	out := make(map[string][]interface{})
-	out[name] = []interface{}{result}
+	out[name+"s"] = []interface{}{result}
 
 	return c.RenderJson(out)
 }
@@ -93,4 +104,38 @@ func GetObjectName(obj interface{}) string {
 	fullName := reflect.TypeOf(obj).String()
 	name := strings.ToLower(strings.SplitN(fullName, ".", 2)[1])
 	return name
+}
+
+type FResponse404 struct {
+	obj interface{}
+}
+
+func Make404(errstring string) FResponse404 {
+	return FResponse404{map[string]string{"error": errstring}}
+}
+
+func (r FResponse404) Apply(req *revel.Request, resp *revel.Response) {
+	var b []byte
+	var err error
+	if revel.Config.BoolDefault("results.pretty", false) {
+		b, err = json.MarshalIndent(r.obj, "", "  ")
+	} else {
+		b, err = json.Marshal(r.obj)
+	}
+
+	if err != nil {
+		revel.ErrorResult{Error: err}.Apply(req, resp)
+		return
+	}
+
+	resp.WriteHeader(http.StatusNotFound, "application/json")
+	resp.Out.Write(b)
+}
+
+func PostgresArrayStringToIntArray(arrayString string) ([]int, error) {
+	intArrayJson := curlyToBracketReplacer.Replace(arrayString)
+	var intArray []int
+	err := json.Unmarshal([]byte(intArrayJson), &intArray)
+	return intArray, err
+
 }

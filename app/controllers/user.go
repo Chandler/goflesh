@@ -28,6 +28,41 @@ func (c Users) Read(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
+func (c Users) Update(id int) revel.Result {
+	var typedJson map[string]models.User
+	keyname := "user"
+	query := `
+		UPDATE "user"
+		SET
+			email = $1,
+			first_name = $2,
+			last_name = $3,
+			screen_name = $4
+		WHERE id = $5
+	`
+
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	model := typedJson[keyname]
+	model.Id = id
+
+	result, err := Dbm.Exec(query, model.Email, model.First_name, model.Last_name, model.Screen_name, id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJson(model)
+}
+
+/////////////////////////////////////////////////////////////////////
+
 func createUsers(data []byte) ([]interface{}, error) {
 	const keyName string = "users"
 	var typedJson map[string][]models.User
@@ -68,16 +103,15 @@ type UserAuthenticateOutput struct {
 }
 
 func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
-	template := `
-    SELECT *
-    FROM "user"
-    WHERE
-    	email = '%s' 
-    	OR screen_name = '%s'
-    `
-	query := fmt.Sprintf(template, userInfo.Email, userInfo.Screen_name)
+	query := `
+		SELECT *
+		FROM "user"
+		WHERE
+		email = $1
+		OR screen_name = $2
+		`
 
-	list, err := Dbm.Select(&models.User{}, query)
+	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name)
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}
