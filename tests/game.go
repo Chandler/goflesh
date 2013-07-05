@@ -2,6 +2,7 @@ package tests
 
 import (
 	"flesh/app/routes"
+	u "flesh/testutils"
 	sjs "github.com/bitly/go-simplejson"
 	"strings"
 	"time"
@@ -12,22 +13,22 @@ type GameTest struct {
 }
 
 func getOrganizationId() interface{} {
-	organization := SelectTestOrganization()
+	organization := u.SelectTestOrganization()
 	return organization.Id
 }
 
 // generate some number of user objects in JSON
 func generateGameJson() string {
-	InsertTestOrganization()
+	u.InsertTestOrganization()
 	now := time.Now().UTC()
 	later := now.Add(12 * time.Hour)
 	tomorrow := now.Add(24 * time.Hour)
 	tomorrowLater := later.Add(24 * time.Hour)
-	jsn := GenerateJson(
+	jsn := u.GenerateJson(
 		"games",
 		map[string]func() interface{}{
-			"name":                    GenerateWord,
-			"slug":                    GenerateSlug,
+			"name":                    u.GenerateWord,
+			"slug":                    u.GenerateSlug,
 			"organization_id":         getOrganizationId,
 			"timezone":                func() interface{} { return "US/Pacific" },
 			"registration_start_time": func() interface{} { return now.Format(time.RFC3339) },
