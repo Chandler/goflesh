@@ -14,4 +14,5 @@ define ["ember"], (Em) ->
     @resource 'users', ->
       @route 'show', path: ":user_id", ->
       @route 'new', path: "/signup", ->
+      @route 'edit', path: ":user_id/edit"
   Router

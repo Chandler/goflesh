@@ -1,0 +1,44 @@
+<div  id="new-org" class="simple-page">
+  {{#if errorMessages}}
+    <div class="alert alert-error">{{errorMessages}}</div>
+  {{/if}}
+  <div class="fields">
+    <div class="row first_name field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=first_name
+        valueBinding="first_name"
+      }}
+    </div>
+    <div class="row last_name field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=last_name
+        valueBinding="last_name"
+      }}
+    </div>
+     <div class="row field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=email
+        valueBinding="email"
+      }}
+    </div>
+     <div class="row field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=screen_name
+        valueBinding="screen_name"
+      }}
+    </div>
+     <div class="row field">
+      {{view Ember.TextField
+        type="text"
+        placeholder="password"
+        valueBinding="password"
+      }}
+    </div>
+    <div class="btn btn-large btn-block  row signup-btn" {{action "editUser"}}>Save Changes</div>
+  </div>
+    <span class="clearfix"></span>
+</div>

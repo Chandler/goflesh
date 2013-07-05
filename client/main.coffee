@@ -43,6 +43,8 @@ ember_namespace = [
   "UsersNewRoute",
   "UsersShowController",
   "UsersShowRoute",
+  "UsersEditRoute",
+  "UsersEditController",
 ]
     
 require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace...) ->
