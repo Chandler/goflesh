@@ -56,7 +56,6 @@ func GetList(model interface{}, blacklist []string) revel.Result {
 		return c.RenderError(err)
 	}
 	for _, item := range result {
-		revel.WARN.Print(item)
 		ZeroOutBlacklist(item, blacklist)
 	}
 
