@@ -28,6 +28,41 @@ func (c Users) Read(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
+func (c Users) Update(id int) revel.Result {
+	var typedJson map[string]models.User
+	keyname := "user"
+	query := `
+		UPDATE "user"
+		SET
+			email = $1,
+			first_name = $2,
+			last_name = $3,
+			screen_name = $4
+		WHERE id = $5
+	`
+
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	model := typedJson[keyname]
+	model.Id = id
+
+	result, err := Dbm.Exec(query, model.Email, model.First_name, model.Last_name, model.Screen_name, id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJson(model)
+}
+
+/////////////////////////////////////////////////////////////////////
+
 func createUsers(data []byte) ([]interface{}, error) {
 	const keyName string = "users"
 	var typedJson map[string][]models.User

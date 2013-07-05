@@ -93,7 +93,7 @@ func GetById(model interface{}, blacklist []string, id int) revel.Result {
 	}
 
 	out := make(map[string][]interface{})
-	out[name] = []interface{}{result}
+	out[name+"s"] = []interface{}{result}
 
 	return c.RenderJson(out)
 }
