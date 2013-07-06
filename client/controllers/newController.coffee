@@ -1,5 +1,5 @@
 define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
-  NewController = BaseController.extend
+  NewController = Ember.ObjectController.extend
     create: ->
       this.clearEnrors()
       if this.name != ''

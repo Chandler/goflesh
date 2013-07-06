@@ -6,10 +6,10 @@ define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
     location: DS.attr 'string'
     users: DS.hasMany 'Em.App.User'
     games: DS.hasMany 'Em.App.Game'
-    avatarUrl: ->
-      "asfasd"
+
+    
 
   Organization.toString = -> 
     "Organization"
 
-  Organization
+  Organization  

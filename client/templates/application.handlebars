@@ -17,12 +17,12 @@
             <div class="navbar-inner">
               {{#linkTo discovery class="brand"}} flesh {{/linkTo}}
               {{#if Em.App.Auth.signedIn}}
-                {{#linkTo discovery class="btn btn-primary nav-button btn-large pull-right"}} Find Organizations {{/linkTo}}
-                {{#linkTo discovery class="btn btn-primary nav-button btn-large pull-right"}} My Profile {{/linkTo}}
-                {{#linkTo discovery class="btn btn-primary nav-button btn-large pull-right"}} Settings {{/linkTo}}
+                {{#linkTo discovery class="btn nav-button btn-large pull-right"}} Find Organizations {{/linkTo}}
+                {{#linkTo discovery class="btn nav-button btn-large pull-right"}} My Profile {{/linkTo}}
+                {{#linkTo discovery class="btn nav-button btn-large pull-right"}} Settings {{/linkTo}}
                  <div class="btn btn-warning right-nav" {{action "signOut"}}> Sign Out </div>
               {{else}}
-                {{#linkTo login class="btn btn-primary nav-button btn-large pull-right"}} Sign in  {{/linkTo}}
+                {{#linkTo login class="btn nav-button btn-large pull-right"}} Sign in  {{/linkTo}}
               {{/if}}
             </div>
           </div>
