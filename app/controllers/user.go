@@ -3,6 +3,7 @@ package controllers
 import (
 	"code.google.com/p/go.crypto/bcrypt"
 	"encoding/json"
+	"errors"
 	"flesh/app/models"
 	"flesh/app/types"
 	"fmt"
@@ -58,7 +59,15 @@ func (c Users) Update(id int) revel.Result {
 	if err != nil {
 		return c.RenderError(err)
 	}
-	return c.RenderJson(model)
+	val, err := result.RowsAffected()
+	if err != nil {
+		return c.RenderError(err)
+	}
+	if val != 1 {
+		c.Response.Status = 500
+		return c.RenderError(errors.New("Did not update exactly one record"))
+	}
+	return c.RenderJson(val)
 }
 
 /////////////////////////////////////////////////////////////////////

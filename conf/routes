@@ -7,11 +7,13 @@ GET		/												Application.Index
 
 GET		/api/organizations								Organizations.ReadList
 GET		/api/organizations/:id/							Organizations.Read
+PUT     /api/organizations/:id/                         Organizations.Update
 POST	/api/organizations								Organizations.Create
 GET		/api/organizations/:organization_id/games		Organizations.ListGames
 
 GET		/api/games										Games.ReadList
 GET		/api/games/:id									Games.Read
+PUT     /api/games/:id                                  Games.Update
 POST	/api/games										Games.Create
 
 GET		/api/users										Users.ReadList

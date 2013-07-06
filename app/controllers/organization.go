@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
+	"io/ioutil"
 )
 
 type Organizations struct {
@@ -48,8 +50,8 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 		readObjects[i] = readObject
 	}
 
-	out := make(map[string][]interface{})
-	out[name] = []interface{}{results}
+	out := make(map[string]interface{})
+	out[name] = readObjects
 
 	return c.RenderJson(out)
 }
@@ -62,6 +64,48 @@ func (c Organizations) ReadList() revel.Result {
 
 func (c Organizations) Read(id int) revel.Result {
 	return c.ReadOrganization("WHERE o.id = $1", id)
+}
+
+/////////////////////////////////////////////////////////////////////
+
+func (c Organizations) Update(id int) revel.Result {
+	var typedJson map[string]models.Organization
+	keyname := "organization"
+	query := `
+		UPDATE "organization"
+		SET
+			name = $1,
+			location = $2,
+			default_timezone = $3
+		WHERE id = $4
+	`
+
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	model := typedJson[keyname]
+	model.Id = id
+
+	result, err := Dbm.Exec(query, model.Name, model.Location, model.Default_timezone, id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	val, err := result.RowsAffected()
+	if err != nil {
+		return c.RenderError(err)
+	}
+	if val != 1 {
+		c.Response.Status = 500
+		return c.RenderError(errors.New("Did not update exactly one record"))
+	}
+	return c.RenderJson(val)
 }
 
 /////////////////////////////////////////////////////////////////////
