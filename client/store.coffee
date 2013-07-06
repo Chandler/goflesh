@@ -1,4 +1,4 @@
-
+#http://www.thomasboyt.com/2013/05/01/why-ember-data-breaks.html
 define ["ember-data"], (DS) ->
   Store = DS.Store.extend
     adapter: DS.RESTAdapter.create

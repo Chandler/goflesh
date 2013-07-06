@@ -33,7 +33,8 @@ require.config
     "templates":
       exports: 'this["Ember"]["TEMPLATES"]'
 
-#jquery-cookie needs to run once to attach itself to jquery.
+
+#plugins that need to run once to attach themselves to their parents.
 require(['jquery-cookie', 'handlebars_helpers'])
 
 ember_namespace = [
