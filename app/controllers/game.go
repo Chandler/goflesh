@@ -12,16 +12,59 @@ type Games struct {
 	GorpController
 }
 
+type GameRead struct {
+	models.Game
+	Players    string `json:"-"`
+	Player_ids []int  `json:"player_ids"`
+}
+
+func (c Games) ReadGame(where string, args ...interface{}) revel.Result {
+	query := `
+	    SELECT *, array(
+			SELECT DISTINCT p.id
+			FROM player p
+			INNER JOIN "user"
+				ON g.id = p.user_id
+			) players
+	    FROM "game" g
+    ` + where
+	name := "games"
+	type readObjectType GameRead
+
+	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	readObjects := make([]*readObjectType, len(results))
+	for i, result := range results {
+		readObject := result.(*readObjectType)
+		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObjects[i] = readObject
+	}
+
+	out := make(map[string]interface{})
+	out[name] = readObjects
+
+	return c.RenderJson(out)
+}
+
 /////////////////////////////////////////////////////////////////////
 
-func (c Games) ReadList() revel.Result {
-	return GetList(models.Game{}, nil)
+func (c Games) ReadList(ids []int) revel.Result {
+	if len(ids) == 0 {
+		return c.ReadGame("")
+	}
+	templateStr := IntArrayToString(ids)
+	return c.ReadGame("WHERE g.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c Games) Read(id int) revel.Result {
-	return GetById(models.Game{}, nil, id)
+	return c.ReadGame("WHERE g.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////

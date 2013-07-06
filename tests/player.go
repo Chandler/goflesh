@@ -28,7 +28,7 @@ func generatePlayerJson() string {
 	return jsn
 }
 
-func (t *PlayerTest) TestCreateAndRead() {
+func (t *PlayerTest) TestCreate() {
 	// create
 	jsn := generatePlayerJson()
 	t.Post(routes.Players.Create(), JSON_CONTENT, strings.NewReader(jsn))
@@ -36,6 +36,11 @@ func (t *PlayerTest) TestCreateAndRead() {
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "game_id") != -1)
+}
+
+func (t *PlayerTest) TestRead() {
+	t.TestCreate()
+	body := string(t.ResponseBody)
 
 	// read
 	responseJson, err := sjs.NewJson(t.ResponseBody)
@@ -47,7 +52,6 @@ func (t *PlayerTest) TestCreateAndRead() {
 	t.AssertContentType(JSON_CONTENT)
 	body = string(t.ResponseBody)
 	t.Assert(strings.Index(body, "game_id") != -1)
-
 }
 
 func (t *PlayerTest) TestList() {

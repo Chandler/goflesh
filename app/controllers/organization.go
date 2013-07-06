@@ -37,9 +37,6 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 	if err != nil {
 		return c.RenderError(err)
 	}
-	if results == nil || len(results) == 0 {
-		return Make404("organization not found")
-	}
 	readObjects := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)
@@ -56,8 +53,12 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 	return c.RenderJson(out)
 }
 
-func (c Organizations) ReadList() revel.Result {
-	return c.ReadOrganization("")
+func (c Organizations) ReadList(ids []int) revel.Result {
+	if len(ids) == 0 {
+		return c.ReadOrganization("")
+	}
+	templateStr := IntArrayToString(ids)
+	return c.ReadOrganization("WHERE o.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -150,6 +151,7 @@ func (c Organizations) ListGames(organization_id int) revel.Result {
 
 	return c.RenderJson(out)
 }
+
 /////////////////////////////////////////////////////////////////////
 
 type OrganizationInformation struct {

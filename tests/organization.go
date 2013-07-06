@@ -49,7 +49,7 @@ func (t *OrganizationTest) TestCreateAndRead() {
 }
 
 func (t *OrganizationTest) TestList() {
-	t.Get(routes.Organizations.ReadList())
+	t.Get(routes.Organizations.ReadList([]int{}))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
