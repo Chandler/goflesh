@@ -15,16 +15,62 @@ type Users struct {
 	GorpController
 }
 
+type UserRead struct {
+	models.User
+	Players    string `json:"-"`
+	Player_ids []int  `json:"player_ids"`
+}
+
 /////////////////////////////////////////////////////////////////////
 
-func (c Users) ReadList() revel.Result {
-	return GetList(models.User{}, []string{"Password", "Api_key"})
+func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
+	query := `
+	    SELECT *, array(
+			SELECT DISTINCT p.id
+			FROM player p
+			INNER JOIN "user"
+				ON u.id = p.user_id
+			) players
+	    FROM "user" u
+    ` + where
+	name := "players"
+	type readObjectType UserRead
+
+	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	if results == nil || len(results) == 0 {
+		return Make404(name + " not found")
+	}
+	readObjects := make([]*readObjectType, len(results))
+	for i, result := range results {
+		readObject := result.(*readObjectType)
+		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObjects[i] = readObject
+	}
+
+	out := make(map[string]interface{})
+	out[name] = readObjects
+
+	return c.RenderJson(out)
+}
+
+func (c Users) ReadList(ids []int) revel.Result {
+	if len(ids) == 0 {
+		return c.ReadUser("")
+	}
+	templateStr := IntArrayToString(ids)
+	return c.ReadUser("WHERE u.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c Users) Read(id int) revel.Result {
-	return GetById(models.User{}, []string{"Password", "Api_key"}, id)
+	return c.ReadUser("WHERE u.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////

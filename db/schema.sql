@@ -123,6 +123,66 @@ ALTER SEQUENCE organization_id_seq OWNED BY organization.id;
 
 
 --
+-- Name: oz; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE oz (
+    id integer NOT NULL,
+    created timestamp without time zone,
+    updated timestamp without time zone
+);
+
+
+--
+-- Name: oz_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE oz_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: oz_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE oz_id_seq OWNED BY oz.id;
+
+
+--
+-- Name: oz_pool; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE oz_pool (
+    id integer NOT NULL,
+    created timestamp without time zone,
+    updated timestamp without time zone
+);
+
+
+--
+-- Name: oz_pool_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE oz_pool_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: oz_pool_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE oz_pool_id_seq OWNED BY oz_pool.id;
+
+
+--
 -- Name: player; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -251,9 +311,17 @@ ALTER TABLE ONLY organization ALTER COLUMN id SET DEFAULT nextval('organization_
 
 
 --
--- Name: player_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY oz ALTER COLUMN id SET DEFAULT nextval('oz_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY oz_pool ALTER COLUMN id SET DEFAULT nextval('oz_pool_id_seq'::regclass);
 
 
 --
@@ -299,6 +367,21 @@ ALTER TABLE ONLY game
 ALTER TABLE ONLY organization
     ADD CONSTRAINT organization_pkey PRIMARY KEY (id);
 
+
+--
+-- Name: oz_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY oz
+    ADD CONSTRAINT oz_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oz_pool_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY oz_pool
+    ADD CONSTRAINT oz_pool_pkey PRIMARY KEY (id);
 
 
 --
@@ -353,6 +436,20 @@ CREATE UNIQUE INDEX user_email_idx ON "user" USING btree (email);
 
 
 --
+-- Name: oz_fk_player; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY oz
+    ADD CONSTRAINT oz_fk_player FOREIGN KEY (id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: oz_pool_fk_player; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY oz_pool
+    ADD CONSTRAINT oz_pool_fk_player FOREIGN KEY (id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
 
 --
 -- Name: player_fk_game; Type: FK CONSTRAINT; Schema: public; Owner: -

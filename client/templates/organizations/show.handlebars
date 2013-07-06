@@ -1,13 +1,23 @@
 <div  id="org" class="simple-page">
-{{#linkTo organizations.edit this class="org-name"}} Edit Settings {{/linkTo}}
-{{#linkTo games.new class="nav-button btn"}} New Game {{/linkTo}}
-  <h1 class="org-title"> The name of my org is {{name}} </h1>
-  <h1 class="org-test"> My games are {{stuff}}</h1>
-  {{#each games}}
-    hi {{name}} <br>
-  {{/each}}
-  <h1 class="org-test"> My photo is </h1>  
-  <h1 class="org-test"> My location is </h1>
-  <h1 class="org-test"> My member count is </h1>
-  <h1 class="org-test"> My members are </h1>
+	<div class="row-fluid">
+	  <span class="span4">
+	    <div class="side-profile">
+	      <img src="img/UIadmin.jpg" class="pull-center image">
+	      <div class="org-profile-heading">
+	        <h1>{{name}}<small><br>Idaho's Flagship University</small></h1> 
+	          {{#linkTo organizations.edit this class="-btn edit-profile-btn"}} Edit Org Settings {{/linkTo}}
+	          <hr>
+	        <h3>223 Members</h3>
+	        <!-- TABLE GOES HERE PROLLY -->
+	      </div>
+	    </div>
+	  </span>
+	  <span class="8">
+	      Games
+	      {{#linkTo games.new class="nav-button btn"}} New Game {{/linkTo}}
+	      {{#each games}}
+	      	<h4>{{name}}</h4>
+	      {{/each}}
+	  </span>
+	</div>
 </div>

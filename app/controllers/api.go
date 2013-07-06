@@ -138,3 +138,12 @@ func PostgresArrayStringToIntArray(arrayString string) ([]int, error) {
 	return intArray, err
 
 }
+
+func IntArrayToString(ids []int) string {
+	idStrings := make([]string, len(ids))
+	for i, id := range ids {
+		idStrings[i] += fmt.Sprintf("%d", id)
+	}
+	idString := strings.Join(idStrings, ",")
+	return idString
+}
