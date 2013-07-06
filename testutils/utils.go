@@ -7,6 +7,7 @@ import (
 	sjs "github.com/bitly/go-simplejson"
 	"github.com/robfig/revel"
 	"io/ioutil"
+	"math"
 	"math/rand"
 	"strings"
 	"time"
@@ -160,9 +161,11 @@ func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]
 }
 
 func InsertTestUser() *models.User {
-	first_name := GenerateName().(string)
-	last_name := GenerateName().(string)
-	screen_name := (first_name + "." + last_name)[:20]
+	first_name := GenerateWord().(string)
+	last_name := GenerateWord().(string)
+	sep := "."
+	screen_name_long := first_name + sep + last_name
+	screen_name := screen_name_long[:int(math.Min(20, float64(len(screen_name_long))))]
 	email := screen_name + "@gmail.com"
 	now := time.Now()
 	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
