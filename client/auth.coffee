@@ -19,7 +19,7 @@ define ["ember-auth"], (Auth) ->
     #   signInBlacklist: ['sign-in']
     #   signOutRoute: 'posts'
 
-    rememberable:
-      tokenKey: 'test'
-      period: 7
-      autoRecall: true
+    # rememberable:
+    #   tokenKey: 'test'
+    #   period: 7
+    #   autoRecall: true

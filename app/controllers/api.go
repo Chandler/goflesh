@@ -56,7 +56,6 @@ func GetList(model interface{}, blacklist []string) revel.Result {
 		return c.RenderError(err)
 	}
 	for _, item := range result {
-		revel.WARN.Print(item)
 		ZeroOutBlacklist(item, blacklist)
 	}
 
@@ -93,7 +92,7 @@ func GetById(model interface{}, blacklist []string, id int) revel.Result {
 	}
 
 	out := make(map[string][]interface{})
-	out[name] = []interface{}{result}
+	out[name+"s"] = []interface{}{result}
 
 	return c.RenderJson(out)
 }

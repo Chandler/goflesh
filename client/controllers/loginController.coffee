@@ -6,4 +6,3 @@ define ["ember"], (Em) ->
         data:
           email: 'test@test.com'
           password: 'test'
-      console.log Em.App.Auth.get('authToken')
