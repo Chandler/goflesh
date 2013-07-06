@@ -35,9 +35,6 @@ func (c Games) ReadGame(where string, args ...interface{}) revel.Result {
 	if err != nil {
 		return c.RenderError(err)
 	}
-	if results == nil || len(results) == 0 {
-		return Make404(name + " not found")
-	}
 	readObjects := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)

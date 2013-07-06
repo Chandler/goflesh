@@ -162,7 +162,7 @@ func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]
 func InsertTestUser() *models.User {
 	first_name := GenerateName().(string)
 	last_name := GenerateName().(string)
-	screen_name := first_name + "--" + last_name
+	screen_name := (first_name + "." + last_name)[:20]
 	email := screen_name + "@gmail.com"
 	now := time.Now()
 	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
