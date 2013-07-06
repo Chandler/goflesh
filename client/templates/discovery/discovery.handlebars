@@ -9,7 +9,7 @@
   </div>
   <div class="row-fluid">
     <div class="span12">
-      <div class="discovery-search textinput">
+      <div class="discovery-search">
         {{view Ember.TextField
           type="text"
           placeholder="Search for an organization"
@@ -19,9 +19,11 @@
         <div class="search btn btn-success" {{action "search"}}> Go! </div>
       </div>
     </span>
-      {{#each orgs}}
-        {{view Em.App.ListItemView}}
-      {{/each}}
+    <div class="listItemContainer">
+    {{#each orgs}}
+      {{view Em.App.ListItemView}}
+    {{/each}}
+    </div>
   </div>
 
   {{#linkTo organizations.new class="nav-button btn"}} Create org {{/linkTo}}
