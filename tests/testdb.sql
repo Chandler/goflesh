@@ -128,6 +128,7 @@ ALTER SEQUENCE organization_id_seq OWNED BY organization.id;
 
 CREATE TABLE oz (
     id integer NOT NULL,
+    confirmed boolean NOT NULL,
     created timestamp without time zone,
     updated timestamp without time zone
 );
