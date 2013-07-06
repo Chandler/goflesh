@@ -16,7 +16,7 @@ define ["ember", "ember-data"], (Em, DS) ->
           @set 'errors', 'SERVER ERROR'
         record.didUpdate = =>
           console.log('yay')
-          @transitionTo('users.show', record);
+          @transitionToRoute('users.show', record);
       else
         @set 'errors', 'Empty Fields'
     errors: null,
