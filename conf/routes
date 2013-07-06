@@ -22,6 +22,9 @@ PUT		/api/users/:id									Users.Update
 POST	/api/users										Users.Create
 POST	/api/users/authenticate							Users.Authenticate
 
+GET		/api/players/oz_pool							OzPools.ReadList
+GET		/api/players/:id/oz_pool						OzPools.Read
+DELETE	/api/players/:id/oz_pool						OzPools.Delete
 GET		/api/players									Players.ReadList
 GET		/api/players/:id								Players.Read
 POST	/api/players									Players.Create
