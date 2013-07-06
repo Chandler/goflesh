@@ -100,7 +100,7 @@ func GenerateWord() interface{} {
 }
 
 func GenerateName() interface{} {
-	return GenerateString(0, " ")
+	return GenerateString(2, " ")
 }
 
 func GenerateSlug() interface{} {
@@ -160,7 +160,12 @@ func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]
 }
 
 func InsertTestUser() *models.User {
-	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, models.TimeTrackedModel{}}
+	first_name := GenerateName().(string)
+	last_name := GenerateName().(string)
+	screen_name := first_name + "--" + last_name
+	email := screen_name + "@gmail.com"
+	now := time.Now()
+	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
 	err := controllers.Dbm.Insert(user)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -169,7 +174,9 @@ func InsertTestUser() *models.User {
 }
 
 func InsertTestOrganization() *models.Organization {
-	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
+	name := GenerateName().(string)
+	slug := strings.Replace(name, " ", "_", -1)
+	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -184,9 +191,11 @@ func InsertTestGame() *models.Game {
 	twoDaysHence := now.Add(twoDaysForward)
 	oneDayAgo := now.Add(oneDayBack)
 	oneDayHence := now.Add(oneDayForward)
+	name := GenerateName().(string)
+	slug := strings.Replace(name, " ", "_", -1)
 	game := &models.Game{0,
-		GenerateName().(string),
-		GenerateSlug().(string),
+		name,
+		slug,
 		org.Id,
 		"US/Pacific",
 		&twoDaysAgo,

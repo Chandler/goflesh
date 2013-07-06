@@ -33,7 +33,7 @@ func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
 			) players
 	    FROM "user" u
     ` + where
-	name := "players"
+	name := "users"
 	type readObjectType UserRead
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
