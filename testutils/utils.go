@@ -58,8 +58,12 @@ func GenerateTestData() {
 			InsertTestOzPool()
 		}
 		revel.INFO.Print("Inserting random OZs")
-		for i := 0; i < 80; i++ {
+		for i := 0; i < 100; i++ {
 			InsertTestOz()
+		}
+		revel.INFO.Print("Confirming random OZs")
+		for i := 0; i < 80; i++ {
+			ConfirmRandomOz()
 		}
 	}
 }
@@ -200,7 +204,7 @@ func InsertTestOzPool() *models.OzPool {
 
 func InsertTestOz() *models.Oz {
 	ozPool := SelectTestOzPool()
-	oz := &models.Oz{ozPool.Id, models.TimeTrackedModel{}}
+	oz := &models.Oz{ozPool.Id, false, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(oz)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -278,4 +282,20 @@ func SelectTestOz() *models.Oz {
 	ozs, _ := controllers.Dbm.Select(models.Oz{}, query)
 	oz := ozs[0].(*models.Oz)
 	return oz
+}
+
+func ConfirmRandomOz() {
+	query := `
+	UPDATE "oz"
+	SET
+		confirmed = TRUE
+	WHERE id IN (
+		SELECT id
+		FROM "oz"
+		WHERE confirmed = FALSE
+		ORDER BY random()
+		LIMIT 1
+	)
+    `
+	controllers.Dbm.Exec(query)
 }
