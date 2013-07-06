@@ -56,7 +56,7 @@ func (t *UserTest) TestCreateAndRead() {
 }
 
 func (t *UserTest) TestList() {
-	t.Get(routes.Users.ReadList([]int{}))
+	t.Get(routes.Users.ReadList(nil))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }

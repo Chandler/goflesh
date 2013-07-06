@@ -33,15 +33,12 @@ func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
 			) players
 	    FROM "user" u
     ` + where
-	name := "players"
+	name := "users"
 	type readObjectType UserRead
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
 	if err != nil {
 		return c.RenderError(err)
-	}
-	if results == nil || len(results) == 0 {
-		return Make404(name + " not found")
 	}
 	readObjects := make([]*readObjectType, len(results))
 	for i, result := range results {

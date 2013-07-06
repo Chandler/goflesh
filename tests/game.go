@@ -65,7 +65,7 @@ func (t *GameTest) TestCreateAndRead() {
 }
 
 func (t *GameTest) TestList() {
-	t.Get(routes.Games.ReadList())
+	t.Get(routes.Games.ReadList([]int{}))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
