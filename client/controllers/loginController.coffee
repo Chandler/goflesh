@@ -4,5 +4,5 @@ define ["ember"], (Em) ->
       console.log "test"
       Em.App.Auth.signIn
         data:
-          email: 'test@test.com'
-          password: 'test'
+          email: 'cats'
+          password: 'cats'
