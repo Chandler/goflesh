@@ -16,6 +16,7 @@ require.config
           name: "ember-auth"
           location: "lib"
           main: "ember-auth.js"
+
       },
       {
           name: "ember-data"
