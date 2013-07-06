@@ -13,6 +13,7 @@ GET		/api/organizations/:organization_id/games		Organizations.ListGames
 
 GET		/api/games										Games.ReadList
 GET		/api/games/:id									Games.Read
+PUT     /api/games/:id                                  Games.Update
 POST	/api/games										Games.Create
 
 GET		/api/users										Users.ReadList
