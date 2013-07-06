@@ -28,7 +28,7 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 			) games
 	    FROM "organization" o
     ` + where
-	name := "organizations"
+	name := "organization"
 	type readObjectType OrganizationRead
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
