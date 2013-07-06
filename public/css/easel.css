@@ -40,9 +40,9 @@ body {
    text-shadow: none;
    border-radius: 0px;
    border: none;
+   color: #ffffff;
    background: #f4645f;
  }
-
 .navbar .nav.pull-right {
    margin-right: 300px;
    margin-top: 8px;
@@ -56,7 +56,8 @@ body {
    height: 654px;
    /*width: 980px;*/
  }
- .org-profile-heading{
+ .page-heading{
+   margin-top: 20px;
    text-align: center;
  }
  .edit-profile-btn {
@@ -75,7 +76,11 @@ body {
    margin-left: auto;
    margin-right: auto;
  }
-
+.form-fields {
+   width: 200px;
+   display: block;
+   margin: 25px auto;
+}
 .discovery-page-header{
    margin: 310px 0px 0px 0px;
 }
@@ -184,4 +189,5 @@ h4 small {
       padding: 15px 20px 15px 20px;
       width: 125px;
    }
+
  }
