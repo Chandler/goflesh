@@ -1,0 +1,4 @@
+define ->
+  Utilities =
+    avatarUrl: ->
+        "hey"
