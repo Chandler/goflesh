@@ -50,9 +50,7 @@
       ln -s $FLESHLOCATION $GOPATH/src/flesh
 
     # Generate test data
-      # visit localhost:9000/@tests
-      # and click Generator > TestGenerateData > Run
-      # This will create a bunch of dummy data for you
+      ./scripts/trashRebuildTestData.sh
 
 ## Running Locally
     #assets (check gruntfile.js for all the availiable tasks)
@@ -91,11 +89,17 @@ connect with psql
 
     psql -p 5454 -U postgres -d flesh_local
 
+
+
+# Generating test data
+
 drop/update schema/generate test data cycle:
 
-    echo "DROP DATABASE flesh_local;" | psql -p 5454 -U postgres
-    createdb -p 5454 -O postgres -U postgres flesh_local
-    psql -p 5454 -U postgres -d flesh_local < $FLESHLOCATION/db/schema.sql
+     # from flesh root (not /scripts!)
+     ./scripts/trashRebuildTestData.sh
+
+generate test data:
+
     # visit localhost:9000/@tests
     # and click Generator > TestGenerateData > Run
     # This will create a bunch of dummy data for you
