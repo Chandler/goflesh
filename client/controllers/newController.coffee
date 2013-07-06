@@ -1,7 +1,7 @@
 define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
-  NewController = BaseController.extend
+  NewController = Em.ObjectController.extend
     create: ->
-      this.clearEnrors()
+      this.clearErrors()
       if this.name != ''
         model = this.get('model')
         record = model.createRecord

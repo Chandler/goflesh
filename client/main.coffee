@@ -34,7 +34,7 @@ require.config
       exports: 'this["Ember"]["TEMPLATES"]'
 
 #jquery-cookie needs to run once to attach itself to jquery.
-require(['jquery-cookie'])
+require(['jquery-cookie', 'handlebars_helpers'])
 
 ember_namespace = [
   "Auth",
