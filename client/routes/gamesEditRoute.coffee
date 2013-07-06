@@ -1,5 +1,5 @@
-define ["ember", "GameModel"], (Em, GameModel) ->
+define ["ember", "Game"], (Em, GameM) ->
   GamesShowRoute = Ember.Route.extend
     model: (params) ->
-      GameModel.find(params.game_id)
+      Game.find(params.game_id)
 

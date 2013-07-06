@@ -1,4 +1,4 @@
-define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
+define ["ember", "Organization"], (Em, Organization) ->
   OrganizationsShowRoute = Ember.Route.extend
     model: (params) ->
-      OrganizationModel.find(params.organization_id)
+      Organization.find(params.organization_id)

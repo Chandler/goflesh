@@ -1,4 +1,4 @@
-define ["ember", "GameModel"], (Em, GameModel) ->
+define ["ember", "Game"], (Em, Game) ->
   GamesRoute = Ember.Route.extend
     model: ->
-      GameModel
+      Game
