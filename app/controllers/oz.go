@@ -15,7 +15,7 @@ type Oz struct {
 func (c Oz) SelectOzs(game_id int) revel.Result {
 	query := `
 	INSERT INTO oz  
-	SELECT oz_pool.id, now(), now()
+	SELECT oz_pool.id, false, now(), now()
 	FROM oz_pool
 	INNER JOIN player
 		ON oz_pool.id = player.id

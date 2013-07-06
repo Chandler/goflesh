@@ -9,11 +9,17 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 var (
 	cachedData sjs.Json
 	allWords   []string
+
+	twoDaysBack, _    = time.ParseDuration("-48h")
+	twoDaysForward, _ = time.ParseDuration("48h")
+	oneDayBack, _     = time.ParseDuration("-24h")
+	oneDayForward, _  = time.ParseDuration("24h")
 )
 
 func init() {
@@ -58,8 +64,12 @@ func GenerateTestData() {
 			InsertTestOzPool()
 		}
 		revel.INFO.Print("Inserting random OZs")
-		for i := 0; i < 80; i++ {
+		for i := 0; i < 100; i++ {
 			InsertTestOz()
+		}
+		revel.INFO.Print("Confirming random OZs")
+		for i := 0; i < 80; i++ {
+			ConfirmRandomOz()
 		}
 	}
 }
@@ -90,7 +100,7 @@ func GenerateWord() interface{} {
 }
 
 func GenerateName() interface{} {
-	return GenerateString(0, " ")
+	return GenerateString(2, " ")
 }
 
 func GenerateSlug() interface{} {
@@ -150,7 +160,12 @@ func ConvertMappedStructArrayToString(mappedStructArray map[string][]map[string]
 }
 
 func InsertTestUser() *models.User {
-	user := &models.User{0, GenerateEmail().(string), GenerateName().(string), GenerateName().(string), GenerateSlug().(string), "", "", nil, models.TimeTrackedModel{}}
+	first_name := GenerateName().(string)
+	last_name := GenerateName().(string)
+	screen_name := (first_name + "." + last_name)[:20]
+	email := screen_name + "@gmail.com"
+	now := time.Now()
+	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
 	err := controllers.Dbm.Insert(user)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -159,7 +174,9 @@ func InsertTestUser() *models.User {
 }
 
 func InsertTestOrganization() *models.Organization {
-	org := &models.Organization{0, GenerateName().(string), GenerateSlug().(string), GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
+	name := GenerateName().(string)
+	slug := strings.Replace(name, " ", "_", -1)
+	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -169,7 +186,24 @@ func InsertTestOrganization() *models.Organization {
 
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
-	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, models.TimeTrackedModel{}}
+	now := time.Now()
+	twoDaysAgo := now.Add(twoDaysBack)
+	twoDaysHence := now.Add(twoDaysForward)
+	oneDayAgo := now.Add(oneDayBack)
+	oneDayHence := now.Add(oneDayForward)
+	name := GenerateName().(string)
+	slug := strings.Replace(name, " ", "_", -1)
+	game := &models.Game{0,
+		name,
+		slug,
+		org.Id,
+		"US/Pacific",
+		&twoDaysAgo,
+		&oneDayHence,
+		&oneDayAgo,
+		&twoDaysHence,
+		models.TimeTrackedModel{},
+	}
 	err := controllers.Dbm.Insert(game)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -200,7 +234,7 @@ func InsertTestOzPool() *models.OzPool {
 
 func InsertTestOz() *models.Oz {
 	ozPool := SelectTestOzPool()
-	oz := &models.Oz{ozPool.Id, models.TimeTrackedModel{}}
+	oz := &models.Oz{ozPool.Id, false, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(oz)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -278,4 +312,20 @@ func SelectTestOz() *models.Oz {
 	ozs, _ := controllers.Dbm.Select(models.Oz{}, query)
 	oz := ozs[0].(*models.Oz)
 	return oz
+}
+
+func ConfirmRandomOz() {
+	query := `
+	UPDATE "oz"
+	SET
+		confirmed = TRUE
+	WHERE id IN (
+		SELECT id
+		FROM "oz"
+		WHERE confirmed = FALSE
+		ORDER BY random()
+		LIMIT 1
+	)
+    `
+	controllers.Dbm.Exec(query)
 }
