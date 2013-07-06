@@ -55,7 +55,7 @@ func (c Users) Update(id int) revel.Result {
 	model := typedJson[keyname]
 	model.Id = id
 
-	_, err = Dbm.Exec(query, model.Email, model.First_name, model.Last_name, model.Screen_name, id)
+	result, err := Dbm.Exec(query, model.Email, model.First_name, model.Last_name, model.Screen_name, id)
 	if err != nil {
 		return c.RenderError(err)
 	}
