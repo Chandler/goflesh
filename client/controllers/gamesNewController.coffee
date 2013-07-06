@@ -17,9 +17,3 @@ define ["ember", "ember-data"], (Em, DS) ->
           @transitionToRoute('games.show', record.id);
       else
         @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 
