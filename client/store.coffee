@@ -8,7 +8,10 @@ define ["ember-data"], (DS) ->
           # Conforms ember-data to JSONAPI spec
           # by accepting singular resources in an array
           root = this.rootForType(type)
-          json[root] = json[root][0]
+          plural = root + "s"
+          json[root] = json[plural][0]
+          delete json[plural]
+
           @_super(loader, json, type, record)
 
           
