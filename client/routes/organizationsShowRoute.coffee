@@ -1,6 +1,8 @@
-define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
+define ["ember", "Organization"], (Em, Organization) ->
   OrganizationsShowRoute = Ember.Route.extend
     model: (params) ->
-      a = OrganizationModel.find(params.organization_id)
-      console.log a
-      a
+      Organization.find(params.organization_id)
+    # setupController: (controller, model) ->
+    #   first = model.get('games')
+    #   console.log first
+    #   controller.set('stuff', first)

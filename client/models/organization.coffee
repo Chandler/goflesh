@@ -4,8 +4,9 @@ define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
     name: DS.attr 'string'
     slug: DS.attr 'string'
     location: DS.attr 'string'
-    games: DS.hasMany 'Em.App.GameModel'
-    users: DS.hasMany 'Em.App.UserModel'
+    users: DS.hasMany 'Em.App.User'
+    games: DS.hasMany 'Em.App.Game'
+
 
   Organization.toString = -> 
     "Organization"

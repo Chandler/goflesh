@@ -15,7 +15,7 @@ type Organizations struct {
 type OrganizationRead struct {
 	models.Organization
 	Games    string `json:"-"`
-	Game_ids []int  `json:"game_ids"`
+	Game_ids []int  `json:"games"`
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -150,7 +150,6 @@ func (c Organizations) ListGames(organization_id int) revel.Result {
 
 	return c.RenderJson(out)
 }
-
 /////////////////////////////////////////////////////////////////////
 
 type OrganizationInformation struct {

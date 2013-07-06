@@ -21,6 +21,7 @@ GET		/api/users										Users.ReadList
 GET		/api/users/:id									Users.Read
 PUT		/api/users/:id									Users.Update
 POST	/api/users										Users.Create
+PUT	/api/users										Users.Create
 POST	/api/users/authenticate							Users.Authenticate
 
 GET		/api/players									Players.ReadList

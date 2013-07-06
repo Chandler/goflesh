@@ -14,6 +14,6 @@ define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
         record.becameError =  =>
           @set 'errors', 'SERVER ERROR'
         record.didCreate = =>
-          @transitionToRoute('discovery');
+          @transitionToRoute('orgs/' + record.id);
       else
         @set 'errors', 'Empty Fields'

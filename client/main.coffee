@@ -42,18 +42,22 @@ ember_namespace = [
   "Store",
   
   #models
-  "GameModel",
-  "UserModel",
-  "OrganizationModel",
+  "Game",
+  "User",
+  "Organization",
   
   #routes
+  "GamesEditRoute",
+  "GamesNewRoute",
   "GamesShowRoute",
   "IndexRoute",
+  "UsersEditRoute",
   "UsersNewRoute",
   "UsersShowRoute",
   "DiscoveryRoute",
   "OrganizationsNewRoute",
   "OrganizationsShowRoute",
+  "OrganizationsEditRoute",
   
   #controllers
   "ApplicationController"
@@ -61,14 +65,19 @@ ember_namespace = [
   "DiscoveryController",
   "OrganizationsShowController",
   "OrganizationsNewController",
+  "OrganizationsEditController"
   "UsersNewController",
   "UsersShowController",
+  "UsersEditController",
+  "GamesNewController",
+  "GamesEditController",
   
   #views
   "ApplicationView",
   "LoginView",
   "DiscoveryView",
   "ListItemView",
+
 ]
     
 require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace...) ->

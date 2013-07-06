@@ -1,26 +1,24 @@
-
 <div  id="new-org" class="simple-page">
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
-<h1> New Game </h1>
-  
+  <h1>Edit Game Settings</h1>
   <div class="fields">
     <div class="row name field">
       {{view Ember.TextField
         type="text"
-        placeholder="Name"
+        placeholder=name
         valueBinding="name"
       }}
     </div>
     <div class="row slug field">
       {{view Ember.TextField
         type="text"
-        placeholder="Slug"
+        placeholder=slug
         valueBinding="slug"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "createGame"}}> Create Game </div>
+    <div class="btn btn-large btn-block  row signup-btn" {{action "editGame"}}>Save Changes </div>
   </div>
     <span class="clearfix"></span>
 </div>
