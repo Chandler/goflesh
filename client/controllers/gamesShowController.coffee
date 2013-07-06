@@ -1,4 +1,4 @@
 define ["ember", "ember-data"], (Em, DS) ->
-  GamessShowController = Ember.ObjectController.extend(setupController: (GamessShowController, Game) ->
-  		UsersShowController.set "Game", Game
+  GamesShowController = Ember.ObjectController.extend(setupController: (GamesShowController, Game) ->
+  		GamesShowController.set "Game", Game
   	)
