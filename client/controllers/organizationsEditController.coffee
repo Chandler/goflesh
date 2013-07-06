@@ -11,7 +11,7 @@ define ["ember", "ember-data"], (Em, DS) ->
         record.becameError =  =>
           @set 'errors', 'SERVER ERROR'
         record.didUpdate = =>
-          @transitionToRoute('orgs/', record.id);
+          @transitionTo('orgs.show', record);
       else
         @set 'errors', 'Empty Fields'
     errors: null,
