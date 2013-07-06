@@ -21,6 +21,7 @@
  .container-fluid .container-fluid div .navbar .navbar-inner {
    background: rgba(255, 255, 255, 0.960784);
    border: none;
+   border-radius: 0px;
    height: 60px;
    padding-left: 20px;
    padding-right: 20px;
@@ -85,15 +86,17 @@ h4 small {
    width: 400px;
 }
 .discovery-search input {
+   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
    font-size: 20px;
    line-height: 30px;
    border-radius: 0px;
    border: none;
    background: #6c6c6c;
    padding: 15px 20px 15px 20px;
-   width: 270px;
+   width: 310px;
    height: 50px;
-   margin-top:10px;
+   display: block;
+   float: left;
  }
  .discovery-search .btn-success {
    background: #29a6be;
@@ -109,6 +112,8 @@ h4 small {
    font-size: 20px;
    line-height: 30px;
    padding: 10px 20px 10px 20px;
+   display: inline-block;
+   width: 50px;
  }
 .discovery-seach .well{
    width: 400px;
@@ -183,7 +188,7 @@ h4 small {
 /*Chandler fucking around with the discover list items just delete all of this*/
 
  .listItemContainer {
-   display: none;
+   /*display: none;*/
    margin: auto;
  }
 
@@ -198,11 +203,16 @@ h4 small {
    color:#fff;
    padding:2px;
    background-color:rgb(144, 148, 146);
-   width:450px;
+   width:350px;
+   border: 1px solid rgb(108, 108, 108);
    margin-right:auto;
    margin-left:auto;
    display:block;
    clear:both;
+}
+
+.org-properties {
+   font-size: 15px;
 }
 
 /*#discovery .org-search-item .btn{float:right}
