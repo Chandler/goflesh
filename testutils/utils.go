@@ -53,6 +53,14 @@ func GenerateTestData() {
 		for i := 0; i < 800; i++ {
 			InsertTestPlayer()
 		}
+		revel.INFO.Print("Inserting random OZ Candidates")
+		for i := 0; i < 160; i++ {
+			InsertTestOzPool()
+		}
+		revel.INFO.Print("Inserting random OZs")
+		for i := 0; i < 80; i++ {
+			InsertTestOz()
+		}
 	}
 }
 
@@ -161,7 +169,6 @@ func InsertTestOrganization() *models.Organization {
 
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
-	// make sure you have an organization available!
 	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(game)
 	if err != nil {
@@ -173,13 +180,32 @@ func InsertTestGame() *models.Game {
 func InsertTestPlayer() *models.Player {
 	user := SelectTestUser()
 	game := SelectTestGame()
-	// make sure you have an organization available!
 	player := &models.Player{0, user.Id, game.Id, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(player)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
 	return player
+}
+
+func InsertTestOzPool() *models.OzPool {
+	player := SelectTestPlayer()
+	ozPool := &models.OzPool{player.Id, models.TimeTrackedModel{}}
+	err := controllers.Dbm.Insert(ozPool)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return ozPool
+}
+
+func InsertTestOz() *models.Oz {
+	ozPool := SelectTestOzPool()
+	oz := &models.Oz{ozPool.Id, models.TimeTrackedModel{}}
+	err := controllers.Dbm.Insert(oz)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return oz
 }
 
 func SelectTestUser() *models.User {
@@ -228,4 +254,28 @@ func SelectTestPlayer() *models.Player {
 	players, _ := controllers.Dbm.Select(models.Player{}, query)
 	player := players[0].(*models.Player)
 	return player
+}
+
+func SelectTestOzPool() *models.OzPool {
+	query := `
+    SELECT *
+    FROM "oz_pool"
+    ORDER BY random()
+    LIMIT 1
+    `
+	ozPools, _ := controllers.Dbm.Select(models.OzPool{}, query)
+	ozPool := ozPools[0].(*models.OzPool)
+	return ozPool
+}
+
+func SelectTestOz() *models.Oz {
+	query := `
+    SELECT *
+    FROM "oz"
+    ORDER BY random()
+    LIMIT 1
+    `
+	ozs, _ := controllers.Dbm.Select(models.Oz{}, query)
+	oz := ozs[0].(*models.Oz)
+	return oz
 }
