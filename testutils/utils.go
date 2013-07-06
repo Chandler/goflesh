@@ -9,11 +9,17 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 var (
 	cachedData sjs.Json
 	allWords   []string
+
+	twoDaysBack, _    = time.ParseDuration("-48h")
+	twoDaysForward, _ = time.ParseDuration("48h")
+	oneDayBack, _     = time.ParseDuration("-24h")
+	oneDayForward, _  = time.ParseDuration("24h")
 )
 
 func init() {
@@ -173,7 +179,22 @@ func InsertTestOrganization() *models.Organization {
 
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
-	game := &models.Game{0, GenerateName().(string), GenerateSlug().(string), org.Id, "US/Pacific", nil, nil, nil, nil, models.TimeTrackedModel{}}
+	now := time.Now()
+	twoDaysAgo := now.Add(twoDaysBack)
+	twoDaysHence := now.Add(twoDaysForward)
+	oneDayAgo := now.Add(oneDayBack)
+	oneDayHence := now.Add(oneDayForward)
+	game := &models.Game{0,
+		GenerateName().(string),
+		GenerateSlug().(string),
+		org.Id,
+		"US/Pacific",
+		&twoDaysAgo,
+		&oneDayHence,
+		&oneDayAgo,
+		&twoDaysHence,
+		models.TimeTrackedModel{},
+	}
 	err := controllers.Dbm.Insert(game)
 	if err != nil {
 		revel.WARN.Print(err)
