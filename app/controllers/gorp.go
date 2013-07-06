@@ -23,6 +23,7 @@ func GorpInit() {
 	Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.Oz{}).SetKeys(true, "Id")
 	Dbm.AddTableWithName(models.OzPool{}, "oz_pool").SetKeys(true, "Id")
 	Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
 }

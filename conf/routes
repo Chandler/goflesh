@@ -11,6 +11,7 @@ PUT     /api/organizations/:id/                         Organizations.Update
 POST	/api/organizations								Organizations.Create
 GET		/api/organizations/:organization_id/games		Organizations.ListGames
 
+POST	/api/games/:game_id/select_ozs						Oz.SelectOzs
 GET		/api/games										Games.ReadList
 GET		/api/games/:id									Games.Read
 PUT     /api/games/:id                                  Games.Update
