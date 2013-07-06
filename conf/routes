@@ -18,9 +18,11 @@ PUT     /api/games/:id                                  Games.Update
 POST	/api/games										Games.Create
 
 GET		/api/users										Users.ReadList
+
 GET		/api/users/:id									Users.Read
 PUT		/api/users/:id									Users.Update
 POST	/api/users										Users.Create
+PUT	/api/users										Users.Create
 POST	/api/users/authenticate							Users.Authenticate
 
 GET		/api/players/oz_pool							OzPools.ReadList

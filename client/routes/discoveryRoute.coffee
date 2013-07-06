@@ -1,7 +1,7 @@
-define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
+define ["ember", "Organization"], (Em, Organization) ->
   DiscoveryRoute = Ember.Route.extend
     model: ->
-      OrganizationModel.find()
+      Organization.find()
       
     setupController: (controller, model) ->
       @controller.set('filterString', '')

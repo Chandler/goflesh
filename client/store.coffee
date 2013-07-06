@@ -11,7 +11,7 @@ define ["ember-data"], (DS) ->
           plural = root + "s"
           json[root] = json[plural][0]
           delete json[plural]
-
+          
           @_super(loader, json, type, record)
 
           

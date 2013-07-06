@@ -1,0 +1,213 @@
+ body {
+  padding-left: 0;
+  padding-right: 0;
+  font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 21px;
+  font-weight: 300;
+  color: #ddd;
+  background: #333;
+  border-top: 5px solid #fc0;
+  box-shadow: inset 0 3px 30px rgba(0,0,0,.3);
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+ }
+
+
+ .container-fluid {
+   padding: 0px;
+ }
+ .container-fluid .container-fluid div .navbar {
+   margin: 0px;
+   height: 60px;
+ }
+ .container-fluid .container-fluid div .navbar .navbar-inner {
+   background: rgba(255, 255, 255, 0.960784);
+   border: none;
+   height: 60px;
+   padding-left: 20px;
+   padding-right: 20px;
+ }
+ .navbar .brand {
+   margin: 0px 0px 0px -15px;
+   text-shadow: none;
+   font-family:"sansita one";
+   font-weight: bold;
+   font-size: 30px;
+   /*color: #333333;*/
+   line-height: 40px;
+ }
+ .nav-button {
+   margin: 8px 0px 0px 0px;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   -o-box-shadow: none;
+   box-shadow: none;
+   text-shadow: none;
+   border-radius: 0px;
+   border: none;
+   background: #f4645f;
+   color: #fff;
+ }
+ .nav-button:hover{
+   color: #fff;
+   background-color: rgb(189, 78, 74)
+ }
+
+
+ .nav-button .icon.icon-signin {
+   margin: 0px 0px 4px;
+ }
+ .container-fluid .container-fluid.inner-discovery {
+   background: rgba(0, 0, 0, 0) url(../img/UIadmin_vignette.jpg) no-repeat 0px 0px;
+   background-size: cover;
+   height: 654px;
+   /*width: 980px;*/
+ }
+.discovery-page-header{
+   margin: 300px 0px 0px 0px;
+}
+.discovery-page-header 
+h1,
+h2,
+h3,
+h4 {
+   color: #ffffff;
+}
+.discovery-page-header 
+h1 small,
+h2 small,
+h3 small,
+h4 small {
+   color: #ffffff;
+   font-style: italic;
+}
+.discovery-search{
+   float: none; 
+   margin: 25px auto;
+   width: 400px;
+}
+.discovery-search input.textinput {
+   font-size: 20px;
+   line-height: 30px;
+   border-radius: 0px;
+   border: none;
+   background: #6c6c6c;
+   padding: 15px 20px 15px 20px;
+   width: 270px;
+   /*height: 50px;*/
+ }
+ .discovery-search .btn-success {
+   background: #29a6be;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   -o-box-shadow: none;
+   box-shadow: none;
+   text-shadow: none;
+   border-radius: 0px;
+   border: none;
+   font-family:"helvetica";
+   font-weight: bold;
+   font-size: 20px;
+   line-height: 30px;
+   padding: 10px 20px 10px 20px;
+ }
+.discovery-seach .well{
+   width: 400px;
+}
+
+.textinput-button {
+   display: inline;
+   float: left;
+}
+.textinput{
+   display: inline;
+   float: left;
+}
+.btn-success{
+   /*margin: 0px 0px 0px 0px;*/
+   padding: 10px 20px 10px 20px;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   -o-box-shadow: none;
+   box-shadow: none;
+   text-shadow: none;
+   border-radius: 0px;
+   border: none;
+   background: #29a6be;
+}
+@media (max-width: 635px){
+   .discovery-page-header{
+      margin: 20px 0px 0px 0px;
+      font-size: 20px;
+   }
+}
+@media (max-width: 768px){
+   .discovery-search{
+      float: none; 
+      margin: 25px auto;
+      width: 325px;
+   }
+   .discovery-search input.textinput {
+      font-size: 20px;
+      line-height: 30px;
+      border-radius: 0px;
+      border: none;
+      background: #6c6c6c;
+      padding: 15px 20px 15px 20px;
+      width: 210px;
+   }
+}
+ @media (max-width: 568px ){
+   .navbar .brand{
+      font-size: 20px;
+      /*margin-bottom: 50px;*/
+   }
+ }
+ @media (max-width: 340px){
+      .discovery-search{
+      float: none; 
+      margin: 25px auto;
+      width: 240px;
+   }
+   .discovery-search input.textinput {
+      font-size: 20px;
+      line-height: 30px;
+      border-radius: 0px;
+      border: none;
+      background: #6c6c6c;
+      padding: 15px 20px 15px 20px;
+      width: 125px;
+   }
+ }
+
+
+/*Chandler fucking around with the discover list items just delete all of this*/
+
+ .listItemContainer {
+
+   margin: auto;
+ }
+
+/*#discovery{padding-top:150px;}
+#discovery .content-well{border-radius:8px 8px 6px 6px;padding-top:30px;background-color:#1492f5}
+#discovery .top-orgs{height:500px}
+#discovery .org-search{min-height:200px;}
+#discovery .org-search .search-box input{height:50px;width:400px;margin-left:auto;margin-right:auto;display:block}
+#discovery .org-search .search-box .org-search-icon{float:right;position:relative;right:60px;top:-42px}*/
+
+#discovery .org-search-item {
+   color:#fff;
+   padding:2px;
+   background-color:rgb(144, 148, 146);
+   width:450px;
+   margin-right:auto;
+   margin-left:auto;
+   display:block;
+   clear:both;
+}
+
+/*#discovery .org-search-item .btn{float:right}
+#discovery .org-search-item img{border-radius:8px 8px 6px 6px;float:left;height:50px;width:50px;margin-right:10px}
+#discovery .org-search-item .clearfix{clear:both}
+*/
+
+

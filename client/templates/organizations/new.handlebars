@@ -7,14 +7,14 @@
       {{view Ember.TextField
         type="text"
         placeholder="Name"
-        valueBinding="orgname"
+        valueBinding="fields.name"
       }}
     </div>
     <div class="row slug field">
       {{view Ember.TextField
         type="text"
         placeholder="Slug"
-        valueBinding="slug"
+        valueBinding="fields.slug"
       }}
     </div>
 
@@ -30,7 +30,7 @@
         placeholder="Location"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "createOrg"}}> Create Org </div>
+    <div class="btn btn-large btn-block  row signup-btn" {{action "create"}}> Create Org </div>
   </div>
     <span class="clearfix"></span>
 </div>

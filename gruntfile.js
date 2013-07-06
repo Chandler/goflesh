@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      assets: ["public/js/*.js", "public/css/*.css"],
+      assets: ["public/js/*.js"],
     },
     coffee: {
       glob_to_multiple: {

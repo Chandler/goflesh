@@ -1,4 +1,4 @@
-define ["ember", "UserModel"], (Em, UserModel) ->
+define ["ember", "User"], (Em, User) ->
   UsersShowRoute = Ember.Route.extend
     model: (params) ->
-      UserModel.find(params.user_id)
+      User.find(params.user_id)

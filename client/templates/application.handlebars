@@ -1,16 +1,39 @@
-<div id="application">
-    <div class="navbar navbar-inverse">
-      <div class="navbar-inner">
-        <div class="container">
-          {{#linkTo discovery class="nav-button btn"}} Find Organizations {{/linkTo}}
-          {{#linkTo discovery class="nav-button btn"}} My Profile {{/linkTo}}
-          {{#linkTo discovery class="nav-button btn"}} Settings {{/linkTo}}
-          {{#linkTo users/new class="nav-button btn right-nav"}} Signup {{/linkTo}}
+<!DOCTYPE HTML>
+<html lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700" media="screen" rel="stylesheet" type="text/css" />
+
+    <title>orgs</title>
+  </head>
+  
+  <body>
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div>
+          <div class="navbar">
+            <div class="navbar-inner">
+              {{#linkTo discovery class="brand"}} flesh {{/linkTo}}
+              {{#if Em.App.Auth.signedIn}}
+                {{#linkTo discovery class="btn btn-primary nav-button btn-large pull-right"}} Find Organizations {{/linkTo}}
+                {{#linkTo discovery class="btn btn-primary nav-button btn-large pull-right"}} My Profile {{/linkTo}}
+                {{#linkTo discovery class="btn btn-primary nav-button btn-large pull-right"}} Settings {{/linkTo}}
+                 <div class="btn btn-warning right-nav" {{action "signOut"}}> Sign Out </div>
+              {{else}}
+                {{#linkTo login class="btn btn-primary nav-button btn-large pull-right"}} Sign in  {{/linkTo}}
+              {{/if}}
+            </div>
+          </div>
         </div>
       </div>
-  </div>
-  {{outlet}}
-</div>
+      {{outlet}}
+    </div>
+  </body>
+</html>
+
+
 <!-- <div id="footer">
   <div class="footer-item">
     <a href="https://twitter.com/MikeOfSolomon"> @MikeOfSolomon </a> <br>

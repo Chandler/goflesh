@@ -13,6 +13,12 @@ require.config
           main: "ember.js"
       },
       {
+          name: "ember-auth"
+          location: "lib"
+          main: "ember-auth.js"
+
+      },
+      {
           name: "ember-data"
           location: "lib"
           main: "ember-data.js"
@@ -27,25 +33,49 @@ require.config
     "templates":
       exports: 'this["Ember"]["TEMPLATES"]'
 
+#jquery-cookie needs to run once to attach itself to jquery.
+require(['jquery-cookie'])
+
 ember_namespace = [
+  "Auth",
   "Router",
   "Store",
-  "IndexRoute",
+  
+  #models
+  "Game",
+  "User",
+  "Organization",
+  
+  #routes
+  "GamesEditRoute",
+  "GamesNewRoute",
   "GamesShowRoute",
-  "OrganizationModel",
-  "GameModel",
-  "OrganizationsShowController",
-  "OrganizationsShowRoute",
-  "OrganizationsNewController",
-  "OrganizationsNewRoute",
-  "DiscoveryController",
+  "IndexRoute",
+  "UsersEditRoute",
+  "UsersNewRoute",
+  "UsersShowRoute",
   "DiscoveryRoute",
+  "OrganizationsNewRoute",
+  "OrganizationsShowRoute",
+  "OrganizationsEditRoute",
+  
+  #controllers
+  "ApplicationController"
+  "LoginController",
+  "DiscoveryController",
+  "OrganizationsNewController",
+  "OrganizationsEditController"
+  "UsersNewController",
+  "UsersEditController",
+  "GamesNewController",
+  "GamesEditController",
+  
+  #views
+  "ApplicationView",
+  "LoginView",
   "DiscoveryView",
   "ListItemView",
-  "UsersNewController",
-  "UsersNewRoute",
-  "UsersShowController",
-  "UsersShowRoute",
+
 ]
     
 require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace...) ->

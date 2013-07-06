@@ -1,4 +1,4 @@
-define ["ember", "UserModel"], (Em, UserModel) ->
+define ["ember", "User"], (Em, User) ->
  	UsersRoute = Ember.Route.extend
     model: ->
-      UserModel
+      User

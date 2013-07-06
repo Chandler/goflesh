@@ -6939,7 +6939,9 @@ DS.JSONSerializer = DS.Serializer.extend({
   },
 
   addId: function(data, key, id) {
+    debugger
     data[key] = id;
+
   },
 
   /**
