@@ -1,4 +1,4 @@
-define ["ember", "OrganizationModel"], (Em, OrganizationModel) ->
+define ["ember", "Organization"], (Em, Organization) ->
   DiscoveryRoute = Ember.Route.extend
     model: ->
-      OrganizationModel
+      Organization
