@@ -62,7 +62,6 @@ func (c Organizations) ReadList(ids []int) revel.Result {
 	}
 	templateStr := IntArrayToString(ids)
 	return c.ReadOrganization("WHERE o.id = ANY('{" + templateStr + "}')")
-
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -155,6 +154,7 @@ func (c Organizations) ListGames(organization_id int) revel.Result {
 
 	return c.RenderJson(out)
 }
+
 /////////////////////////////////////////////////////////////////////
 
 type OrganizationInformation struct {
