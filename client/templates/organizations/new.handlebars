@@ -2,35 +2,33 @@
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
-  <div class="fields">
-    <div class="row name field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="Name"
-        valueBinding="fields.name"
-      }}
-    </div>
-    <div class="row slug field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="Slug"
-        valueBinding="fields.slug"
-      }}
-    </div>
-
-<!--     <div class="row description field">
-      {{view Ember.TextArea
-        type="textArea"
-        placeholder="Description"
-      }}
-    </div> -->
-    <div class="row location field">
-      {{view Ember.TextField
-        valueBinding="location"
-        placeholder="Location"
-      }}
-    </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "create"}}> Create Org </div>
+<div class="page-heading"><h1>Create your Organization!</h1></div>
+  <div class="row-fluid">
+    <span class="span12">
+      <div class="form-fields">
+        <div class="field">
+          {{view Ember.TextField
+            type="text"
+            placeholder="Name"
+            valueBinding="fields.name"
+          }}
+        </div>
+        <div class="field">
+          {{view Ember.TextField
+            type="text"
+            placeholder="Slug"
+            valueBinding="fields.slug"
+          }}
+        </div>
+        <div class=field">
+          {{view Ember.TextField
+            valueBinding="location"
+            placeholder="Location"
+          }}
+        </div>
+        <div class="btn btn-large btn-block signup-btn" {{action "create"}}> Create Organization </div>
+      </div>
+    </span>
   </div>
     <span class="clearfix"></span>
 </div>

@@ -2,43 +2,48 @@
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
-  <div class="fields">
-    <div class="row first_name field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="first name"
-        valueBinding="first_name"
-      }}
-    </div>
-    <div class="row last_name field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="last name"
-        valueBinding="last_name"
-      }}
-    </div>
-     <div class="row field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="email"
-        valueBinding="email"
-      }}
-    </div>
-     <div class="row field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="screen name"
-        valueBinding="screen_name"
-      }}
-    </div>
-     <div class="row field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="password"
-        valueBinding="password"
-      }}
-    </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "createUser"}}> Create User </div>
+  <div class="page-heading"><h1>Create an account!</h1></div>
+  <div class="row-fluid">
+    <span class="span12">
+      <div class="form-fields">
+        <div class="first_name">
+          {{view Ember.TextField
+            type="text"
+            placeholder="first name"
+            valueBinding="first_name"
+          }}
+        </div>
+        <div class="last_name">
+          {{view Ember.TextField
+            type="text"
+            placeholder="last name"
+            valueBinding="last_name"
+          }}
+        </div>
+         <div class="">
+          {{view Ember.TextField
+            type="text"
+            placeholder="email"
+            valueBinding="email"
+          }}
+        </div>
+         <div class="">
+          {{view Ember.TextField
+            type="text"
+            placeholder="screen name"
+            valueBinding="screen_name"
+          }}
+        </div>
+         <div class="">
+          {{view Ember.TextField
+            type="text"
+            placeholder="password"
+            valueBinding="password"
+          }}
+        </div>
+        <div class="btn btn-large btn-block signup-btn" {{action "createUser"}}> Sign Up! </div>
+      </div>
+    </span>
   </div>
     <span class="clearfix"></span>
 </div>
