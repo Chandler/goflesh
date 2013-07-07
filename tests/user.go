@@ -34,7 +34,7 @@ func generateUserJson() string {
 	return u.ConvertMappedStructArrayToString(embedded)
 }
 
-func (t *UserTest) TestCreateAndRead() {
+func (t *UserTest) TestCreate() {
 	// create
 	jsn := generateUserJson()
 	t.Post(routes.Users.Create(), JSON_CONTENT, strings.NewReader(jsn))
@@ -42,7 +42,11 @@ func (t *UserTest) TestCreateAndRead() {
 	t.AssertContentType(JSON_CONTENT)
 	body := string(t.ResponseBody)
 	t.Assert(strings.Index(body, "first_name") != -1)
+}
 
+func (t *UserTest) TestRead() {
+	t.TestCreate()
+	body := string(t.ResponseBody)
 	// read
 	responseJson, err := sjs.NewJson(t.ResponseBody)
 	t.Assert(err == nil)
@@ -53,6 +57,7 @@ func (t *UserTest) TestCreateAndRead() {
 	t.AssertContentType(JSON_CONTENT)
 	body = string(t.ResponseBody)
 	t.Assert(strings.Index(body, "last_name") != -1)
+
 }
 
 func (t *UserTest) TestList() {

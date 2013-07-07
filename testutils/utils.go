@@ -17,10 +17,10 @@ var (
 	cachedData sjs.Json
 	allWords   []string
 
-	twoDaysBack, _    = time.ParseDuration("-48h")
-	twoDaysForward, _ = time.ParseDuration("48h")
-	oneDayBack, _     = time.ParseDuration("-24h")
-	oneDayForward, _  = time.ParseDuration("24h")
+	TwoDaysBack, _    = time.ParseDuration("-48h")
+	TwoDaysForward, _ = time.ParseDuration("48h")
+	OneDayBack, _     = time.ParseDuration("-24h")
+	OneDayForward, _  = time.ParseDuration("24h")
 )
 
 func init() {
@@ -52,6 +52,10 @@ func GenerateTestData() {
 		for i := 0; i < 400; i++ {
 			InsertTestUser()
 		}
+		revel.INFO.Print("Inserting random Members")
+		for i := 0; i < 40; i++ {
+			InsertTestMember()
+		}
 		revel.INFO.Print("Inserting random Games")
 		for i := 0; i < 40; i++ {
 			InsertTestGame()
@@ -71,6 +75,10 @@ func GenerateTestData() {
 		revel.INFO.Print("Confirming random OZs")
 		for i := 0; i < 80; i++ {
 			ConfirmRandomOz()
+		}
+		revel.INFO.Print("Simulating tags by OZs")
+		for i := 0; i < 100; i++ {
+			TagByRandomOzs()
 		}
 	}
 }
@@ -190,10 +198,10 @@ func InsertTestOrganization() *models.Organization {
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
 	now := time.Now()
-	twoDaysAgo := now.Add(twoDaysBack)
-	twoDaysHence := now.Add(twoDaysForward)
-	oneDayAgo := now.Add(oneDayBack)
-	oneDayHence := now.Add(oneDayForward)
+	twoDaysAgo := now.Add(TwoDaysBack)
+	twoDaysHence := now.Add(TwoDaysForward)
+	oneDayAgo := now.Add(OneDayBack)
+	oneDayHence := now.Add(OneDayForward)
 	name := GenerateName().(string)
 	slug := strings.Replace(name, " ", "_", -1)
 	game := &models.Game{0,
@@ -223,6 +231,17 @@ func InsertTestPlayer() *models.Player {
 		revel.WARN.Print(err)
 	}
 	return player
+}
+
+func InsertTestMember() *models.Member {
+	user := SelectTestUser()
+	organization := SelectTestOrganization()
+	member := &models.Member{0, user.Id, organization.Id, models.TimeTrackedModel{}}
+	err := controllers.Dbm.Insert(member)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return member
 }
 
 func InsertTestOzPool() *models.OzPool {
@@ -317,6 +336,39 @@ func SelectTestOz() *models.Oz {
 	return oz
 }
 
+func SelectTestConfirmedOz() *models.Oz {
+	query := `
+    SELECT *
+    FROM "oz"
+    WHERE confirmed = TRUE
+    ORDER BY random()
+    LIMIT 1
+    `
+	ozs, _ := controllers.Dbm.Select(models.Oz{}, query)
+	oz := ozs[0].(*models.Oz)
+	return oz
+}
+
+func SelectTestHuman(and string, args ...interface{}) *models.Player {
+	query := `
+    SELECT player.id Id, player.user_id User_id, player.game_id Game_id, player.created Created, player.updated Updated
+    FROM "player"
+    LEFT OUTER JOIN tag
+    	ON player.id = taggee_id
+    LEFT OUTER JOIN oz
+    	on player.id = oz.id
+    WHERE taggee_id IS NULL
+    AND (oz.id IS NULL
+    	 OR oz.confirmed = FALSE)
+	` + and + `
+    ORDER BY random()
+    LIMIT 1
+    `
+	players, _ := controllers.Dbm.Select(models.Player{}, query, args...)
+	player := players[0].(*models.Player)
+	return player
+}
+
 func ConfirmRandomOz() {
 	query := `
 	UPDATE "oz"
@@ -331,4 +383,23 @@ func ConfirmRandomOz() {
 	)
     `
 	controllers.Dbm.Exec(query)
+}
+
+func TagByRandomOzs() {
+	oz := SelectTestConfirmedOz()
+	oz_player, _ := models.PlayerFromId(oz.Id)
+	human := SelectTestHuman("AND player.game_id = $1", oz_player.Game_id)
+	if human == nil {
+		return
+	}
+	now := time.Now()
+	game, _ := models.GameFromId(human.Game_id)
+	tag, err := models.NewTag(game, oz_player, human, &now)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	err = controllers.Dbm.Insert(tag)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
 }
