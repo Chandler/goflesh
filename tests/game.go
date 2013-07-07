@@ -1,6 +1,8 @@
 package tests
 
 import (
+	"flesh/app/controllers"
+	"flesh/app/models"
 	"flesh/app/routes"
 	u "flesh/testutils"
 	sjs "github.com/bitly/go-simplejson"
@@ -68,4 +70,58 @@ func (t *GameTest) TestList() {
 	t.Get(routes.Games.ReadList([]int{}))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
+}
+
+func (t *GameTest) TestIsRunning() {
+	u.InsertTestOrganization()
+	org := u.SelectTestOrganization()
+	now := time.Now()
+	twoDaysAgo := now.Add(u.TwoDaysBack)
+	twoDaysHence := now.Add(u.TwoDaysForward)
+	oneDayAgo := now.Add(u.OneDayBack)
+	oneDayHence := now.Add(u.OneDayForward)
+	current := &models.Game{0,
+		"name",
+		"slug",
+		org.Id,
+		"US/Pacific",
+		&twoDaysAgo,
+		&oneDayHence,
+		&oneDayAgo,
+		&twoDaysHence,
+		models.TimeTrackedModel{},
+	}
+	err := controllers.Dbm.Insert(current)
+	t.Assert(err == nil)
+	t.Assert(current.IsRunning())
+
+	past := &models.Game{0,
+		"name",
+		"slug",
+		org.Id,
+		"US/Pacific",
+		&twoDaysAgo,
+		&oneDayHence,
+		&twoDaysAgo,
+		&oneDayAgo,
+		models.TimeTrackedModel{},
+	}
+	err = controllers.Dbm.Insert(past)
+	t.Assert(err == nil)
+	t.Assert(!past.IsRunning())
+
+	future := &models.Game{0,
+		"name",
+		"slug",
+		org.Id,
+		"US/Pacific",
+		&twoDaysAgo,
+		&oneDayHence,
+		&oneDayHence,
+		&twoDaysHence,
+		models.TimeTrackedModel{},
+	}
+	err = controllers.Dbm.Insert(future)
+	t.Assert(err == nil)
+	t.Assert(!future.IsRunning())
 }

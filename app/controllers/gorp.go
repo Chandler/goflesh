@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"flesh/app/models"
 	"github.com/coopernurse/gorp"
-	r "github.com/robfig/revel"
+	"github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
 	"math/rand"
 	"time"
@@ -18,23 +18,16 @@ func GorpInit() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
-
-	Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.Member{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.Oz{}).SetKeys(true, "Id")
-	Dbm.AddTableWithName(models.OzPool{}, "oz_pool").SetKeys(true, "Id")
-	Dbm.TraceOn("\x1b[36m[gorp]\x1b[0m", r.INFO)
+	Dbm.TraceOn("\x1b[36m[C.gorp]\x1b[0m", revel.INFO)
+	models.AddTables(Dbm)
 }
 
 type GorpController struct {
-	*r.Controller
+	*revel.Controller
 	Txn *gorp.Transaction
 }
 
-func (c *GorpController) Begin() r.Result {
+func (c *GorpController) Begin() revel.Result {
 	txn, err := Dbm.Begin()
 	if err != nil {
 		panic(err)
@@ -43,7 +36,7 @@ func (c *GorpController) Begin() r.Result {
 	return nil
 }
 
-func (c *GorpController) Commit() r.Result {
+func (c *GorpController) Commit() revel.Result {
 	if c.Txn == nil {
 		return nil
 	}
@@ -54,7 +47,7 @@ func (c *GorpController) Commit() r.Result {
 	return nil
 }
 
-func (c *GorpController) Rollback() r.Result {
+func (c *GorpController) Rollback() revel.Result {
 	if c.Txn == nil {
 		return nil
 	}
