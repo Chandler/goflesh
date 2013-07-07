@@ -21,6 +21,7 @@ func GorpInit() {
 
 	Dbm.AddTable(models.Game{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.Organization{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.Member{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.Player{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
 	Dbm.AddTable(models.Oz{}).SetKeys(true, "Id")

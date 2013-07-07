@@ -52,6 +52,10 @@ func GenerateTestData() {
 		for i := 0; i < 400; i++ {
 			InsertTestUser()
 		}
+		revel.INFO.Print("Inserting random Members")
+		for i := 0; i < 40; i++ {
+			InsertTestMember()
+		}
 		revel.INFO.Print("Inserting random Games")
 		for i := 0; i < 40; i++ {
 			InsertTestGame()
@@ -223,6 +227,17 @@ func InsertTestPlayer() *models.Player {
 		revel.WARN.Print(err)
 	}
 	return player
+}
+
+func InsertTestMember() *models.Member {
+	user := SelectTestUser()
+	organization := SelectTestOrganization()
+	member := &models.Member{0, user.Id, organization.Id, models.TimeTrackedModel{}}
+	err := controllers.Dbm.Insert(member)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	return member
 }
 
 func InsertTestOzPool() *models.OzPool {
