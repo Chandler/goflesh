@@ -72,6 +72,10 @@ func GenerateTestData() {
 		for i := 0; i < 80; i++ {
 			ConfirmRandomOz()
 		}
+		revel.INFO.Print("Simulating tags by OZs")
+		for i := 0; i < 100; i++ {
+			TagByRandomOzs()
+		}
 	}
 }
 
@@ -317,6 +321,38 @@ func SelectTestOz() *models.Oz {
 	return oz
 }
 
+func SelectTestConfirmedOz() *models.Oz {
+	query := `
+    SELECT *
+    FROM "oz"
+    WHERE confirmed = TRUE
+    ORDER BY random()
+    LIMIT 1
+    `
+	ozs, _ := controllers.Dbm.Select(models.Oz{}, query)
+	oz := ozs[0].(*models.Oz)
+	return oz
+}
+
+func SelectTestHuman() *models.Player {
+	query := `
+    SELECT player.id, player.user_id, player.game_id, player.created, player.updated
+    FROM "player"
+    LEFT OUTER JOIN tag
+    	ON player.id = taggee_id
+    LEFT OUTER JOIN oz
+    	on player.id = oz.id
+    WHERE taggee_id IS NULL
+    AND (oz.id IS NULL
+    	 OR oz.confirmed = FALSE)
+    ORDER BY random()
+    LIMIT 1
+    `
+	players, _ := controllers.Dbm.Select(models.Player{}, query)
+	player := players[0].(*models.Player)
+	return player
+}
+
 func ConfirmRandomOz() {
 	query := `
 	UPDATE "oz"
@@ -331,4 +367,13 @@ func ConfirmRandomOz() {
 	)
     `
 	controllers.Dbm.Exec(query)
+}
+
+func TagByRandomOzs() {
+	oz := SelectTestConfirmedOz()
+	oz_player, _ := models.PlayerFromId(oz.Id)
+	human := SelectTestHuman()
+	now := time.Now()
+	game, _ := models.GameFromId(human.Game_id)
+	err := models.NewTag(game, oz_player, human, &now)
 }

@@ -12,6 +12,11 @@ type Player struct {
 	TimeTrackedModel
 }
 
+func PlayerFromId(id int) (*Player, error) {
+	player, err := Dbm.Get(Player{}, id)
+	return player.(*Player), err
+}
+
 func (p *Player) isZombie() bool {
 	fmt.Println(Dbm)
 	return true

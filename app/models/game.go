@@ -17,6 +17,11 @@ type Game struct {
 	TimeTrackedModel
 }
 
+func GameFromId(id int) (*Game, error) {
+	game, err := Dbm.Get(Game{}, id)
+	return game.(*Game), err
+}
+
 func (g Game) IsRunning() bool {
 	now := time.Now()
 	return g.Running_start_time.Before(now) && g.Running_end_time.After(now)

@@ -11,8 +11,8 @@ var (
 	Dbm *gorp.DbMap
 )
 
-func init() {
-	// db.Init()
+func Init() {
+	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.PostgresDialect{}}
 	Dbm.TraceOn("\x1b[36m[M.gorp]\x1b[0m", revel.INFO)
 	AddTables(Dbm)
@@ -24,6 +24,7 @@ func AddTables(dbm *gorp.DbMap) {
 	dbm.AddTable(Player{}).SetKeys(true, "Id")
 	dbm.AddTable(User{}).SetKeys(true, "Id")
 	dbm.AddTable(Oz{}).SetKeys(true, "Id")
+	dbm.AddTable(Tag{}).SetKeys(true, "Id")
 	dbm.AddTableWithName(OzPool{}, "oz_pool").SetKeys(true, "Id")
 }
 
