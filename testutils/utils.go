@@ -17,10 +17,10 @@ var (
 	cachedData sjs.Json
 	allWords   []string
 
-	twoDaysBack, _    = time.ParseDuration("-48h")
-	twoDaysForward, _ = time.ParseDuration("48h")
-	oneDayBack, _     = time.ParseDuration("-24h")
-	oneDayForward, _  = time.ParseDuration("24h")
+	TwoDaysBack, _    = time.ParseDuration("-48h")
+	TwoDaysForward, _ = time.ParseDuration("48h")
+	OneDayBack, _     = time.ParseDuration("-24h")
+	OneDayForward, _  = time.ParseDuration("24h")
 )
 
 func init() {
@@ -190,10 +190,10 @@ func InsertTestOrganization() *models.Organization {
 func InsertTestGame() *models.Game {
 	org := SelectTestOrganization()
 	now := time.Now()
-	twoDaysAgo := now.Add(twoDaysBack)
-	twoDaysHence := now.Add(twoDaysForward)
-	oneDayAgo := now.Add(oneDayBack)
-	oneDayHence := now.Add(oneDayForward)
+	twoDaysAgo := now.Add(TwoDaysBack)
+	twoDaysHence := now.Add(TwoDaysForward)
+	oneDayAgo := now.Add(OneDayBack)
+	oneDayHence := now.Add(OneDayForward)
 	name := GenerateName().(string)
 	slug := strings.Replace(name, " ", "_", -1)
 	game := &models.Game{0,
