@@ -66,6 +66,7 @@ ember_namespace = [
   "DiscoveryController",
   "OrganizationsNewController",
   "OrganizationsEditController"
+  "OrganizationsShowController",
   "UsersNewController",
   "UsersEditController",
   "GamesNewController",
@@ -76,6 +77,7 @@ ember_namespace = [
   "LoginView",
   "DiscoveryView",
   "ListItemView",
+  "GameItemView"
 
 ]
     

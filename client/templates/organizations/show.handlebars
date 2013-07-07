@@ -15,7 +15,7 @@
 	      Games
 	      {{#linkTo games.new class="nav-button btn"}} New Game {{/linkTo}}
 	      {{#each games}}
-	      	<h4>{{name}}</h4>
+          {{view Em.App.GameItemView}}
 	      {{/each}}
 	  </span>
 	</div>
