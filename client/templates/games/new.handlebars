@@ -3,24 +3,28 @@
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
-<h1> New Game </h1>
-  
-  <div class="fields">
-    <div class="row name field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="Name"
-        valueBinding="name"
-      }}
-    </div>
-    <div class="row slug field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="Slug"
-        valueBinding="slug"
-      }}
-    </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "create"}}> Create Game </div>
+<div class="page-heading"><h1>Create a Game!</h1></div>
+  <div class="row-fluid">
+    <span class="span12">
+      <div class="form-fields">
+        <div class="field">
+          {{view Ember.TextField
+            type="text"
+            placeholder="Name"
+            valueBinding="name"
+          }}
+        </div>
+        <div class="field">
+          {{view Ember.TextField
+            type="text"
+            placeholder="Slug"
+            valueBinding="slug"
+          }}
+        </div>
+        <div class="btn btn-large btn-block signup-btn" {{action "create"}}> Create Game </div>
+      </div>
+    </span>
   </div>
+
     <span class="clearfix"></span>
 </div>
