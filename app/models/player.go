@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Player struct {
@@ -18,8 +17,23 @@ func PlayerFromId(id int) (*Player, error) {
 }
 
 func (p *Player) isZombie() bool {
-	fmt.Println(Dbm)
-	return true
+	query := `
+		SELECT COUNT(1)
+		FROM player
+		LEFT OUTER JOIN "oz"
+			ON player.id = oz.id
+		LEFT OUTER JOIN "tag"
+			ON player.id = taggee_id
+		WHERE player.id = $1
+			AND (oz.id IS NULL OR oz.confirmed = FALSE)
+			AND taggee_id IS NULL
+	`
+	numFound, err := Dbm.SelectInt(query, p.Id)
+	if err != nil {
+		panic(err)
+	}
+	isZombie := numFound == 0
+	return isZombie
 }
 
 func (p *Player) isHuman() bool {
@@ -27,16 +41,14 @@ func (p *Player) isHuman() bool {
 }
 
 func (p *Player) CanTag() (bool, error) {
-	isZ := p.isZombie()
-	if !isZ {
+	if !p.isZombie() {
 		return false, errors.New("player is not a zombie!")
 	}
 	return true, nil
 }
 
 func (p *Player) CanBeTagged() (bool, error) {
-	isH := p.isHuman()
-	if !isH {
+	if !p.isHuman() {
 		return false, errors.New("player is not a human!")
 	}
 	return true, nil

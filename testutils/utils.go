@@ -334,9 +334,9 @@ func SelectTestConfirmedOz() *models.Oz {
 	return oz
 }
 
-func SelectTestHuman() *models.Player {
+func SelectTestHuman(and string, args ...interface{}) *models.Player {
 	query := `
-    SELECT player.id, player.user_id, player.game_id, player.created, player.updated
+    SELECT player.id Id, player.user_id User_id, player.game_id Game_id, player.created Created, player.updated Updated
     FROM "player"
     LEFT OUTER JOIN tag
     	ON player.id = taggee_id
@@ -345,10 +345,11 @@ func SelectTestHuman() *models.Player {
     WHERE taggee_id IS NULL
     AND (oz.id IS NULL
     	 OR oz.confirmed = FALSE)
+	` + and + `
     ORDER BY random()
     LIMIT 1
     `
-	players, _ := controllers.Dbm.Select(models.Player{}, query)
+	players, _ := controllers.Dbm.Select(models.Player{}, query, args...)
 	player := players[0].(*models.Player)
 	return player
 }
@@ -372,8 +373,18 @@ func ConfirmRandomOz() {
 func TagByRandomOzs() {
 	oz := SelectTestConfirmedOz()
 	oz_player, _ := models.PlayerFromId(oz.Id)
-	human := SelectTestHuman()
+	human := SelectTestHuman("AND player.game_id = $1", oz_player.Game_id)
+	if human == nil {
+		return
+	}
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	err := models.NewTag(game, oz_player, human, &now)
+	tag, err := models.NewTag(game, oz_player, human, &now)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	err = controllers.Dbm.Insert(tag)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
 }

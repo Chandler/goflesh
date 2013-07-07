@@ -13,7 +13,7 @@ type Tag struct {
 	TimeTrackedModel
 }
 
-func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) error {
+func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Tag, error) {
 	/*
 		Conditions for tagging:
 			1. Tagger is a zombie (OZ or regular)
@@ -23,23 +23,22 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) erro
 
 	*/
 	if tagger.Game_id != taggee.Game_id {
-		return errors.New("Tagger and tagee must be in same game")
+		return nil, errors.New("Tagger and tagee must be in same game")
 	}
 
 	if !game.IsRunning() {
-		return errors.New("Game must be running")
+		return nil, errors.New("Game must be running")
 	}
 
 	if can, err := tagger.CanTag(); !can {
-		return errors.New("Tagger cannot tag: " + err.Error())
+		return nil, errors.New("Tagger cannot tag: " + err.Error())
 	}
 
-	if can, err := tagger.CanBeTagged(); !can {
-		return errors.New("Taggee cannot be tagged: " + err.Error())
+	if can, err := taggee.CanBeTagged(); !can {
+		return nil, errors.New("Taggee cannot be tagged: " + err.Error())
 	}
 
-	tag := &Tag{0, tagger.Id, taggee.Id, claimed, TimeTrackedModel{}}
+	tag := Tag{0, tagger.Id, taggee.Id, claimed, TimeTrackedModel{}}
 
-	err := Dbm.Insert(tag)
-	return err
+	return &tag, nil
 }
