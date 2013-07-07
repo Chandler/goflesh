@@ -53,7 +53,7 @@ body {
  .container-fluid .container-fluid.inner-discovery {
    background: rgba(0, 0, 0, 0) url(../img/UIadmin_vignette.jpg) no-repeat 0px 0px;
    background-size: cover;
-   height: 654px;
+   height: 500px;
    /*width: 980px;*/
  }
  .page-heading{
