@@ -40,9 +40,9 @@ body {
    text-shadow: none;
    border-radius: 0px;
    border: none;
+   color: #ffffff;
    background: #f4645f;
  }
-
 .navbar .nav.pull-right {
    margin-right: 300px;
    margin-top: 8px;
@@ -56,7 +56,8 @@ body {
    height: 654px;
    /*width: 980px;*/
  }
- .org-profile-heading{
+ .page-heading{
+   margin-top: 20px;
    text-align: center;
  }
  .edit-profile-btn {
@@ -75,7 +76,11 @@ body {
    margin-left: auto;
    margin-right: auto;
  }
-
+.form-fields {
+   width: 200px;
+   display: block;
+   margin: 25px auto;
+}
 .discovery-page-header{
    margin: 310px 0px 0px 0px;
 }
@@ -193,8 +198,7 @@ h4 small {
    border: 2px solid #f3f3f3;
 
    float: left;
-/*   display: inline-block;
-*/}
+}
 
 .games {
    clear: both;
@@ -204,21 +208,36 @@ h4 small {
    margin-left: 0;
 }
 
+.gameitem {
+   margin-top: 25px;
+   background-color:  rgb(52, 43, 70);
+   width: 600px;
+   height: 150px;
+   -webkit-filter: drop-shadow(0 2px 2px hsla(0,0%,100%,.75))
+                  drop-shadow(0 -2px 2px hsla(0,0%,0%,.5));
+}
 
+.closed {
+   background: rgba(0, 0, 0, 0) url(../img/closed.jpg) no-repeat 0px 0px;
+}
 
+.gameitem .major-title {
+   font-size: 25;
+   color: #fff;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.gameitem .register-button {
+   padding-top: 15px;
+   vertical-align: middle; 
+   text-align: center; 
+   font-family:"sansita one";
+   font-weight: 300;
+   font-size: 20px;
+   height: 30px;
+   margin-top: 70px;
+   margin-left: 30px;
+   width: 200px;
+   background-color: rgb(138, 121, 170);
+   border-radius: 10px
+}
 

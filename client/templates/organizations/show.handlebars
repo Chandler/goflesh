@@ -3,7 +3,7 @@
 	  <span class="span4">
 	    <div class="side-profile">
 	      {{avatar profile class="profile_image pull-center"}}
-	      <div class="org-profile-heading">
+	      <div class="page-heading">
 	        <h1>{{name}}<small><br>Idaho's Flagship University</small></h1> 
 	          {{#linkTo organizations.edit this class="-btn edit-profile-btn"}} Edit Org Settings {{/linkTo}}
 	          <hr>
@@ -13,18 +13,26 @@
 	  </span>
 	  <span class="span5 profile-content-column">
 		  <div class="profile-option-tabs">
-			  <div class="profile-option-tab"></div>
-			  <div class="profile-option-tab"></div>
-			  <div class="profile-option-tab"></div>
+			  <div class="profile-option-tab">Home</div>
+			  <div class="profile-option-tab">Activity</div>
+			  <div class="profile-option-tab">Games</div>
+			  <div class="profile-option-tab">Settings</div>
 			  <span class="clearfix">
 			</div>
 
 			<span class="games">
-	      Games
-	      {{#linkTo games.new class="nav-button btn"}} New Game {{/linkTo}}
-	      {{#each games}}
-	      	<h4>{{name}}</h4>
-	      {{/each}}
+	    <h2> Active Game </h2>
+			<div class="gameitem">
+				<div class="major-title">
+					August 3rd 2013
+				</div>
+				<div class="register-button btn">
+					Register Now
+				</div>
+			</div>
+	    <h3> Past Games</h3>
+			<div class="gameitem closed"></div>
+	  	<div class="gameitem closed"></div>
 	  	</span>
 		</span>
 	</div>
