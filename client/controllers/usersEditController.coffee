@@ -1,5 +1,5 @@
 define ["ember", "ember-data"], (Em, DS) ->
-  UsersEditController = Ember.ObjectController.extend
+  UsersEditController = Em.ObjectController.extend
     editUser: ->
       this.clearErrors()
       if this.first_name != ''
