@@ -1,4 +1,4 @@
-/* Base */
+/*/* Base */
 
 * {
   box-sizing: border-box;
@@ -836,3 +836,14 @@ code.option, code.flag, code.filter, code.output {
     padding: 0 10px;
   }
 }
+
+.discovery-search input.ember-text-field {
+  font-size: 20px;
+  line-height: 30px;
+  border-radius: 0px;
+  border: none;
+  background: #6c6c6c;
+  padding: 15px 20px 15px 20px;
+  width: 210px;
+}
+*/
