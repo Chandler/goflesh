@@ -2,7 +2,7 @@ define ["ember", "ember-data"], (Em, DS) ->
   GamesNewController = Ember.ObjectController.extend
     name: '',
     slug: '',
-    createGame: ->
+    create: ->
       this.clearErrors()
       if this.name != ''
         model = this.get('model')
@@ -17,3 +17,9 @@ define ["ember", "ember-data"], (Em, DS) ->
           @transitionToRoute('games.show', record.id);
       else
         @set 'errors', 'Empty Fields'
+    errors: null,
+    clearErrors: ->
+      @set 'errors', null
+    errorMessages: (->
+      @get 'errors'
+    ).property 'errors' 

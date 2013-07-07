@@ -22,3 +22,9 @@ define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
           @transitionToRoute('users.show', record.id);
       else
         @set 'errors', 'Empty Fields'
+    errors: null,
+    clearErrors: ->
+      @set 'errors', null
+    errorMessages: (->
+      @get 'errors'
+    ).property 'errors' 

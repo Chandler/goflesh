@@ -14,3 +14,9 @@ define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
           @transitionToRoute('orgs/' + record.id);
       else
         @set 'errors', 'Empty Fields'
+    errors: null,
+    clearErrors: ->
+      @set 'errors', null
+    errorMessages: (->
+      @get 'errors'
+    ).property 'errors' 
