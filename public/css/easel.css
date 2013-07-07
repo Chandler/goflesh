@@ -132,6 +132,7 @@ h4 small {
    padding: 10px 20px 10px 20px;
    display: inline-block;
    width: 50px;
+   margin: 0px;
  }
 .textinput-button {
    display: inline;
@@ -203,7 +204,6 @@ h4 small {
    padding:2px;
    background-color: rgb(255, 255, 255);
    width:395px;
-   border-bottom: 1px solid rgb(108, 108, 108);
    border-left: 1px solid rgb(108, 108, 108);
    margin-right:auto;
    margin-left:auto;
@@ -211,8 +211,8 @@ h4 small {
    clear:both;
  }
 
- .org-search-item:hover{
-   background-color: rgb(150, 150, 150);
+ #discovery .org-search-item:hover{
+   background-color: rgb(200, 200, 200);
  }
 
  .org-image {
