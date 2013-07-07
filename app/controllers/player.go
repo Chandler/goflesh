@@ -43,7 +43,7 @@ func createPlayers(data []byte) ([]interface{}, error) {
 		user_id := player.User_id
 		game_id := player.Game_id
 
-		result, err := MemberExists(user_id, game_id) 
+		result, err := MemberExists(user_id, game_id)
 		if err != nil {
 			return nil, err
 		}
@@ -65,7 +65,7 @@ func (c Players) Create() revel.Result {
 }
 func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	query := `
-		SELECT *
+		SELECT member.Id, member.User_id, member.Organization_id, member.Created, member.Updated 
 		FROM member JOIN organization ON member.organization_id = organization.id 
 		INNER JOIN game ON game.organization_id = organization.id
 		WHERE user_id = $1 AND game.id = $2
@@ -74,4 +74,4 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	_, err := Dbm.Select(member, query, user_id, game_id)
 
 	return &member, err
-} 
+}

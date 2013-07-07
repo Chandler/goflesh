@@ -324,6 +324,77 @@ ALTER SEQUENCE player_user_id_seq OWNED BY player.user_id;
 
 
 --
+-- Name: tag; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tag (
+    id integer NOT NULL,
+    tagger_id integer NOT NULL,
+    taggee_id integer NOT NULL,
+    claimed timestamp without time zone,
+    created timestamp without time zone,
+    updated timestamp without time zone
+);
+
+
+--
+-- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tag_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tag_id_seq OWNED BY tag.id;
+
+
+--
+-- Name: tag_taggee_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tag_taggee_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tag_taggee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tag_taggee_id_seq OWNED BY tag.taggee_id;
+
+
+--
+-- Name: tag_tagger_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tag_tagger_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tag_tagger_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tag_tagger_id_seq OWNED BY tag.tagger_id;
+
+
+--
 -- Name: user; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -441,6 +512,27 @@ ALTER TABLE ONLY player ALTER COLUMN game_id SET DEFAULT nextval('player_game_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tag ALTER COLUMN id SET DEFAULT nextval('tag_id_seq'::regclass);
+
+
+--
+-- Name: tagger_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tag ALTER COLUMN tagger_id SET DEFAULT nextval('tag_tagger_id_seq'::regclass);
+
+
+--
+-- Name: taggee_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tag ALTER COLUMN taggee_id SET DEFAULT nextval('tag_taggee_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regclass);
 
 
@@ -493,6 +585,14 @@ ALTER TABLE ONLY player
 
 
 --
+-- Name: tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tag
+    ADD CONSTRAINT tag_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -533,6 +633,13 @@ CREATE UNIQUE INDEX player_user_game ON player USING btree (user_id, game_id);
 --
 
 CREATE UNIQUE INDEX screen_name_idx ON "user" USING btree (screen_name);
+
+
+--
+-- Name: tag_taggee; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX tag_taggee ON tag USING btree (taggee_id);
 
 
 --
@@ -588,6 +695,22 @@ ALTER TABLE ONLY player
 
 ALTER TABLE ONLY player
     ADD CONSTRAINT player_fk_user FOREIGN KEY (user_id) REFERENCES "user"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tag_fk_player_taggee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tag
+    ADD CONSTRAINT tag_fk_player_taggee FOREIGN KEY (taggee_id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tag_fk_player_tagger; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tag
+    ADD CONSTRAINT tag_fk_player_tagger FOREIGN KEY (tagger_id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

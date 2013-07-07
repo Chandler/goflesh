@@ -25,6 +25,7 @@ func AddTables(dbm *gorp.DbMap) {
 	dbm.AddTable(User{}).SetKeys(true, "Id")
 	dbm.AddTable(Oz{}).SetKeys(true, "Id")
 	dbm.AddTable(Tag{}).SetKeys(true, "Id")
+	dbm.AddTable(Member{}).SetKeys(true, "Id")
 	dbm.AddTableWithName(OzPool{}, "oz_pool").SetKeys(true, "Id")
 }
 
