@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flesh/app/models"
 	"github.com/robfig/revel"
-	"database/sql"
 )
 
 type Players struct {
@@ -49,9 +48,13 @@ func createPlayers(data []byte) ([]interface{}, error) {
 			return nil, err
 		}
 		// if this user is not a member of an org, add them
-		if result.RowsAffected() == 0 {
-			// game := Mike's function 
-			models.Member{0, user_id, game.organization_id}
+		if result == nil {
+			game, err := models.GameFromId(game_id)
+			if err != nil {
+				return nil, err
+			}
+			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
+			Dbm.Insert(member)
 		}
 	}
 	return interfaces, nil
@@ -60,14 +63,15 @@ func createPlayers(data []byte) ([]interface{}, error) {
 func (c Players) Create() revel.Result {
 	return CreateList(createPlayers, c.Request.Body)
 }
-func MemberExists(user_id int, game_id int) (models.Member{}, error) {
+func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	query := `
 		SELECT *
 		FROM member JOIN organization ON member.organization_id = organization.id 
 		INNER JOIN game ON game.organization_id = organization.id
 		WHERE user_id = $1 AND game.id = $2
 		`
-	result, err := Dbm.Select(models.Member{}, query, user_id, organization_id)
+	member := models.Member{}
+	_, err := Dbm.Select(member, query, user_id, game_id)
 
-	return result, err
+	return &member, err
 } 

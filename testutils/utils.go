@@ -390,5 +390,5 @@ func TagByRandomOzs() {
 	human := SelectTestHuman()
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	err := models.NewTag(game, oz_player, human, &now)
+	models.NewTag(game, oz_player, human, &now)
 }
