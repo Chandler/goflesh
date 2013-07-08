@@ -10,6 +10,7 @@
 ._*
 .nfs.*
 public/js/*.js
+tests/client/js/*.js
 
 .DS_Store
 public/css/application.css
