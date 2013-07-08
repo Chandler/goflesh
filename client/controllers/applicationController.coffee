@@ -1,5 +1,5 @@
 define ["ember"], (Em) ->
-  ApplicationController = Ember.Controller.extend
+  ApplicationController = Em.Controller.extend
     signOut:  ->
       console.log "ok"
       Em.App.Auth.get('module.rememberable').forget()

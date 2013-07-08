@@ -1,4 +1,4 @@
 define ["ember", "User"], (Em, User) ->
-  UsersEditRoute = Ember.Route.extend
+  UsersEditRoute = Em.Route.extend
     model: (params) ->
       User.find(params.user_id)

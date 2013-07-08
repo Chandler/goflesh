@@ -1,5 +1,5 @@
 define ["ember"], (Em) ->
-  DiscoveryController = Ember.ObjectController.extend
+  DiscoveryController = Em.ObjectController.extend
     orgs: (->
       string = @get 'filterString'
       if string == ""

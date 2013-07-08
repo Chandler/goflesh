@@ -1,5 +1,5 @@
 define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
-  OrganizationsNewController = Em.ObjectController.extend
+  OrganizationsNewController = NewController.extend
     name: '',
     slug: '',
     location: '',
@@ -18,9 +18,3 @@ define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
           @transitionToRoute('discovery');
       else
         @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 

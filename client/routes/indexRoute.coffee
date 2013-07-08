@@ -1,4 +1,4 @@
 define ["ember"], (Em) ->
-  IndexRoute = Ember.Route.extend(redirect: ->
+  IndexRoute = Em.Route.extend(redirect: ->
     @transitionTo 'discovery'
   )

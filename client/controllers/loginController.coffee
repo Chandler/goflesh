@@ -1,5 +1,5 @@
 define ["ember"], (Em) ->
-  LoginController = Ember.ObjectController.extend
+  LoginController = Em.ObjectController.extend
     email: ''
     password: ''
     login: (arg) ->

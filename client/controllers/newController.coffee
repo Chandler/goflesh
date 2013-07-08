@@ -1,5 +1,5 @@
 define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
-  NewController = Em.ObjectController.extend
+  NewController = BaseController.extend
     create: ->
       this.clearErrors()
       if this.name != ''
@@ -14,9 +14,3 @@ define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
           @transitionToRoute('orgs/' + record.id);
       else
         @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 

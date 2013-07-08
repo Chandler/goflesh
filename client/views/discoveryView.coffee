@@ -1,5 +1,5 @@
 define ["ember"], (Em) ->
-  DiscoveryView = Ember.View.extend
+  DiscoveryView = Em.View.extend
     templateName: "discovery"
 
 

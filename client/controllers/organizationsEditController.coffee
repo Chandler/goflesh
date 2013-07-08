@@ -1,5 +1,5 @@
 define ["ember", "ember-data"], (Em, DS) ->
-  OrganizationsNewController = Ember.ObjectController.extend
+  OrganizationsNewController = Em.ObjectController.extend
     editOrg: ->
       this.clearErrors()
       if this.name != ''

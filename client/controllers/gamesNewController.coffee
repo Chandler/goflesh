@@ -1,5 +1,5 @@
 define ["ember", "ember-data"], (Em, DS) ->
-  GamesNewController = Ember.ObjectController.extend
+  GamesNewController = Em.ObjectController.extend
     name: '',
     slug: '',
     create: ->
