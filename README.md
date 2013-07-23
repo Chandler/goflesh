@@ -10,6 +10,9 @@
 
 
 ## Setup
+    # you probably haven't updated brew in a while
+      brew update
+
     # get the repo
       export FLESHLOCATION="~/flesh"
       git clone git@github.com:Chandler/flesh.git $FLESHLOCATION
@@ -27,7 +30,7 @@
       # from $FLESHLOCATION:
       git clone https://github.com/Chandler/grunt-ember-handlebars.git
       npm install grunt-ember-handlebars
-      
+
     # database
       brew install postgres
       initdb .db -U postgres
@@ -45,7 +48,12 @@
       psql -p 5454 -U postgres -d flesh_local < $FLESHLOCATION/db/schema.sql
 
     # revel
+      mkdir ~/gocode
+      export GOPATH=~/gocode # you should add this line to your .bash_profile too
+      export PATH="$PATH:$GOPATH/bin" # you should add this line to your .bash_profile too
       brew install go
+      brew upgrade go
+      brew install mercurial
       cat goPackages.txt | xargs -t go get -u
       ln -s $FLESHLOCATION $GOPATH/src/flesh
 
@@ -58,7 +66,7 @@
       grunt w #build assets once and then watch for file changes
 
     #server
-      revel run flesh # if you added $GOPATH/bin to your path as per revel install instructions
+      revel run flesh
 
 
 ## Other
