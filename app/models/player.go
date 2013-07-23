@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"github.com/robfig/revel"
 )
 
 type Player struct {
@@ -9,6 +10,14 @@ type Player struct {
 	User_id int `json:"user_id"`
 	Game_id int `json:"game_id"`
 	TimeTrackedModel
+}
+
+func (m *Player) HumanCode() *HumanCode {
+	human, err := Dbm.Get(HumanCode{}, m.Id)
+	if err != nil {
+		revel.ERROR.Print("Could not get human code", err)
+	}
+	return human.(*HumanCode)
 }
 
 func PlayerFromId(id int) (*Player, error) {

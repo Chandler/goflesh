@@ -59,3 +59,9 @@ func (t *PlayerTest) TestList() {
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
+
+func (t *PlayerTest) TestHumanCode() {
+	t.TestCreate()
+	human := u.SelectTestHuman("")
+	t.Assert(human.HumanCode().Code != "")
+}

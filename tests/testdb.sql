@@ -89,6 +89,37 @@ ALTER SEQUENCE game_organization_id_seq OWNED BY game.organization_id;
 
 
 --
+-- Name: human_code; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE human_code (
+    id integer NOT NULL,
+    code character varying(5) NOT NULL,
+    created timestamp without time zone,
+    updated timestamp without time zone
+);
+
+
+--
+-- Name: human_code_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE human_code_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: human_code_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE human_code_id_seq OWNED BY human_code.id;
+
+
+--
 -- Name: member; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -449,6 +480,13 @@ ALTER TABLE ONLY game ALTER COLUMN organization_id SET DEFAULT nextval('game_org
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY human_code ALTER COLUMN id SET DEFAULT nextval('human_code_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY member ALTER COLUMN id SET DEFAULT nextval('member_id_seq'::regclass);
 
 
@@ -545,6 +583,14 @@ ALTER TABLE ONLY game
 
 
 --
+-- Name: human_code_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY human_code
+    ADD CONSTRAINT human_code_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: member_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -601,6 +647,13 @@ ALTER TABLE ONLY "user"
 
 
 --
+-- Name: human_code_code_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX human_code_code_idx ON human_code USING btree (code);
+
+
+--
 -- Name: member_user_organization; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -647,6 +700,14 @@ CREATE UNIQUE INDEX tag_taggee ON tag USING btree (taggee_id);
 --
 
 CREATE UNIQUE INDEX user_email_idx ON "user" USING btree (email);
+
+
+--
+-- Name: human_pool_fk_player; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY human_code
+    ADD CONSTRAINT human_pool_fk_player FOREIGN KEY (id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
