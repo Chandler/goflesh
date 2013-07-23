@@ -38,7 +38,7 @@
       echo "fsync = off"              >> .db/postgresql.conf
       echo "synchronous_commit = off" >> .db/postgresql.conf
       # Start postgres and create DB
-      sudo sysctl -w kern.sysv.shmmall=1073741824
+      sudo sysctl -w kern.sysv.shmall=1073741824
       sudo sysctl -w kern.sysv.shmmax=16777216
       pg_ctl start -D .db -l /tmp/flesh-postgres.log -o "-p 5454"
       createdb -p 5454 -O postgres -U postgres flesh_local
