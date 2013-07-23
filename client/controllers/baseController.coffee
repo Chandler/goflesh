@@ -1,4 +1,4 @@
-define ["ember", "ember-data"], (Em, DS) ->
+define ["ember"], (Em) ->
   BaseController = Em.ObjectController.extend
     errors: null,
     clearErrors: ->

@@ -1,5 +1,5 @@
-define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
-  UsersNewController = NewController.extend
+define ["ember", "ember-data"], (Em, DS) ->
+  UsersNewController = Em.ObjectController.extend
     first_name: '',
     last_name: '',
     email: '',

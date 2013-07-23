@@ -1,5 +1,5 @@
-define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
-  NewController = BaseController.extend
+define ["ember"], (Em) ->
+  NewController = Em.ObjectController.extend
     create: ->
       this.clearErrors()
       if this.name != ''
