@@ -65,7 +65,7 @@ func TestInit() {
 	`, test_db_name, template_db_name)
 
 	// Slurp in the DB schema
-	sql_file_bytes, err := ioutil.ReadFile("tests/testdb.sql")
+	sql_file_bytes, err := ioutil.ReadFile("db/schema.sql")
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}
