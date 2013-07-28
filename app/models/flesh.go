@@ -28,6 +28,7 @@ func AddTables(dbm *gorp.DbMap) {
 	dbm.AddTable(Member{}).SetKeys(true, "Id")
 	dbm.AddTableWithName(HumanCode{}, "human_code").SetKeys(true, "Id")
 	dbm.AddTableWithName(OzPool{}, "oz_pool").SetKeys(true, "Id")
+	dbm.AddTableWithName(PasswordReset{}, "password_reset")
 }
 
 type TimeTrackedModel struct {

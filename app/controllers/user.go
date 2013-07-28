@@ -198,3 +198,59 @@ func (c Users) Authenticate() revel.Result {
 
 	return c.RenderJson(out)
 }
+
+/////////////////////////////////////////////////////////////////////
+
+func (c Users) SendPasswordReset() revel.Result {
+	var authInfo UserAuthenticateInput
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
+		return c.RenderError(err)
+	}
+
+	user, err := authInfo.Model()
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	// only have one password reset link active at a time
+	_, err = Dbm.Exec("DELETE FROM password_reset WHERE id = $1", user.Id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	reset := models.PasswordReset{user.Id, nil, ""}
+	err = reset.GenerateCode()
+	if err != nil {
+		return c.RenderError(err)
+	}
+	err = Dbm.Insert(&reset)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	return c.RenderJson(reset)
+}
+
+func (c Users) PasswordReset(code string) revel.Result {
+	query := `
+		SELECT id
+		FROM password_reset
+		WHERE code = $1
+		AND expires > now()
+	`
+	user_id, err := Dbm.SelectInt(query, code)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	userInterface, err := Dbm.Get(models.User{}, user_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	user := userInterface.(*models.User)
+	revel.WARN.Print(user)
+
+	// return as if we authenticated
+	out := UserAuthenticateOutput{user.Id, user.Api_key}
+
+	return c.RenderJson(out)
+}

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"flesh/app/routes"
 	"flesh/app/utils"
 	uuid "github.com/nu7hatch/gouuid"
 	"time"
@@ -41,4 +42,31 @@ func (u *User) ChangePassword(plaintext string) error {
 	}
 
 	return nil
+}
+
+/////////////////////////////////////////////////////////////////////
+
+type PasswordReset struct {
+	Id      int        `json:"id"`
+	Expires *time.Time `json:"expires"`
+	Code    string     `json:"code"`
+}
+
+func (m *PasswordReset) GenerateCode() error {
+	keyObj, err := uuid.NewV4()
+	if err != nil {
+		return err
+	}
+	m.Code = keyObj.String()
+	week, err := time.ParseDuration("168h")
+	if err != nil {
+		return err
+	}
+	expires := time.Now().Add(week).UTC()
+	m.Expires = &expires
+	return nil
+}
+
+func (m *PasswordReset) ResetLink() string {
+	return routes.Users.PasswordReset(m.Code)
 }
