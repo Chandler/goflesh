@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bytes"
 	"code.google.com/p/go.crypto/bcrypt"
 	"encoding/json"
 	"errors"
@@ -8,7 +9,10 @@ import (
 	"flesh/app/types"
 	"fmt"
 	"github.com/robfig/revel"
+	"html/template"
 	"io/ioutil"
+	"net/smtp"
+	"os"
 )
 
 type Users struct {
@@ -19,6 +23,18 @@ type UserRead struct {
 	models.User
 	Players    string `json:"-"`
 	Player_ids []int  `json:"player_ids"`
+}
+
+var reset_password_email_template *template.Template
+
+/////////////////////////////////////////////////////////////////////
+
+func init() {
+	var err error
+	reset_password_email_template, err = template.ParseFiles("app/views/Users/SendPasswordReset.html")
+	if err != nil {
+		panic(err)
+	}
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -228,7 +244,45 @@ func (c Users) SendPasswordReset() revel.Result {
 		return c.RenderError(err)
 	}
 
-	return c.RenderJson(reset)
+	b := new(bytes.Buffer)
+	reset_password_email_template.Execute(b, reset)
+
+	// TODO: move email code into separate module
+	smtp_host, found := revel.Config.String("smtp.host")
+	if !found {
+		revel.ERROR.Fatal("No SMTP host configured")
+	}
+	smtp_port, found := revel.Config.String("smtp.port")
+	if !found {
+		revel.ERROR.Fatal("No SMTP port configured")
+	}
+	smtp_username, found := revel.Config.String("smtp.username")
+	if !found {
+		revel.ERROR.Fatal("No SMTP username configured")
+	}
+	smtp_key := os.Getenv("FLESH_MANDRILL_KEY")
+	if smtp_key == "" {
+		revel.ERROR.Fatal("OS ENV var FLESH_MANDRILL_KEY not set!")
+	}
+
+	auth := smtp.PlainAuth(
+		smtp_username,
+		smtp_username,
+		smtp_key,
+		smtp_host,
+	)
+	err = smtp.SendMail(
+		smtp_host+":"+smtp_port,
+		auth,
+		"placedinbags@gmail.com",
+		[]string{"placedinbags@gmail.com"},
+		b.Bytes(),
+	)
+	if err != nil {
+		revel.ERROR.Fatal(err)
+	}
+
+	return c.RenderText("")
 }
 
 func (c Users) PasswordReset(code string) revel.Result {
@@ -247,7 +301,6 @@ func (c Users) PasswordReset(code string) revel.Result {
 		return c.RenderError(err)
 	}
 	user := userInterface.(*models.User)
-	revel.WARN.Print(user)
 
 	// return as if we authenticated
 	out := UserAuthenticateOutput{user.Id, user.Api_key}
