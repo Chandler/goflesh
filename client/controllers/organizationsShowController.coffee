@@ -1,2 +1,2 @@
-define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
+define ["NewController"], (NewController) ->
   OrganizationsShowController = NewController.extend()

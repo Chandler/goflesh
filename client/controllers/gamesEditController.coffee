@@ -1,4 +1,4 @@
-define ["ember", "ember-data"], (Em, DS) ->
+define ["ember"], (Em) ->
   GamesEditController = Em.ObjectController.extend
     editGame: ->
       this.clearErrors()

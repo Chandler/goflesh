@@ -1,4 +1,4 @@
-define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
+define ["templates", "ember-data"], (Templates, DS) ->
 
   User = DS.Model.extend
     first_name: DS.attr 'string'

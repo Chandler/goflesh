@@ -1,4 +1,4 @@
-define ["ember", "ember-data"], (Em, DS) ->
+define ["ember"], (Em) ->
   OrganizationsNewController = Em.ObjectController.extend
     editOrg: ->
       this.clearErrors()

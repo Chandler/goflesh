@@ -1,4 +1,4 @@
-define ["ember", "ember-data"], (Em, DS) ->
+define ["ember"], (Em) ->
   UsersEditController = Em.ObjectController.extend
     editUser: ->
       this.clearErrors()

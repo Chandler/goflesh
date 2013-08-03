@@ -1,4 +1,4 @@
-define ["ember", "ember-data", "NewController"], (Em, DS, NewController) ->
+define ["NewController"], (NewController) ->
   GamesNewController = NewController.extend
     recordProperties: ['name', 'slug']
     name: '',
