@@ -34,49 +34,49 @@ require.config
       exports: 'this["Ember"]["TEMPLATES"]'
 
 #plugins that need to run once to attach themselves to their parents.
-require(['handlebars_helpers'])
+require(['jquery-cookie','handlebars_helpers'])
 
 ember_namespace = [
-  "Auth"
-  # "Router",
-  # "Store",
+  "Auth",
+  "Router",
+  "Store",
   
-  # #models
-  # "Game",
-  # "User",
-  # "Organization",
+  #models
+  "Game",
+  "User",
+  "Organization",
   
-  # #routes
-  # "GamesEditRoute",
-  # "GamesNewRoute",
-  # "GamesShowRoute",
-  # "IndexRoute",
-  # "UsersEditRoute",
-  # "UsersNewRoute",
-  # "UsersShowRoute",
-  # "DiscoveryRoute",
-  # "OrganizationsNewRoute",
-  # "OrganizationsShowRoute",
-  # "OrganizationsEditRoute",
+  #routes
+  "GamesEditRoute",
+  "GamesNewRoute",
+  "GamesShowRoute",
+  "IndexRoute",
+  "UsersEditRoute",
+  "UsersNewRoute",
+  "UsersShowRoute",
+  "DiscoveryRoute",
+  "OrganizationsNewRoute",
+  "OrganizationsShowRoute",
+  "OrganizationsEditRoute",
   
-  # #controllers
-  # "ApplicationController"
-  # "LoginController",
-  # "DiscoveryController",
-  # "OrganizationsNewController",
-  # "OrganizationsEditController"
-  # "OrganizationsShowController",
-  # "UsersNewController",
-  # "UsersEditController",
-  # "GamesNewController",
-  # "GamesEditController",
+  #controllers
+  "ApplicationController"
+  "LoginController",
+  "DiscoveryController",
+  "OrganizationsNewController",
+  "OrganizationsEditController"
+  "OrganizationsShowController",
+  "UsersNewController",
+  "UsersEditController",
+  "GamesNewController",
+  "GamesEditController",
   
-  # #views
-  # "ApplicationView",
-  # "LoginView",
-  # "DiscoveryView",
-  # "ListItemView",
-  # "GameItemView"
+  #views
+  "ApplicationView",
+  "LoginView",
+  "DiscoveryView",
+  "ListItemView",
+  "GameItemView"
 
 ]
     
