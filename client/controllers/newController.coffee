@@ -1,5 +1,5 @@
 define ["BaseController"], (BaseController) ->
-  NewController = BaseController.extend
+  NewController = Em.ObjectController.extend
     create: ->
       @clearErrors()
       if @name != ''
