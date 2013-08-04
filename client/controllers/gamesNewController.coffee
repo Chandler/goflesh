@@ -1,5 +1,5 @@
 define ["NewController"], (NewController) ->
   GamesNewController = NewController.extend
-    recordProperties: ['name', 'slug']
+    submitFields: ['name', 'slug']
     name: '',
     slug: '',

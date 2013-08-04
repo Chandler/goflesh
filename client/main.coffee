@@ -36,6 +36,11 @@ require.config
 #plugins that need to run once to attach themselves to their parents.
 require(['jquery-cookie','handlebars_helpers'])
 
+#parts of our framework not on the ember namespace
+#we shouldn't need this, but things break without it
+#so for now it's unblocking us. 
+require(['NewController', 'BaseController'])
+
 ember_namespace = [
   "Auth",
   "Router",
@@ -64,7 +69,7 @@ ember_namespace = [
   "LoginController",
   "DiscoveryController",
   "OrganizationsNewController",
-  "OrganizationsEditController"
+  "OrganizationsEditController",
   "OrganizationsShowController",
   "UsersNewController",
   "UsersEditController",

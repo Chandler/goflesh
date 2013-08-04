@@ -1,14 +1,21 @@
 define ["BaseController"], (BaseController) ->
-  NewController = Em.ObjectController.extend
+  NewController = BaseController.extend
+    createTransition: ->
+      @transitionToRoute('discovery');
     create: ->
       @clearErrors()
-      if @name != ''
+      @recordProperties = @getProperties(@submitFields)
+      if @fieldsPopulated()
         model = @get('model')
-        record = model.createRecord(@getProperties(@recordProperties))
+        record = model.createRecord(@recordProperties)
         record.transaction.commit()
         record.becameError =  =>
           @set 'errors', 'SERVER ERROR'
         record.didCreate = =>
-          @transitionToRoute('discovery');
+          @createTransition()
       else
         @set 'errors', 'Empty Fields'
+    fieldsPopulated: ->
+      for k,v of @recordProperties
+        return false if v == ''
+      true

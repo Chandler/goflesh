@@ -1,4 +1,4 @@
-define ["ember", "NewController"], (Em, NewController) ->
+define ["ember"], (Em) ->
   BaseController = Em.ObjectController.extend
     errors: null,
     clearErrors: ->
