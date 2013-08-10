@@ -60,17 +60,16 @@ ember_namespace = [
   "UsersNewRoute",
   "UsersShowRoute",
   "DiscoveryRoute",
+  "OrganizationRoute",
+  #"OrganizationSettingsRoute"
   "OrganizationsNewRoute",
-  "OrganizationsShowRoute",
-  "OrganizationsEditRoute",
   
   #controllers
   "ApplicationController"
   "LoginController",
   "DiscoveryController",
+  "OrganizationSettingsController"
   "OrganizationsNewController",
-  "OrganizationsEditController",
-  "OrganizationsShowController",
   "UsersNewController",
   "UsersEditController",
   "GamesNewController",

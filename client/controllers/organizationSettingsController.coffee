@@ -1,5 +1,5 @@
 define ["ember"], (Em) ->
-  OrganizationsNewController = Em.ObjectController.extend
+  OrganizationSettingsController = Em.ObjectController.extend
     editOrg: ->
       this.clearErrors()
       if this.name != ''
