@@ -12,7 +12,6 @@ define ["ember"], (Em) ->
         @route 'settings'
         @route 'home'
       @route 'new'
-      @route 'edit', path: "edit/:organization_id"
     @resource 'games', ->
       @route 'show', path: ":game_id"
       @route 'show', path: ":game_id"

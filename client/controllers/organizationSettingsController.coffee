@@ -1,4 +1,4 @@
-define ["ember", "BaseController"], (Em, BaseController) ->
+define ["ember", "BaseController", "ember-data"], (Em, BaseController) ->
   OrganizationSettingsController = BaseController.extend
     needs: 'organization'
     organization: null
@@ -6,13 +6,13 @@ define ["ember", "BaseController"], (Em, BaseController) ->
     editOrg: ->
       this.clearErrors()
       if @get('organization.name') != ''
-        record = @get('organization')
-        record.setProperties
-          name: @get("organization.name")
-        record.transaction.commit()
-        record.becameError =  =>
+        record = @get('organization.content')
+        @get('store').get('defaultTransaction').commit()
+        record.on 'becameError', =>
           @set 'errors', 'SERVER ERROR'
-        record.didUpdate = =>
+        record.on 'didUpdate', =>
           @transitionTo('organization.home', record);
       else
         @set 'errors', 'Empty Field'
+
+  #record.on('didUpdate', -> alert('toto'))
