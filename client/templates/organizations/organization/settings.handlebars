@@ -1,5 +1,4 @@
 <div  id="new-org" class="simple-page">
-  {{name}}a
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
@@ -8,20 +7,14 @@
       {{view Ember.TextField
         type="text"
         placeholder=name
-        valueBinding="name"
+        valueBinding="organization.name"
       }}
     </div>
     <div class="row slug field">
       {{view Ember.TextField
         type="text"
         placeholder=slug
-        valueBinding="slug"
-      }}
-    </div>
-    <div class="row location field">
-      {{view Ember.TextField
-        valueBinding=location
-        placeholder="location"
+        valueBinding="organization.slug"
       }}
     </div>
     <div class="btn btn-large btn-block  row signup-btn" {{action "editOrg"}}> Save Changes </div>

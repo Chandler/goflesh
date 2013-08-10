@@ -1,5 +1,8 @@
 define ["ember", "Organization"], (Em, Organization) ->
   OrganizationRoute = Em.Route.extend
     model: (params) ->
-      model = Organization.find(params.organization_id)
+      Organization.find(params.organization_id)
+
+    setupController: (controller, model) ->
+      @_super arguments...
       @controllerFor('organizations').set 'selectedModel', model

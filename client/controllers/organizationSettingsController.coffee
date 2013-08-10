@@ -1,26 +1,18 @@
-define ["ember"], (Em) ->
-  OrganizationSettingsController = Em.Controller.extend
+define ["ember", "BaseController"], (Em, BaseController) ->
+  OrganizationSettingsController = BaseController.extend
     needs: 'organization'
     organization: null
     organizationBinding: 'controllers.organization'
     editOrg: ->
-      console.log @get('organization')
       this.clearErrors()
-      if this.name != ''
+      if @get('organization.name') != ''
         record = @get('organization')
         record.setProperties
-          name: @get("name")
-          slug: @get("slug")
+          name: @get("organization.name")
         record.transaction.commit()
         record.becameError =  =>
           @set 'errors', 'SERVER ERROR'
         record.didUpdate = =>
-          @transitionTo('organizations.show', record);
+          @transitionTo('organization.home', record);
       else
-        @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 
+        @set 'errors', 'Empty Field'

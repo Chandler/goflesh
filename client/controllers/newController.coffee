@@ -15,14 +15,3 @@ define ["BaseController"], (BaseController) ->
           @createTransition()
       else
         @set 'errors', 'Empty Fields'
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 
-    fieldsPopulated: ->
-      for k,v of @recordProperties
-        return false if v == ''
-      true
-
