@@ -23,7 +23,7 @@
                   {{#linkTo discovery }} Game <i class="icon icon-globe"></i>{{/linkTo}}
                 </li>
                 <li>
-                  {{#linkTo discovery }} Profile <i class="icon icon-user"></i>{{/linkTo}}
+                  {{#linkTo user.home currentUser }} Profile <i class="icon icon-user"></i>{{/linkTo}}
                 </li>
                 <li>
                   {{#linkTo discovery }} Orgs <i class="icon icon-sitemap"></i>{{/linkTo}}
@@ -31,6 +31,7 @@
               </ul>                 
               {{else}}
                 {{#linkTo login class="btn nav-button btn-large pull-right"}} Sign in  {{/linkTo}}
+                {{#linkTo users.new class="btn nav-button btn-large pull-right"}} Sign up  {{/linkTo}}
               {{/if}}
             </div>
           </div>

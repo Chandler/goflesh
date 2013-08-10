@@ -1,0 +1,31 @@
+<div  id="new-org" class="c">
+  {{#if errorMessages}}
+    <div class="alert alert-error">{{errorMessages}}</div>
+  {{/if}}
+
+  <h3> Basic Info <h3>
+  <div class="form-fields">
+    <div class="row name field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=name
+        valueBinding="organization.name"
+      }}
+    </div>
+    <div class="row slug field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=slug
+        valueBinding="organization.slug"
+      }}
+    </div>
+  </div>
+  <h3> Games </h3>
+    {{#each organization.games}}
+      <div class="inline-game"> 
+        {{#linkTo game.home this}} {{name}} {{/linkTo}}
+      </div>
+    {{/each}}
+  <span class="clearfix"></span>
+  <div class="btn signup-btn" {{action "edit"}}> Save Changes </div>
+</div>

@@ -1,0 +1,22 @@
+<div  id="org" class="simple-page">
+  <div class="row-fluid">
+    <span class="span4">
+      <div class="side-profile">
+        {{avatar profile class="profile_image pull-center"}}
+        <div class="page-heading">
+          <h1>{{name}}<small><br>Idaho's Flagship University</small></h1> 
+            <hr>
+          <h3>223 Members</h3>
+        </div>
+      </div>
+    </span>
+    <span class="span5 profile-content-column">
+      <div class="profile-option-tabs">
+        {{#linkTo organization.home classNames="profile-option-tab profile-home"}} Home {{/linkTo}}
+        {{#linkTo organization.settings classNames="profile-option-tab profile-home"}} Settings {{/linkTo}}
+        <span class="clearfix">
+      </div>
+      {{outlet}}
+    </span>
+  </div>
+</div>

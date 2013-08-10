@@ -33,9 +33,13 @@ require.config
     "templates":
       exports: 'this["Ember"]["TEMPLATES"]'
 
-
 #plugins that need to run once to attach themselves to their parents.
-require(['jquery-cookie', 'handlebars_helpers'])
+require(['jquery-cookie','handlebars_helpers'])
+
+#require parts of our framework not on the ember namespace
+#we shouldn't need this, but things break without it
+#tracking here: https://github.com/Chandler/flesh/issues/5
+require(['NewController', 'BaseController'])
 
 ember_namespace = [
   "Auth",
@@ -48,29 +52,28 @@ ember_namespace = [
   "Organization",
   
   #routes
-  "GamesEditRoute",
-  "GamesNewRoute",
-  "GamesShowRoute",
   "IndexRoute",
-  "UsersEditRoute",
-  "UsersNewRoute",
-  "UsersShowRoute",
   "DiscoveryRoute",
+  "GameRoute",
+  "GamesNewRoute",
+  "UserRoute",
+  "UsersNewRoute",
+  "OrganizationRoute",
   "OrganizationsNewRoute",
-  "OrganizationsShowRoute",
-  "OrganizationsEditRoute",
   
   #controllers
   "ApplicationController"
   "LoginController",
   "DiscoveryController",
+  "OrganizationsController"
+  "OrganizationSettingsController"
   "OrganizationsNewController",
-  "OrganizationsEditController"
-  "OrganizationsShowController",
+  "UsersController",
   "UsersNewController",
-  "UsersEditController",
+  "UserSettingsController",
+  "GamesController",
   "GamesNewController",
-  "GamesEditController",
+  "GameSettingsController",
   
   #views
   "ApplicationView",

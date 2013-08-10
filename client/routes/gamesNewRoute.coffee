@@ -1,4 +1,4 @@
 define ["ember", "Game"], (Em, Game) ->
-  GamesRoute = Ember.Route.extend
+  GamesRoute = Em.Route.extend
     model: ->
       Game

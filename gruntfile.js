@@ -134,7 +134,13 @@ module.exports = function(grunt) {
         files: ['client/stylesheets/*.styl'],
         tasks: 'stylus'
       }
-    }
+    },
+    madge: {
+      options: {
+        format: 'amd'
+      },
+      all: ['client']
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-handlebars');
@@ -149,6 +155,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-requirejs');
   grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-madge');
+
 
   
   grunt.registerTask('spec', ['coffee:tests', 'jasmine']);
