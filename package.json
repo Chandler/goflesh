@@ -16,7 +16,8 @@
     "grunt-shell": "~0.2.2",
     "grunt-requirejs": "~0.3.5",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-madge": "0.0.1",
+    "grunt-madge": "~0.0.1",
+    "grunt-amd-dist": "~0.4.5",
     "mocha": "~1.9.0"
 
   },
