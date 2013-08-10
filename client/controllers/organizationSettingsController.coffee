@@ -1,9 +1,13 @@
 define ["ember"], (Em) ->
-  OrganizationSettingsController = Em.ObjectController.extend
+  OrganizationSettingsController = Em.Controller.extend
+    needs: 'organization'
+    organization: null
+    organizationBinding: 'controllers.organization'
     editOrg: ->
+      console.log @get('organization')
       this.clearErrors()
       if this.name != ''
-        record = @get('model')
+        record = @get('organization')
         record.setProperties
           name: @get("name")
           slug: @get("slug")

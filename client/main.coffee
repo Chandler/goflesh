@@ -68,6 +68,7 @@ ember_namespace = [
   "ApplicationController"
   "LoginController",
   "DiscoveryController",
+  "OrganizationsController"
   "OrganizationSettingsController"
   "OrganizationsNewController",
   "UsersNewController",
