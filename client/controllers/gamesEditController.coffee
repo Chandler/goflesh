@@ -1,5 +1,5 @@
-define ["ember", "ember-data"], (Em, DS) ->
-  GamesEditController = Ember.ObjectController.extend
+define ["ember"], (Em) ->
+  GamesEditController = Em.ObjectController.extend
     editGame: ->
       this.clearErrors()
       if this.name != ''

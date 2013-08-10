@@ -10,20 +10,20 @@
           {{view Ember.TextField
             type="text"
             placeholder="Name"
-            valueBinding="fields.name"
+            valueBinding="name"
           }}
         </div>
         <div class="field">
           {{view Ember.TextField
             type="text"
             placeholder="Slug"
-            valueBinding="fields.slug"
+            valueBinding="slug"
           }}
         </div>
-        <div class=field">
+        <div class="field">
           {{view Ember.TextField
             valueBinding="location"
-            placeholder="Location"
+            placeholder="location"
           }}
         </div>
         <div class="btn btn-large btn-block signup-btn" {{action "create"}}> Create Organization </div>

@@ -220,6 +220,7 @@ h4 small {
    float: left;
    padding: 5px;
  }
+<<<<<<< HEAD
 
  .org-data {
    display: block;
@@ -305,3 +306,13 @@ h4 small {
    border-radius: 10px
 }
 
+=======
+
+ .org-data {
+   display: block;
+ }
+
+ .org-properties {
+   font-size: 15px;
+ }
+>>>>>>> client

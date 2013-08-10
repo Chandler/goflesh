@@ -1,17 +1,18 @@
-define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
-  NewController = Em.ObjectController.extend
+define ["BaseController"], (BaseController) ->
+  NewController = BaseController.extend
+    createTransition: ->
+      @transitionToRoute('discovery');
     create: ->
-      this.clearErrors()
-      if this.name != ''
-        model = this.get('model')
-        record = model.createRecord
-          name: this.name
-          slug: this.slug
+      @clearErrors()
+      @recordProperties = @getProperties(@submitFields)
+      if @fieldsPopulated()
+        model = @get('model')
+        record = model.createRecord(@recordProperties)
         record.transaction.commit()
         record.becameError =  =>
           @set 'errors', 'SERVER ERROR'
         record.didCreate = =>
-          @transitionToRoute('orgs/' + record.id);
+          @createTransition()
       else
         @set 'errors', 'Empty Fields'
     errors: null,
@@ -20,3 +21,8 @@ define ["ember", "ember-data", "BaseController"], (Em, DS, BaseController) ->
     errorMessages: (->
       @get 'errors'
     ).property 'errors' 
+    fieldsPopulated: ->
+      for k,v of @recordProperties
+        return false if v == ''
+      true
+

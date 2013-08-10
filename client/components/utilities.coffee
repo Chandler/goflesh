@@ -1,6 +1,6 @@
 define [], ->
   Utilities =
-    avatarTag: (hash, size, options) ->
+    avatarTag: (hash, size, options = {}) ->
       sizes =
         small: 50
         large: 100

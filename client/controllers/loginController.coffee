@@ -1,8 +1,16 @@
 define ["ember"], (Em) ->
-  LoginController = Ember.ObjectController.extend
+  LoginController = Em.ObjectController.extend
+    email: ''
+    password: ''
     login: (arg) ->
-      console.log "test"
+      @clearErrors()
       Em.App.Auth.signIn
         data:
-          email: 'cats'
-          password: 'cats'
+          email: this.email
+          password: this.password
+    errors: null,
+    clearErrors: ->
+      @set 'errors', null
+    errorMessages: (->
+      @get 'errors'
+    ).property 'errors' 

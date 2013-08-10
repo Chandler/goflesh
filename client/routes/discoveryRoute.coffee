@@ -1,5 +1,5 @@
 define ["ember", "Organization"], (Em, Organization) ->
-  DiscoveryRoute = Ember.Route.extend
+  DiscoveryRoute = Em.Route.extend
     model: ->
       Organization.find()
       

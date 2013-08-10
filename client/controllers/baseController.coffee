@@ -1,5 +1,5 @@
-define ["ember", "ember-data"], (Em, DS) ->
-  BaseController = Ember.ObjectController.extend
+define ["ember"], (Em) ->
+  BaseController = Em.ObjectController.extend
     errors: null,
     clearErrors: ->
       @set 'errors', null

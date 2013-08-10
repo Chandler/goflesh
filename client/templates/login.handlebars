@@ -1,4 +1,21 @@
 <div  id="org" class="simple-page">
-  login login
+  {{#if errorMessages}}
+    <div class="alert alert-error">{{errorMessages}}</div>
+  {{/if}}
+  <div class="form-fields">
+    <div class="row name field">
+      {{view Ember.TextField
+        type="text"
+        placeholder="email"
+        valueBinding="email"
+      }}
+    </div>
+    <div class="row slug field">
+      {{view Ember.TextField
+        type="password"
+        placeholder="password"
+        valueBinding="password"
+      }}
+    </div>
   <div class="btn" {{action "login"}}>login </div>
 </div>

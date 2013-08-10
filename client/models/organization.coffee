@@ -1,4 +1,4 @@
-define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
+define ["ember-data"], (DS) ->
 
   Organization = DS.Model.extend
     name: DS.attr 'string'
@@ -10,8 +10,6 @@ define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
       50
     ).property()
     
-    
-
   Organization.toString = -> 
     "Organization"
 

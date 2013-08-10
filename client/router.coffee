@@ -8,11 +8,13 @@ define ["ember"], (Em) ->
   Router.map ->
     @route 'discovery' 
     @resource 'organizations', path: "/orgs", ->
-      @route 'show', path: ":organization_id"
-      @route 'edit', path: ":organization_id/edit"
+      @resource 'organization', path: ":organization_id", ->
+        @route 'settings'
+        @route 'home'
       @route 'new'
       @route 'edit', path: "edit/:organization_id"
     @resource 'games', ->
+      @route 'show', path: ":game_id"
       @route 'show', path: ":game_id"
       @route 'edit'
       @route 'new'

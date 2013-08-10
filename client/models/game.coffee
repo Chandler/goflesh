@@ -1,4 +1,4 @@
-define ["ember", "templates", "ember-data"], (Em, Templates, DS) ->
+define ["ember-data"], (DS) ->
   Game = DS.Model.extend
     name: DS.attr 'string'
     slug: DS.attr 'string'
