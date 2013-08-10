@@ -52,16 +52,13 @@ ember_namespace = [
   "Organization",
   
   #routes
-  "GamesEditRoute",
-  "GamesNewRoute",
-  "GamesShowRoute",
   "IndexRoute",
-  "UsersEditRoute",
-  "UsersNewRoute",
-  "UsersShowRoute",
   "DiscoveryRoute",
+  "GameRoute",
+  "GamesNewRoute",
+  "UserRoute",
+  "UsersNewRoute",
   "OrganizationRoute",
-  #"OrganizationSettingsRoute"
   "OrganizationsNewRoute",
   
   #controllers
@@ -71,10 +68,12 @@ ember_namespace = [
   "OrganizationsController"
   "OrganizationSettingsController"
   "OrganizationsNewController",
+  "UsersController",
   "UsersNewController",
-  "UsersEditController",
+  "UserSettingsController",
+  "GamesController",
   "GamesNewController",
-  "GamesEditController",
+  "GameSettingsController",
   
   #views
   "ApplicationView",

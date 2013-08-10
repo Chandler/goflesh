@@ -13,14 +13,14 @@ define ["ember"], (Em) ->
         @route 'home'
       @route 'new'
     @resource 'games', ->
-      @resource 'game', path: ":game_id/edit", ->
+      @resource 'game', path: ":game_id", ->
         @route 'settings'
         @route 'home'
       @route 'new'
     @resource 'users', ->
       @resource 'user', path: ":user_id", ->
-        @route 'home', path: ":user_id"
-        @route 'settings', path: ":user_id/settings"
+        @route 'home'
+        @route 'settings'
     @route 'users.new', path: "/signup"
     @route 'login'
   Router

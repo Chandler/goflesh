@@ -5,4 +5,4 @@ define ["ember", "Organization"], (Em, Organization) ->
 
     setupController: (controller, model) ->
       @_super arguments...
-      @controllerFor('organizations').set 'selectedModel', model
+      @controllerFor('organizations').set 'selectedOrganization', model
