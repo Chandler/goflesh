@@ -3,7 +3,7 @@ define ["ember", "BaseController", "ember-data"], (Em, BaseController) ->
     needs: 'organization'
     organization: null
     organizationBinding: 'controllers.organization'
-    editOrg: ->
+    edit: ->
       this.clearErrors()
       if @get('organization.name') != ''
         record = @get('organization.content')

@@ -11,7 +11,7 @@ define ["ember"], (Em) ->
         record.becameError =  =>
           @set 'errors', 'SERVER ERROR'
         record.didUpdate = =>
-          @transitionToRoute('games.show', record);
+          @transitionToRoute('game.show', record);
       else
         @set 'errors', 'Empty Fields'
     errors: null,

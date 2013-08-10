@@ -16,7 +16,7 @@ define ["ember"], (Em) ->
           @set 'errors', 'SERVER ERROR'
         record.didUpdate = =>
           console.log('yay')
-          @transitionToRoute('users.show', record);
+          @transitionToRoute('user.home', record);
       else
         @set 'errors', 'Empty Fields'
     errors: null,
