@@ -36,9 +36,9 @@ require.config
 #plugins that need to run once to attach themselves to their parents.
 require(['jquery-cookie','handlebars_helpers'])
 
-#parts of our framework not on the ember namespace
+#require parts of our framework not on the ember namespace
 #we shouldn't need this, but things break without it
-#so for now it's unblocking us. 
+#tracking here: https://github.com/Chandler/flesh/issues/5
 require(['NewController', 'BaseController'])
 
 ember_namespace = [
