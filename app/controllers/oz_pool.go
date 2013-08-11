@@ -8,13 +8,15 @@ import (
 )
 
 type OzPools struct {
-	GorpController
+	AuthController
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c OzPools) ReadList() revel.Result {
-	// Expose a list view for a given model, with zeroed blacklisted field names
+func (c *OzPools) ReadList() revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	name := "oz_pools"
 	query := `
     SELECT *
@@ -32,7 +34,14 @@ func (c OzPools) ReadList() revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c OzPools) Read(id int) revel.Result {
+func (c *OzPools) Read(id int) revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
+	c.Auth()
+	if c.User == nil || c.User.Id != id {
+		return c.PermissionDenied()
+	}
 	name := "oz_pools"
 	result, err := Dbm.Get(models.OzPool{}, id)
 	if err != nil {
@@ -50,7 +59,11 @@ func (c OzPools) Read(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c OzPools) Delete(id int) revel.Result {
+func (c *OzPools) Delete(id int) revel.Result {
+	c.Auth()
+	if c.User == nil || c.User.Id != id {
+		return c.PermissionDenied()
+	}
 	query := `
         DELETE
         FROM "oz_pool"
@@ -74,7 +87,10 @@ func (c OzPools) Delete(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c OzPools) Create() revel.Result {
+func (c *OzPools) Create() revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	return CreateList(createOzPools, c.Request.Body)
 }
 

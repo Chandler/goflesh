@@ -12,8 +12,8 @@ type Player struct {
 	TimeTrackedModel
 }
 
-func (m *Player) HumanCode() *HumanCode {
-	human, err := Dbm.Get(HumanCode{}, m.Id)
+func (p *Player) HumanCode() *HumanCode {
+	human, err := Dbm.Get(HumanCode{}, p.Id)
 	if err != nil {
 		revel.ERROR.Print("Could not get human code", err)
 	}
