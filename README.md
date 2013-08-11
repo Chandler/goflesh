@@ -10,6 +10,16 @@
 
 
 ## Setup
+
+### Environment variables
+
+Configuration that shouldn't be committed (e.g. passwords) go in environment variables.
+
+    export FLESH_EMAIL_OVERRIDE=youemailaddress@gmail.com # in development mode, send all emails to this address
+    export FLESH_MANDRILL_KEY= # this has to be generated per-developer
+
+### From the shell
+
     # you probably haven't updated brew in a while
       brew update
 
