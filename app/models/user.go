@@ -50,6 +50,7 @@ type PasswordReset struct {
 	Id      int        `json:"id"`
 	Expires *time.Time `json:"expires"`
 	Code    string     `json:"code"`
+	TimeTrackedModel
 }
 
 func (m *PasswordReset) GenerateCode() error {

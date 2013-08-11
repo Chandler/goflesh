@@ -7,12 +7,11 @@ import (
 	"errors"
 	"flesh/app/models"
 	"flesh/app/types"
+	"flesh/app/utils"
 	"fmt"
 	"github.com/robfig/revel"
 	"html/template"
 	"io/ioutil"
-	"net/smtp"
-	"os"
 )
 
 type Users struct {
@@ -237,7 +236,7 @@ func (c Users) SendPasswordReset() revel.Result {
 	if err != nil {
 		return c.RenderError(err)
 	}
-	reset := models.PasswordReset{user.Id, nil, ""}
+	reset := models.PasswordReset{user.Id, nil, "", models.TimeTrackedModel{}}
 	err = reset.GenerateCode()
 	if err != nil {
 		return c.RenderError(err)
@@ -250,40 +249,14 @@ func (c Users) SendPasswordReset() revel.Result {
 	b := new(bytes.Buffer)
 	reset_password_email_template.Execute(b, reset)
 
-	// TODO: move email code into separate module
-	smtp_host, found := revel.Config.String("smtp.host")
-	if !found {
-		revel.ERROR.Fatal("No SMTP host configured")
-	}
-	smtp_port, found := revel.Config.String("smtp.port")
-	if !found {
-		revel.ERROR.Fatal("No SMTP port configured")
-	}
-	smtp_username, found := revel.Config.String("smtp.username")
-	if !found {
-		revel.ERROR.Fatal("No SMTP username configured")
-	}
-	smtp_key := os.Getenv("FLESH_MANDRILL_KEY")
-	if smtp_key == "" {
-		revel.ERROR.Fatal("OS ENV var FLESH_MANDRILL_KEY not set!")
-	}
-
-	auth := smtp.PlainAuth(
-		smtp_username,
-		smtp_username,
-		smtp_key,
-		smtp_host,
+	utils.SendEmail(
+		"Flesh Password Reset",
+		b.String(),
+		"Flesh Server",
+		"flesh@example.com",
+		user.First_name+" "+user.Last_name,
+		user.Email,
 	)
-	err = smtp.SendMail(
-		smtp_host+":"+smtp_port,
-		auth,
-		"placedinbags@gmail.com",
-		[]string{"placedinbags@gmail.com"},
-		b.Bytes(),
-	)
-	if err != nil {
-		revel.ERROR.Fatal(err)
-	}
 
 	return c.RenderText("")
 }
