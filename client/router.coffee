@@ -23,4 +23,6 @@ define ["ember"], (Em) ->
         @route 'settings'
     @route 'users.new', path: "/signup"
     @route 'login'
+    @route 'sendPasswordReset'
+    @route 'passwordReset', path:"/passwordReset/:code" #user/.home for success
   Router

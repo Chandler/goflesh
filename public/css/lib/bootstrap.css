@@ -3900,6 +3900,7 @@ input[type="submit"].btn.btn-mini {
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
+  text-align: center
 }
 
 .alert,

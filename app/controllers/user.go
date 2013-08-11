@@ -230,10 +230,12 @@ func (c Users) Authenticate() revel.Result {
 
 func (c Users) SendPasswordReset() revel.Result {
 	var authInfo UserAuthenticateInput
+	revel.WARN.Print("hello")
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
 		return c.RenderError(err)
 	}
+	revel.WARN.Print(string(data))
 
 	user, err := authInfo.Model()
 	if err != nil {

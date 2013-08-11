@@ -26,8 +26,9 @@ PUT		/api/users/:id									Users.Update
 POST	/api/users										Users.Create
 PUT		/api/users										Users.Create
 POST	/api/users/authenticate							Users.Authenticate
-POST	/api/users/password_reset						Users.SendPasswordReset
-GET		/api/users/password_reset/:code					Users.PasswordReset
+
+POST	/api/password_reset						Users.SendPasswordReset
+GET		/api/password_resets					Users.PasswordReset
 
 GET		/api/players/oz_pool							OzPools.ReadList
 GET		/api/players/:id/oz_pool						OzPools.Read

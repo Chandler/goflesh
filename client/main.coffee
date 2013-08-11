@@ -50,9 +50,9 @@ ember_namespace = [
   "Game",
   "User",
   "Organization",
+  "PasswordReset",
   
   #routes
-  "IndexRoute",
   "DiscoveryRoute",
   "GameRoute",
   "GamesNewRoute",
@@ -60,10 +60,15 @@ ember_namespace = [
   "UsersNewRoute",
   "OrganizationRoute",
   "OrganizationsNewRoute",
+  "PasswordResetRoute",
+  "IndexRoute",
+  
   
   #controllers
   "ApplicationController"
   "LoginController",
+  "PasswordResetController",
+  "SendPasswordResetController",
   "DiscoveryController",
   "OrganizationsController"
   "OrganizationSettingsController"

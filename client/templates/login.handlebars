@@ -1,21 +1,28 @@
-<div  id="org" class="simple-page">
+<div  id="login" class="simple-page">
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
-  <div class="form-fields">
-    <div class="row name field">
-      {{view Ember.TextField
-        type="text"
-        placeholder="email"
-        valueBinding="email"
-      }}
-    </div>
-    <div class="row slug field">
-      {{view Ember.TextField
-        type="password"
-        placeholder="password"
-        valueBinding="password"
-      }}
-    </div>
-  <div class="btn" {{action "login"}}>login </div>
+  <div class="row-fluid">
+    <span class="span12">
+      <div class="form-fields">
+        <div class="row field">
+          {{view Ember.TextField
+            type="text"
+            placeholder="email"
+            valueBinding="email"
+          }}
+        </div>
+        <div class="row field">
+          {{view Ember.TextField
+            type="password"
+            placeholder="password"
+            valueBinding="password"
+          }}
+        </div>
+        <div class="row"><small>{{#linkTo sendPasswordReset}} Forgotten Password? {{/linkTo}}</small></div>
+          <div class="row btn btn-large btn-block signup-btn" {{action "login"}}> Login </div>
+        </div>
+    </span>
+  </div>
+    <span class="clearfix"></span>
 </div>
