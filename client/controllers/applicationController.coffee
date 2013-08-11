@@ -1,12 +1,7 @@
 define ["ember"], (Em) ->
   ApplicationController = Em.Controller.extend
     signOut:  ->
-      console.log "ok"
-      Em.App.Auth.get('module.rememberable').forget()
-      Em.App.Auth.set('signedIn', false)
-    
+      Em.App.Auth.destroySession()
     currentUser: (->
-      debugger
-      #Em.Store.User.find(Em.App.get('user.id'))
-      Em.User
-    ).property
+      Em.App.Auth.get('user')
+    ).property()

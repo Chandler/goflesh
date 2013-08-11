@@ -1,8 +1,8 @@
 define ["ember", "BaseController"], (Em, BaseController) ->
   UserSettingsController = BaseController.extend
     needs: 'user'
-    organization: null
-    organizationBinding: 'controllers.user'
+    user: null
+    userBinding: 'controllers.user'
     edit: ->
       this.clearErrors()
       if @get('user.name') != ''

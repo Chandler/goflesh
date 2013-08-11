@@ -14,5 +14,3 @@ define ["ember", "BaseController", "ember-data"], (Em, BaseController) ->
           @transitionTo('organization.home', record);
       else
         @set 'errors', 'Empty Field'
-
-  #record.on('didUpdate', -> alert('toto'))

@@ -1,5 +1,8 @@
 define ["ember-auth"], (Auth) ->
   Auth.create
+    modules: ['emberData']
+    
+    userModel: 'Em.App.User' # default null
     # requestAdapter: 'jquery' # default 'jquery'
     # responseAdapter: 'json' # default 'json'
     # strategyAdapter: 'token' # default 'token'

@@ -41,41 +41,52 @@ require(['jquery-cookie','handlebars_helpers'])
 #tracking here: https://github.com/Chandler/flesh/issues/5
 require(['NewController', 'BaseController'])
 
+#Any file you create that needs be on the ember namespace must be listed here
 ember_namespace = [
   "Auth",
   "Router",
   "Store",
   
-  #models
+  # Models
+  "Player",
+  "Member",
   "Game",
   "User",
   "Organization",
   
-  #routes
-  "IndexRoute",
+  # Routes
   "DiscoveryRoute",
+  
   "GameRoute",
   "GamesNewRoute",
+  
   "UserRoute",
   "UsersNewRoute",
+  
   "OrganizationRoute",
   "OrganizationsNewRoute",
-  
-  #controllers
+  "IndexRoute",
+
+  # Controllers
   "ApplicationController"
   "LoginController",
   "DiscoveryController",
-  "OrganizationsController"
-  "OrganizationSettingsController"
+
+  "OrganizationHomeController",
+  "OrganizationSettingsController",
+  "OrganizationsController",
   "OrganizationsNewController",
+  
   "UsersController",
   "UsersNewController",
+  "UserHomeController",
   "UserSettingsController",
+  
   "GamesController",
   "GamesNewController",
   "GameSettingsController",
   
-  #views
+  # Views
   "ApplicationView",
   "LoginView",
   "DiscoveryView",

@@ -4,11 +4,8 @@ define ["ember-data"], (DS) ->
     name: DS.attr 'string'
     slug: DS.attr 'string'
     location: DS.attr 'string'
-    users: DS.hasMany 'Em.App.User'
+    members: DS.hasMany 'Em.App.Member'
     games: DS.hasMany 'Em.App.Game'
-    member_count: (->
-      50
-    ).property()
     
   Organization.toString = -> 
     "Organization"
