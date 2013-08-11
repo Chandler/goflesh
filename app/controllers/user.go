@@ -61,6 +61,7 @@ func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
 		// omit passsword and api key
 		readObject.Password = ""
 		readObject.Api_key = ""
+		readObject.Email = ""
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
 		if err != nil {
 			return c.RenderJson(err)
