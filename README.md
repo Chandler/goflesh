@@ -10,6 +10,19 @@
 
 
 ## Setup
+
+### Environment variables
+
+Configuration that shouldn't be committed (e.g. passwords) go in environment variables.
+
+    export FLESH_EMAIL_OVERRIDE=youemailaddress@gmail.com # in development mode, send all emails to this address
+    export FLESH_MANDRILL_KEY= # this has to be generated per-developer
+
+### From the shell
+
+    # you probably haven't updated brew in a while
+      brew update
+
     # get the repo
       export FLESHLOCATION="~/flesh"
       git clone git@github.com:Chandler/flesh.git $FLESHLOCATION
@@ -27,7 +40,7 @@
       # from $FLESHLOCATION:
       git clone https://github.com/Chandler/grunt-ember-handlebars.git
       npm install grunt-ember-handlebars
-      
+
     # database
       brew install postgres
       initdb .db -U postgres
@@ -38,14 +51,19 @@
       echo "fsync = off"              >> .db/postgresql.conf
       echo "synchronous_commit = off" >> .db/postgresql.conf
       # Start postgres and create DB
-      sudo sysctl -w kern.sysv.shmmall=1073741824
+      sudo sysctl -w kern.sysv.shmall=1073741824
       sudo sysctl -w kern.sysv.shmmax=16777216
       pg_ctl start -D .db -l /tmp/flesh-postgres.log -o "-p 5454"
       createdb -p 5454 -O postgres -U postgres flesh_local
       psql -p 5454 -U postgres -d flesh_local < $FLESHLOCATION/db/schema.sql
 
     # revel
+      mkdir ~/gocode
+      export GOPATH=~/gocode # you should add this line to your .bash_profile too
+      export PATH="$PATH:$GOPATH/bin" # you should add this line to your .bash_profile too
       brew install go
+      brew upgrade go
+      brew install mercurial
       cat goPackages.txt | xargs -t go get -u
       ln -s $FLESHLOCATION $GOPATH/src/flesh
 
@@ -58,7 +76,7 @@
       grunt w #build assets once and then watch for file changes
 
     #server
-      revel run flesh # if you added $GOPATH/bin to your path as per revel install instructions
+      revel run flesh
 
 
 ## Other

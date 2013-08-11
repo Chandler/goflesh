@@ -14,20 +14,29 @@ type Organizations struct {
 
 type OrganizationRead struct {
 	models.Organization
-	Games    string `json:"-"`
-	Game_ids []int  `json:"games"`
+	Games      string `json:"-"`
+	Game_ids   []int  `json:"games"`
+	Members    string `json:"-"`
+	Member_ids []int  `json:"members"`
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c Organizations) ReadOrganization(where string, args ...interface{}) revel.Result {
 	query := `
-	    SELECT *, array(
-			SELECT DISTINCT g.id
-			FROM game g
-			INNER JOIN organization
-				ON o.id = g.organization_id
-			) games
+	    SELECT *,
+		    array(
+				SELECT DISTINCT g.id
+				FROM game g
+				INNER JOIN organization
+					ON o.id = g.organization_id
+				) games,
+			array(
+				SELECT DISTINCT m.id
+				FROM game m
+				INNER JOIN member
+					ON o.id = m.organization_id
+				) members
 	    FROM "organization" o
     ` + where
 	name := "organizations"
@@ -41,6 +50,7 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 	for i, result := range results {
 		readObject := result.(*readObjectType)
 		readObject.Game_ids, err = PostgresArrayStringToIntArray(readObject.Games)
+		readObject.Member_ids, err = PostgresArrayStringToIntArray(readObject.Members)
 		if err != nil {
 			return c.RenderJson(err)
 		}

@@ -3,6 +3,7 @@ package tests
 import (
 	"database/sql"
 	"flesh/app/controllers"
+	"flesh/app/models"
 	"fmt"
 	"github.com/robfig/revel"
 	"github.com/robfig/revel/modules/db/app"
@@ -65,7 +66,7 @@ func TestInit() {
 	`, test_db_name, template_db_name)
 
 	// Slurp in the DB schema
-	sql_file_bytes, err := ioutil.ReadFile("tests/testdb.sql")
+	sql_file_bytes, err := ioutil.ReadFile("db/schema.sql")
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}
@@ -134,6 +135,10 @@ func MakeDbFromTemplate() {
 	if err != nil {
 		revel.ERROR.Fatal(err)
 	}
+	models.Dbm.Db, err = sql.Open(driver, db_spec)
+	if err != nil {
+		revel.ERROR.Fatal(err)
+	}
 
 	controllers.GorpInit()
 }
@@ -141,6 +146,14 @@ func MakeDbFromTemplate() {
 func TestClean() {
 	// close DB connection
 	err := db.Db.Close()
+	if err != nil {
+		revel.ERROR.Print(err)
+	}
+	err = controllers.Dbm.Db.Close()
+	if err != nil {
+		revel.ERROR.Print(err)
+	}
+	err = models.Dbm.Db.Close()
 	if err != nil {
 		revel.ERROR.Print(err)
 	}

@@ -18,7 +18,7 @@ type GameRead struct {
 	Player_ids []int  `json:"player_ids"`
 }
 
-func (c Games) ReadGame(where string, args ...interface{}) revel.Result {
+func (c *Games) ReadGame(where string, args ...interface{}) revel.Result {
 	query := `
 	    SELECT *, array(
 			SELECT DISTINCT p.id
@@ -53,7 +53,7 @@ func (c Games) ReadGame(where string, args ...interface{}) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Games) ReadList(ids []int) revel.Result {
+func (c *Games) ReadList(ids []int) revel.Result {
 	if len(ids) == 0 {
 		return c.ReadGame("")
 	}
@@ -63,13 +63,13 @@ func (c Games) ReadList(ids []int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Games) Read(id int) revel.Result {
+func (c *Games) Read(id int) revel.Result {
 	return c.ReadGame("WHERE g.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Games) Update(id int) revel.Result {
+func (c *Games) Update(id int) revel.Result {
 	var typedJson map[string]models.Game
 	keyname := "game"
 	query := `
@@ -144,4 +144,57 @@ func createModels(data []byte) ([]interface{}, error) {
 
 func (c Games) Create() revel.Result {
 	return CreateList(createModels, c.Request.Body)
+}
+
+/////////////////////////////////////////////////////////////////////
+
+func (c *Games) AllEmailList(game_id int) revel.Result {
+	return c.emailList("", "", game_id)
+}
+
+func (c *Games) HumanEmailList(game_id int) revel.Result {
+	return c.emailList(
+		"LEFT JOIN tag ON u.id = taggee_id LEFT JOIN oz on u.id = oz.id",
+		"AND taggee_id IS NULL AND (oz.id IS NULL OR oz.confirmed = FALSE)",
+		game_id,
+	)
+}
+
+func (c *Games) ZombieEmailList(game_id int) revel.Result {
+	return c.emailList(
+		"LEFT JOIN tag ON u.id = taggee_id LEFT JOIN oz on u.id = oz.id",
+		"AND (taggee_id IS NOT NULL OR (oz.id IS NOT NULL AND oz.confirmed = TRUE))",
+		game_id,
+	)
+}
+
+func (c *Games) emailList(join string, where_and string, args ...interface{}) revel.Result {
+	query := `
+		SELECT u.email email
+		FROM "game" g
+		INNER JOIN player p
+			ON p.game_id = g.id
+		INNER JOIN "user" u
+			on p.user_id = u.id
+	` + join + `
+		WHERE g.id = $1
+	` + where_and
+
+	revel.WARN.Print(query)
+
+	rows, err := Dbm.Db.Query(query, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	var emails []string
+
+	for rows.Next() {
+		var email string
+		rows.Scan(&email)
+		emails = append(emails, email)
+	}
+	jsn := make(map[string][]string)
+	jsn["emails"] = emails
+	return c.RenderJson(jsn)
 }

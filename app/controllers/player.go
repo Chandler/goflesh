@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flesh/app/models"
 	"github.com/robfig/revel"
+	"io/ioutil"
 )
 
 type Players struct {
@@ -12,25 +13,30 @@ type Players struct {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Players) ReadList() revel.Result {
+func (c *Players) ReadList() revel.Result {
 	return GetList(models.Player{}, nil)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Players) Read(id int) revel.Result {
+func (c *Players) Read(id int) revel.Result {
 	return GetById(models.Player{}, nil, id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func createPlayers(data []byte) ([]interface{}, error) {
+func (c *Players) Create() revel.Result {
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
 	const keyName string = "players"
 	var typedJson map[string][]models.Player
 
-	err := json.Unmarshal(data, &typedJson)
+	err = json.Unmarshal(data, &typedJson)
 	if err != nil {
-		return nil, err
+		return c.RenderError(err)
 	}
 
 	modelObjects := typedJson[keyName]
@@ -45,23 +51,38 @@ func createPlayers(data []byte) ([]interface{}, error) {
 
 		result, err := MemberExists(user_id, game_id)
 		if err != nil {
-			return nil, err
+			return c.RenderError(err)
 		}
 		// if this user is not a member of an org, add them
 		if result == nil {
 			game, err := models.GameFromId(game_id)
 			if err != nil {
-				return nil, err
+				return c.RenderError(err)
 			}
 			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
 			Dbm.Insert(member)
 		}
 	}
-	return interfaces, nil
-}
 
-func (c Players) Create() revel.Result {
-	return CreateList(createPlayers, c.Request.Body)
+	// do the bulk insert
+	err = Dbm.Insert(interfaces...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	// Return a copy of the data with id's set
+	for _, playerInterface := range interfaces {
+		player := playerInterface.(*models.Player)
+		// add a human code for the player
+		human_code := models.HumanCode{player.Id, "", models.TimeTrackedModel{}}
+		human_code.GenerateCode()
+		err = Dbm.Insert(&human_code)
+		if err != nil {
+			revel.WARN.Print(err, human_code)
+			return c.RenderError(err)
+		}
+	}
+	return c.RenderJson(interfaces)
 }
 func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	query := `
