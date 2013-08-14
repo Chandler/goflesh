@@ -11,25 +11,48 @@ type Players struct {
 	AuthController
 }
 
-/////////////////////////////////////////////////////////////////////
+func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
+	query := `
+	    SELECT p.*
+	    FROM player p
+    ` + where
+	name := "players"
+	type readObjectType models.Player
 
-func (c *Players) ReadList(player_id *int) revel.Result {
-	if result := c.DevOnly(); result != nil {
-		return *result
+	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	if err != nil {
+		return c.RenderError(err)
 	}
-	if player_id != nil {
-		return GetById(models.Player{}, nil, *player_id)
+	readObjects := make([]*readObjectType, len(results))
+	for i, result := range results {
+		readObject := result.(*readObjectType)
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObjects[i] = readObject
 	}
-	return GetList(models.Player{}, nil)
+
+	out := make(map[string]interface{})
+	out[name] = readObjects
+
+	return c.RenderJson(out)
+}
+
+func (c *Players) ReadList(game_id *int, ids []int) revel.Result {
+	if game_id != nil {
+		return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", *game_id)
+	}
+	if len(ids) == 0 {
+		return c.ReadPlayer("")
+	}
+	templateStr := IntArrayToString(ids)
+	return c.ReadPlayer("WHERE u.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	if result := c.DevOnly(); result != nil {
-		return *result
-	}
-	return GetById(models.Player{}, nil, id)
+	return c.ReadPlayer("WHERE u.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
