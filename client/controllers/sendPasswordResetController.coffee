@@ -1,5 +1,5 @@
 define ["ember", "jquery", "BaseController"], (Em, $, BaseController) ->
-  PasswordResetController = BaseController.extend
+  SendPasswordResetController = BaseController.extend
     email: null
     reset: (arg) ->
       @clearErrors()

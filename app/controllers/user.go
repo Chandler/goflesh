@@ -273,24 +273,37 @@ func (c Users) SendPasswordReset() revel.Result {
 }
 
 func (c Users) PasswordReset(code string) revel.Result {
+	revel.WARN.Print("a")
+	if code == "" {
+		c.Response.Status = 400
+		c.RenderJson("")
+	}
+	revel.WARN.Print("a")
 	query := `
 		SELECT id
 		FROM password_reset
 		WHERE code = $1
 		AND expires > now()
 	`
+	revel.WARN.Print("a")
 	user_id, err := Dbm.SelectInt(query, code)
 	if err != nil {
 		return c.RenderError(err)
 	}
+	revel.WARN.Print("a")
 	userInterface, err := Dbm.Get(models.User{}, user_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
+	if userInterface == nil {
+		c.Response.Status = 404
+		return c.RenderJson("")
+	}
 	user := userInterface.(*models.User)
 
 	// return as if we authenticated
-	out := UserAuthenticateOutput{user.Id, user.Api_key}
+	out := make(map[string]interface{})
+	out["password_resets"] = []UserAuthenticateOutput{UserAuthenticateOutput{user.Id, user.Api_key}}
 
 	return c.RenderJson(out)
 }

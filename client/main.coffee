@@ -67,7 +67,7 @@ ember_namespace = [
   #controllers
   "ApplicationController"
   "LoginController",
-  "PasswordResetController",
+  # "PasswordResetController",
   "SendPasswordResetController",
   "DiscoveryController",
   "OrganizationsController"

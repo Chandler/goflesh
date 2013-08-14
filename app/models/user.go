@@ -20,7 +20,7 @@ type User struct {
 }
 
 type UserGetAuthenticate struct {
-	Id      int    `json:"id"`
+	Id      int    `json:"id"` // user id
 	Api_key string `json:"api_key,omitempty"`
 }
 
