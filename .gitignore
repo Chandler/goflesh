@@ -9,6 +9,7 @@
 *~
 ._*
 .nfs.*
+.db
 public/js/*.js
 tests/client/js/*.js
 

@@ -9,7 +9,7 @@ import (
 )
 
 type Games struct {
-	GorpController
+	AuthController
 }
 
 type GameRead struct {
@@ -54,6 +54,9 @@ func (c *Games) ReadGame(where string, args ...interface{}) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Games) ReadList(ids []int) revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	if len(ids) == 0 {
 		return c.ReadGame("")
 	}
@@ -70,6 +73,10 @@ func (c *Games) Read(id int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Games) Update(id int) revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
+
 	var typedJson map[string]models.Game
 	keyname := "game"
 	query := `
@@ -149,10 +156,12 @@ func (c Games) Create() revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Games) AllEmailList(game_id int) revel.Result {
+	// TODO: add moderator authentication
 	return c.emailList("", "", game_id)
 }
 
 func (c *Games) HumanEmailList(game_id int) revel.Result {
+	// TODO: add moderator authentication
 	return c.emailList(
 		"LEFT JOIN tag ON u.id = taggee_id LEFT JOIN oz on u.id = oz.id",
 		"AND taggee_id IS NULL AND (oz.id IS NULL OR oz.confirmed = FALSE)",
@@ -161,6 +170,7 @@ func (c *Games) HumanEmailList(game_id int) revel.Result {
 }
 
 func (c *Games) ZombieEmailList(game_id int) revel.Result {
+	// TODO: add moderator authentication
 	return c.emailList(
 		"LEFT JOIN tag ON u.id = taggee_id LEFT JOIN oz on u.id = oz.id",
 		"AND (taggee_id IS NOT NULL OR (oz.id IS NOT NULL AND oz.confirmed = TRUE))",

@@ -12,7 +12,7 @@ type Oz struct {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Oz) SelectOzs(game_id int) revel.Result {
+func (c *Oz) SelectOzs(game_id int) revel.Result {
 	query := `
 	INSERT INTO oz  
 	SELECT oz_pool.id, false, now(), now()

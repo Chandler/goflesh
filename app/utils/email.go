@@ -21,7 +21,7 @@ func SendEmail(
 	to_name string,
 	to_address string,
 ) error {
-	isDisabled := revel.Config.BoolDefault("noemail", false)
+	isDisabled := revel.Config.BoolDefault("email.disabled", false)
 	if isDisabled {
 		return nil
 	}

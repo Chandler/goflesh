@@ -8,24 +8,36 @@ import (
 )
 
 type Players struct {
-	GorpController
+	AuthController
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c *Players) ReadList() revel.Result {
+func (c *Players) ReadList(player_id *int) revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
+	if player_id != nil {
+		return GetById(models.Player{}, nil, *player_id)
+	}
 	return GetList(models.Player{}, nil)
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	return GetById(models.Player{}, nil, id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Create() revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		return c.RenderError(err)

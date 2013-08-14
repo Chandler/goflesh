@@ -7,18 +7,21 @@ import (
 )
 
 type Members struct {
-	GorpController
+	AuthController
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Members) ReadList() revel.Result {
+func (c *Members) ReadList() revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	return GetList(models.Member{}, nil)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Members) Read(id int) revel.Result {
+func (c *Members) Read(id int) revel.Result {
 	return GetById(models.Member{}, nil, id)
 }
 
@@ -43,6 +46,9 @@ func createMembers(data []byte) ([]interface{}, error) {
 	return interfaces, nil
 }
 
-func (c Members) Create() revel.Result {
+func (c *Members) Create() revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	return CreateList(createMembers, c.Request.Body)
 }
