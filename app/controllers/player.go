@@ -13,9 +13,12 @@ type Players struct {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c *Players) ReadList() revel.Result {
+func (c *Players) ReadList(player_id *int) revel.Result {
 	if result := c.DevOnly(); result != nil {
 		return *result
+	}
+	if player_id != nil {
+		return GetById(models.Player{}, nil, *player_id)
 	}
 	return GetList(models.Player{}, nil)
 }
