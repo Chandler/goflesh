@@ -25,6 +25,7 @@
     "packageDir": "public/js/jam",
     "baseUrl": "public/js",
     "dependencies": {
+      "d3": null,
       "underscore": "1.4.4",
       "jquery": "1.9.1",
       "jquery-cookie":"1.3.1",

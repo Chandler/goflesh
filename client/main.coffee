@@ -22,11 +22,16 @@ require.config
           name: "ember-data"
           location: "lib"
           main: "ember-data.js"
-      }
+      },
       {
           name: "templates"
           location: "."
           main: "templates.js"
+      },
+      {
+          name: "ember-grid"
+          location: "lib"
+          main: "ember-grid.js"
       }
   ],
   shim:
@@ -34,7 +39,7 @@ require.config
       exports: 'this["Ember"]["TEMPLATES"]'
 
 #plugins that need to run once to attach themselves to their parents.
-require(['jquery-cookie','handlebars_helpers'])
+require(['jquery-cookie','handlebars_helpers', 'ember-grid'])
 
 #require parts of our framework not on the ember namespace
 #we shouldn't need this, but things break without it
@@ -85,8 +90,13 @@ ember_namespace = [
   "GamesController",
   "GamesNewController",
   "GameSettingsController",
+  "GameHomeController",
   
   # Views
+  "RegisterKillView",
+  "TimeSeriesView",
+  "PlayerTableRowView",
+  "PlayerTableView",  
   "ApplicationView",
   "LoginView",
   "DiscoveryView",

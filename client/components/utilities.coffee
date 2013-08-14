@@ -2,6 +2,7 @@ define [], ->
   Utilities =
     avatarTag: (hash, size, options = {}) ->
       sizes =
+        tiny:  25
         small: 50
         large: 100
         profile: 150

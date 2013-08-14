@@ -11,16 +11,39 @@
             </small>
           </h1> 
           <hr>
-          <h3>223 Members</h3>
+          <h3>{{members.length}} Members</h3>
+            <div class="avatar-grid">
+            {{#each members}}
+              <div class="grid-pic"> 
+                {{avatar tiny}}
+              </div>
+            {{/each}}
+            {{#each members}}
+              <div class="grid-pic"> 
+                {{avatar tiny}}
+              </div>
+            {{/each}}
+            {{#each members}}
+              <div class="grid-pic"> 
+                {{avatar tiny}}
+              </div>
+            {{/each}}
+            </div>
+
+            <h3>{{members.length}} Teams</h3>
+            <div class="avatar-grid">
+            {{#each members}}
+              <div class="grid-pic"> 
+                {{avatar tiny}}
+              </div>
+            {{/each}}
+            </div>
+
+
         </div>
       </div>
     </span>
     <span class="span5 profile-content-column">
-      <div class="profile-option-tabs">
-        {{#linkTo organization.home classNames="profile-option-tab profile-home"}} Home {{/linkTo}}
-        {{#linkTo organization.settings classNames="profile-option-tab profile-home"}} Settings {{/linkTo}}
-        <span class="clearfix">
-      </div>
       {{outlet}}
     </span>
   </div>
