@@ -38,15 +38,16 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	return c.RenderJson(out)
 }
 
-func (c *Players) ReadList(game_id *int, ids []int) revel.Result {
-	if game_id != nil {
-		return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", *game_id)
-	}
+func (c *Players) ReadList(ids []int) revel.Result {
+	// TODO: when revel is fixed, support getting by game id (game_id *int)
+	// if game_id != nil {
+	// 	return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", *game_id)
+	// }
 	if len(ids) == 0 {
 		return c.ReadPlayer("")
 	}
 	templateStr := IntArrayToString(ids)
-	return c.ReadPlayer("WHERE u.id = ANY('{" + templateStr + "}')")
+	return c.ReadPlayer("WHERE p.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
