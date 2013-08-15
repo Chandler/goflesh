@@ -13,7 +13,6 @@ define ["ember-grid"], (GRID) ->
 
     columns: [
         GRID.column('name', { formatter: '{{avatar small}}', header: '' }),
-        GRID.column('get_user', { header: '' }),
         GRID.column('id', { header: '' }),
-        GRID.column('id', { header: '' }),
+
     ]
