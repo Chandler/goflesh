@@ -6,6 +6,5 @@ define ["ember", "Game", "Player", "User"], (Em, Game, Player, User) ->
     setupController: (controller, model) ->
       @_super arguments...
       @controllerFor('games').set 'selectedGame', model
-      @controllerFor('gameHome').set('gridModel', Player.find({game_id:  model.id}))
-
-      console.log "test"
+      @controllerFor('gameHome').set('players', Player.find({game_id:  model.id}))
+      @controllerFor('gameHome').set('organization', model.get('organization'))

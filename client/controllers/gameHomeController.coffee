@@ -3,7 +3,9 @@ define ["ember-grid"], (GRID) ->
     needs: 'game'
     game: null
     gameBinding: 'controllers.game'
-    contentBinding: 'gridModel'
+    contentBinding: 'players'
+    
+    #table controller stuff
     toolbar: [
         GRID.Filter
         GRID.ColumnSelector,

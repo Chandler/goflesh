@@ -13,7 +13,6 @@ define('ember-grid', ['ember'], function (Em) {
             var query = this.get('query');
             if (!query) return this;
             var qProps = this.get('queryProperties');
-            debugger
             return this.get('filterableContent').filter(function (row, index) {
                 var props = row.getProperties(qProps);
                 for (var prop in props) {
@@ -220,7 +219,6 @@ define('ember-grid', ['ember'], function (Em) {
             if (this.get('columns')) {
                 this.clear();
                 this.get('columns').forEach(function (column) {
-                    debugger
                     var cell = column.get('viewClass').create({
                         column: column,
                         content: this.get('row'),
