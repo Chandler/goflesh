@@ -3,7 +3,7 @@ define ["ember-data"], (DS) ->
     name: DS.attr 'string'
     slug: DS.attr 'string'
     organization: DS.belongsTo 'Em.App.Organization'
-    players: DS.hasMany 'App.Player'
+    players: DS.hasMany 'Em.App.Player'
   
   Game.toString = -> 
     "Game"

@@ -1,14 +1,6 @@
 #http://www.thomasboyt.com/2013/05/01/why-ember-data-breaks.html
 define ["ember-data"], (DS) ->
-  DS.RESTAdapter.map 'Em.App.Game',
-    organization:
-      embedded: 'always'
-    players:
-      embedded: 'load'
-  
-  DS.RESTAdapter.map 'Em.App.Organization',
-    games:
-      embedded: 'always'
+
 
 
   restAdapter = DS.RESTAdapter.create

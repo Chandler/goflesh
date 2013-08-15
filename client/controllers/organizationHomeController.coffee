@@ -3,6 +3,3 @@ define ["ember"], (Em) ->
     needs: 'organization'
     organization: null
     organizationBinding: 'controllers.organization'
-    activeGame: (->
-      @get('organization.games')
-    ).property()
