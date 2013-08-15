@@ -19,6 +19,7 @@
     </div>
     <div class="btn btn-large btn-block  row signup-btn" {{action "editGame"}}>Save Changes </div>
   </div>
+  {{game.organization}}
       {{#each players}}
       <div class="inline-game"> 
         {{#linkTo game.home this}} {{name}} {{/linkTo}}
