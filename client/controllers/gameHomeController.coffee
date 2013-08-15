@@ -11,8 +11,7 @@ define ["ember-grid"], (GRID) ->
 
     columns: [
         GRID.column('name', { formatter: '{{avatar small}}', header: '' }),
-        GRID.column('name', { header: 'Name' }),
-        GRID.column('id', { header: 'Status' }),
-        GRID.column('id', { header: 'Team' }),
-        GRID.column('id', { header: 'Time to live' }),
+        GRID.column('get_user', { header: '' }),
+        GRID.column('id', { header: '' }),
+        GRID.column('id', { header: '' }),
     ]

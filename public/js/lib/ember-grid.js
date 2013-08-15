@@ -152,6 +152,7 @@ define('ember-grid', ['ember'], function (Em) {
                 column.set(key, options[key])
             }
         }
+
         return column;
     };
 
@@ -219,6 +220,7 @@ define('ember-grid', ['ember'], function (Em) {
             if (this.get('columns')) {
                 this.clear();
                 this.get('columns').forEach(function (column) {
+                    debugger
                     var cell = column.get('viewClass').create({
                         column: column,
                         content: this.get('row'),

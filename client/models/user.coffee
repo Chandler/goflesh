@@ -6,6 +6,7 @@ define ["templates", "ember-data"], (Templates, DS) ->
     screen_name: DS.attr 'string'
     email: DS.attr 'string'
     password: DS.attr 'string'
+    player: DS.belongsTo 'Em.App.Player'
 
   User.toString = -> 
     "User"
