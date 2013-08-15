@@ -1,3 +1,5 @@
+define('ember-data', ['ember'], function (Ember) {
+
 // Version: v0.13-102-g6bdebe7
 // Last commit: 6bdebe7 (2013-08-14 00:51:19 -0500)
 
@@ -10167,7 +10169,7 @@ DS.Model.reopen({
 })();
 
 
-define('ember-data', ['ember'], function (Ember) {
+
 (function() {
 //Copyright (C) 2011 by Living Social, Inc.
 
@@ -10200,6 +10202,5 @@ define('ember-data', ['ember'], function (Ember) {
 
 
 })();
-
-  return DS;
+return DS;
 });

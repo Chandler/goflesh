@@ -1,8 +1,6 @@
 #http://www.thomasboyt.com/2013/05/01/why-ember-data-breaks.html
 define ["ember-data"], (DS) ->
 
-
-
   restAdapter = DS.RESTAdapter.create
     namespace: 'api' 
     serializer: DS.JSONSerializer.createWithMixins

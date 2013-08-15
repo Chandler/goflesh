@@ -1,17 +1,14 @@
-define ["ember"], (Em) ->
-  GameHomeController =  Em.Controller.extend
+define ["ember-grid"], (GRID) ->
+  GameHomeController =  GRID.TableController.extend
     needs: 'game'
     game: null
     gameBinding: 'controllers.game'
-    
-    #table controller stuff
-    # toolbar: [
-    #     GRID.Filter
-    #     GRID.ColumnSelector,
-    # ],
+    contentBinding: 'gridModel'
+    toolbar: [
+        GRID.Filter
+    ],
 
-    # columns: [
-    #     GRID.column('name', { formatter: '{{avatar small}}', header: '' }),
-    #     GRID.column('id', { header: '' }),
-
-    # ]
+    columns: [
+        GRID.column('name', { formatter: '{{avatar small}}', header: '' }),
+        GRID.column('name', { header: '' }),
+    ]

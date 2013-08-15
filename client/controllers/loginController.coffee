@@ -8,3 +8,6 @@ define ["ember", "BaseController"], (Em, BaseController) ->
         data:
           email: @email
           password: @password
+
+      Em.App.Auth.on 'signInSuccess', =>
+        @transitionTo('user.home', Em.App.Auth.get('user'))

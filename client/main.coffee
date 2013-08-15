@@ -91,12 +91,12 @@ ember_namespace = [
   "GamesNewController",
   "GameSettingsController",
   "GameHomeController",
-  
+
   # Views
   "RegisterKillView",
   "TimeSeriesView",
   "PlayerTableRowView",
-  "PlayerTableView",  
+  "PlayerListTableView",  
   "ApplicationView",
   "LoginView",
   "DiscoveryView",

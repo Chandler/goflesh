@@ -13,6 +13,7 @@ define('ember-grid', ['ember'], function (Em) {
             var query = this.get('query');
             if (!query) return this;
             var qProps = this.get('queryProperties');
+
             return this.get('filterableContent').filter(function (row, index) {
                 var props = row.getProperties(qProps);
                 for (var prop in props) {
