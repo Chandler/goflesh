@@ -3,6 +3,7 @@ define ["ember-grid"], (GRID) ->
     needs: 'game'
     game: null
     gameBinding: 'controllers.game'
+    organizationBinding: 'organization'
     contentBinding: 'players'
     
     #table controller stuff

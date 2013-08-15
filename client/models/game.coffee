@@ -2,8 +2,8 @@ define ["ember-data"], (DS) ->
   Game = DS.Model.extend
     name: DS.attr 'string'
     slug: DS.attr 'string'
-    organziation: DS.belongsTo 'Em.App.Organization'
-    players: DS.hasMany 'Em.App.Player'
+    organization: DS.belongsTo 'Em.App.Organization'
+    players: DS.hasMany 'App.Player'
   
   Game.toString = -> 
     "Game"

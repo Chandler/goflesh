@@ -110,6 +110,7 @@ require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace.
   _.map _.zip(@ember_namespace, ember_namespace) , (pair) ->
     App.set(pair[0], pair[1])
 
+  window.App = App
   Em.App = App
 
   
