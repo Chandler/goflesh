@@ -55,7 +55,7 @@ func (t *PlayerTest) TestRead() {
 }
 
 func (t *PlayerTest) TestList() {
-	t.Get(routes.Players.ReadList(nil, nil))
+	t.Get(routes.Players.ReadList(nil))
 	t.AssertOk()
 	t.AssertContentType(JSON_CONTENT)
 }
