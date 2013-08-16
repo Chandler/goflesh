@@ -1,16 +1,15 @@
 define ["ember", "PasswordReset", "jquery"], (Em, PasswordReset, $) ->
   PasswordResetRoute = Em.Route.extend
     model: (params) ->
-      try
-        result = PasswordReset.find(params)
-      catch error
-      	console.log 'sucks'
-        
-      # result = PasswordReset.find(params)
-      # console.log result
-      # console.log params
+      result = PasswordReset.find(params)
+      if result == ''
+        console.log 'boo'
+      console.log result
       console.log 'happy'
-
+  
+    # events: 
+    #   error: (error, transition) ->
+    #     console.log 'error'
       # $.ajax "/api/password_resets?code="+params["code"],
       #   type: "GET"
       #   contentType: "application/json" 
@@ -38,10 +37,7 @@ define ["ember", "PasswordReset", "jquery"], (Em, PasswordReset, $) ->
      #   else
      #     @transitionTo('login')
 
-    # events: -> 
-    #   console.log 'sup'
-    #   error: (reason, transition) ->
-    #     console.log 'error'
+    
     # error: (error)->
   	 #  console.log error
     # setupController: (controller, model) ->

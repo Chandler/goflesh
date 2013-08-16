@@ -3,12 +3,6 @@ define ["ember-data"], (DS) ->
     code: DS.attr 'string'
     expires: DS.attr 'string'
 
-  becameError: ->
-  	console.log 'HABAAHBA'
-  	# @transitionTo 'discovery'
-  becameInvalid: (errors) ->
-  	console.log 'other errors'
-
   PasswordReset.toString = -> 
     "PasswordReset"
 
