@@ -3,12 +3,12 @@ define ["ember-grid"], (GRID) ->
     needs: 'game'
     game: null
     gameBinding: 'controllers.game'
-    contentBinding: 'gridModel'
+    contentBinding: 'game.players'
     toolbar: [
         GRID.Filter
     ],
 
     columns: [
-        GRID.column('name', { formatter: '{{avatar small}}', header: '' }),
-        GRID.column('name', { header: '' }),
+        GRID.column('id', { formatter: '{{avatar small}}', header: '' }),
+        GRID.column('user.first_name', { header: '' }),
     ]
