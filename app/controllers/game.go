@@ -24,7 +24,7 @@ func (c *Games) ReadGame(where string, args ...interface{}) revel.Result {
 			SELECT DISTINCT p.id
 			FROM player p
 			INNER JOIN "user"
-				ON g.id = p.user_id
+				ON g.id = p.game_id
 			) players
 	    FROM "game" g
     ` + where
