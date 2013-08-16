@@ -230,7 +230,6 @@ func (c Users) Authenticate() revel.Result {
 
 func (c Users) SendPasswordReset() revel.Result {
 	var authInfo UserAuthenticateInput
-	revel.WARN.Print("hello")
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
 		return c.RenderError(err)
@@ -273,30 +272,26 @@ func (c Users) SendPasswordReset() revel.Result {
 }
 
 func (c Users) PasswordReset(code string) revel.Result {
-	revel.WARN.Print("a")
 	if code == "" {
 		c.Response.Status = 400
 		c.RenderJson("")
 	}
-	revel.WARN.Print("a")
 	query := `
 		SELECT id
 		FROM password_reset
 		WHERE code = $1
 		AND expires > now()
 	`
-	revel.WARN.Print("a")
 	user_id, err := Dbm.SelectInt(query, code)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	revel.WARN.Print("a")
 	userInterface, err := Dbm.Get(models.User{}, user_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
 	if userInterface == nil {
-		c.Response.Status = 404
+		// c.Response.Status = 404
 		return c.RenderJson("")
 	}
 	user := userInterface.(*models.User)
