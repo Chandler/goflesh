@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
@@ -11,13 +12,18 @@ type Players struct {
 	AuthController
 }
 
+type PlayerRead struct {
+	models.Player
+	IsHuman bool `json:"is_human"`
+}
+
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	query := `
 	    SELECT p.*
 	    FROM player p
     ` + where
 	name := "players"
-	type readObjectType models.Player
+	type readObjectType PlayerRead
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
 	if err != nil {
@@ -131,4 +137,32 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	_, err := Dbm.Select(member, query, user_id, game_id)
 
 	return &member, err
+}
+
+func (c *Players) Tag(code string) revel.Result {
+	query := `
+		SELECT *
+		FROM human_code
+		WHERE code = $1
+	`
+	human_code := models.HumanCode{}
+	_, err := Dbm.Select(human_code, query, code)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	player, err := Dbm.Get(models.Player{}, human_code.Id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	human := player.(models.Player)
+	taggable, err := human.CanBeTagged()
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	if !taggable {
+		c.Response.Status = 412
+		return c.RenderError(errors.New("Player could not be tagged"))
+	}
+	return c.Read(human.Id)
 }

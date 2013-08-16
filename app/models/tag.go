@@ -40,5 +40,11 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 
 	tag := Tag{0, tagger.Id, taggee.Id, claimed, TimeTrackedModel{}}
 
+	if err := Dbm.Insert(&tag); err != nil {
+		return nil, err
+	}
+
+	CreateTagEvent(&tag)
+
 	return &tag, nil
 }
