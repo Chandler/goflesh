@@ -1,8 +1,8 @@
 <div>
 <div class="top">
-  {{avatar profile class="profile_image pull-left"}}
+  {{#linkTo organization.home organization}} {{avatar profile class="profile_image pull-left"}} {{/linkTo}}
   <div class="wrap">
-    <h1>{{organization.name}}</h1>
+    <h1>{{#linkTo organization.home organization}} {{organization.name}} {{/linkTo}}</h1>
     <h2>{{name}} Game</h2>
   </div>
   <div class="right-banner-nav">
