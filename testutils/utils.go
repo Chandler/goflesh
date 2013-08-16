@@ -178,7 +178,13 @@ func InsertTestUser() *models.User {
 	now := time.Now()
 	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
 	user.ChangePassword("password")
-	err := controllers.Dbm.Insert(user)
+	human_code := models.HumanCode{user.Id, "", models.TimeTrackedModel{}}
+	human_code.GenerateCode()
+	err := controllers.Dbm.Insert(&human_code)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	err = controllers.Dbm.Insert(user)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
