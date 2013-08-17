@@ -30,7 +30,7 @@ func AddTables(dbm *gorp.DbMap) {
 	dbm.AddTable(EventType{}).SetKeys(true, "Id")
 	dbm.AddTable(EventRole{}).SetKeys(true, "Id")
 	dbm.AddTable(EventPlayer{}).SetKeys(true, "Id")
-	dbm.AddTableWithName(HumanCode{}, "human_code").SetKeys(true, "Id")
+	dbm.AddTableWithName(HumanCode{}, "human_code").SetKeys(false, "Id")
 	dbm.AddTableWithName(OzPool{}, "oz_pool").SetKeys(true, "Id")
 	dbm.AddTableWithName(PasswordReset{}, "password_reset")
 }

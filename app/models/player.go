@@ -25,6 +25,27 @@ func PlayerFromId(id int) (*Player, error) {
 	return player.(*Player), err
 }
 
+func PlayerFromUserIdGameId(user_id int, game_id int) (*Player, error) {
+	query := `
+		SELECT *
+		FROM player
+		WHERE user_id = $1
+		AND game_id = $2
+	`
+
+	var list []*Player
+	_, err := Dbm.Select(&list, query)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(list) != 1 {
+		return nil, errors.New("Could not get player object")
+	}
+
+	return list[0], err
+}
+
 func (p *Player) isZombie() bool {
 	query := `
 		SELECT COUNT(1)

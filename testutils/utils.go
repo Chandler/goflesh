@@ -178,13 +178,7 @@ func InsertTestUser() *models.User {
 	now := time.Now()
 	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
 	user.ChangePassword("password")
-	human_code := models.HumanCode{user.Id, "", models.TimeTrackedModel{}}
-	human_code.GenerateCode()
-	err := controllers.Dbm.Insert(&human_code)
-	if err != nil {
-		revel.WARN.Print(err)
-	}
-	err = controllers.Dbm.Insert(user)
+	err := controllers.Dbm.Insert(user)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
@@ -234,6 +228,12 @@ func InsertTestPlayer() *models.Player {
 	game := SelectTestGame()
 	player := &models.Player{0, user.Id, game.Id, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(player)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	human_code := models.HumanCode{player.Id, "", models.TimeTrackedModel{}}
+	human_code.GenerateCode()
+	err = controllers.Dbm.Insert(&human_code)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
