@@ -1,5 +1,3 @@
-define('ember-data', ['ember'], function (Ember) {
-
 // Version: v0.13-102-g6bdebe7
 // Last commit: 6bdebe7 (2013-08-14 00:51:19 -0500)
 
@@ -10202,5 +10200,3 @@ DS.Model.reopen({
 
 
 })();
-return DS;
-});

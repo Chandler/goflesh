@@ -1,3 +1,2 @@
-define ["ember"], (Em) ->
-  GamesController = Em.ArrayController.extend
-    selectedGame: null
+App.GamesController = Ember.ObjectController.extend
+  selectedGame: null

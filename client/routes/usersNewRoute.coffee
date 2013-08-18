@@ -1,4 +1,3 @@
-define ["ember", "User"], (Em, User) ->
- 	UsersRoute = Em.Route.extend
-    model: ->
-      User
+App.UsersRoute = Ember.Route.extend
+  model: ->
+    App.User

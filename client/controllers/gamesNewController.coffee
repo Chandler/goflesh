@@ -1,5 +1,4 @@
-define ["NewController"], (NewController) ->
-  GamesNewController = NewController.extend
-    submitFields: ['name', 'slug']
-    name: '',
-    slug: '',
+App.GamesNewController = NewController.extend
+  submitFields: ['name', 'slug']
+  name: '',
+  slug: '',

@@ -21,7 +21,7 @@
   </div>
       {{#each game.players}}
       <div class="inline-game"> 
-        {{#linkTo game.home this}} test {{user.first_name}} {{/linkTo}}
+        {{#linkTo 'game.home' this}} test {{user.first_name}} {{/linkTo}}
       </div>
     {{/each}}
     <span class="clearfix"></span>

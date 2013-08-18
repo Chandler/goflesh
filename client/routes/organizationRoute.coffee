@@ -1,8 +1,7 @@
-define ["ember", "Organization"], (Em, Organization) ->
-  OrganizationRoute = Em.Route.extend
-    model: (params) ->
-      Organization.find(params.organization_id)
+App.OrganizationRoute = Ember.Route.extend
+  model: (params) ->
+    App.Organization.find(params.organization_id)
 
-    setupController: (controller, model) ->
-      @_super arguments...
-      @controllerFor('organizations').set 'selectedOrganization', model
+  setupController: (controller, model) ->
+    @_super arguments...
+    @controllerFor('organizations').set 'selectedOrganization', model

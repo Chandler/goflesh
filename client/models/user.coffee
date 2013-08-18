@@ -1,14 +1,10 @@
-define ["templates", "ember-data"], (Templates, DS) ->
+App.User = DS.Model.extend
+  first_name: DS.attr 'string'
+  last_name: DS.attr 'string'
+  screen_name: DS.attr 'string'
+  email: DS.attr 'string'
+  password: DS.attr 'string'
+  player: DS.belongsTo 'App.Player'
 
-  User = DS.Model.extend
-    first_name: DS.attr 'string'
-    last_name: DS.attr 'string'
-    screen_name: DS.attr 'string'
-    email: DS.attr 'string'
-    password: DS.attr 'string'
-    player: DS.belongsTo 'Em.App.Player'
-
-  User.toString = -> 
-    "User"
-
-  User
+App.User.toString = -> 
+  "User"

@@ -19,11 +19,11 @@ public/css/application.css
 .db/
 app/routes/
 app/tmp/
-grunt-ember-handlebars/
 jam/
+bower_components/
 node_modules/
-public/js/jam/
 test-results/
-
+public/js/bower
+public/js/*
 !public/js/lib
 public/img/glyphicons/

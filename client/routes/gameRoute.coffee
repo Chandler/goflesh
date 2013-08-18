@@ -1,8 +1,10 @@
-define ["ember", "Game", "Player", "Organization"], (Em, Game, Player, Organization) ->
-  GameRoute = Em.Route.extend
-    model: (params) ->
-      Game.find(params.game_id)
+App.GameRoute = Ember.Route.extend
+  model: (params) ->
+    App.Game.find(params.game_id)
 
-    setupController: (controller, model) ->
-      @_super arguments...
-      @controllerFor('games').set 'selectedGame', model
+  setupController: (controller, model) ->
+    @_super arguments...
+    @controllerFor('games').set 'selectedGame', model
+
+    
+  

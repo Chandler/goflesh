@@ -1,5 +1,4 @@
-define ["ember"], (Em) ->
+App.LoginView = Ember.View.extend
   templateName: "login"
-  LoginView = Em.View.extend
-    login: ->
-      console.log "test"
+  login: ->
+    console.log "test"
