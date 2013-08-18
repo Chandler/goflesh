@@ -1,3 +1,2 @@
-define ["ember"], (Em) ->
-  OrganizationsController = Em.ArrayController.extend
-    selectedOrganization: null
+App.OrganizationsController = Ember.ArrayController.extend
+  selectedOrganization: null

@@ -23,6 +23,7 @@ jam/
 bower_components/
 node_modules/
 test-results/
+public/js/bower
 
 !public/js/lib
 public/img/glyphicons/

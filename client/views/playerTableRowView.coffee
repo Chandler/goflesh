@@ -1,3 +1,2 @@
-define ["ember"], (Em) ->
-  ApplicationView = Em.View.extend
-    templateName: 'playerTableRow'
+App.ApplicationView = Ember.View.extend
+  templateName: 'playerTableRow'

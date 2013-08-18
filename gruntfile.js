@@ -2,19 +2,48 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      assets: ["public/js/*.js", 'tests/client/js/*.js'],
+      assets: ["public/js/*.js", 'tests/client/js/*.js', 'public/js/bower/*.js'],
     },
-    coffee: {
+    bower: {
+      dev: {
+        dest: 'public/js/bower',
+        options: {
+          stripJsAffix: true
+        }
+      }
+    },
+    concat: {
+      basic: {
+        src: [
+            'public/js/bower/jquery.js',
+            'public/js/bower/jquery-cookie.js',
+            'public/js/bower/d3.js',
+            'public/js/bower/underscore.js',
+            'public/js/bower/handlebars.js',
+            'bower_components/handlebars/handlebars.runtime.js',
+            'public/js/lib/ember.js',
+            'public/js/lib/ember-data.js',
+            'public/js/bower/ember-auth.js'
+          ],
+        dest: 'public/js/libraries.js',
+      }
+    },
+    coffee: { 
       options: {
         bare: true
       },
       app: {
-        flatten: true,
-        expand: true,
-        cwd: 'client',
-        src: ['**/*.coffee'],
-        dest: 'public/js/',
-        ext: '.js'
+        options: {
+          sourceMap: true
+        },
+        files: {
+          'public/js/main.js': [
+            'client/app.coffee',
+            'client/controllers/baseController.coffee',
+            'client/controllers/newController.coffee',
+            'client/**/*.coffee'
+          ] 
+        }
       },
       tests: {
         flatten: true,
@@ -100,11 +129,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-madge');
-  
-  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-bower');
+
 
   grunt.registerTask('spec', ['coffee:tests', 'jasmine']);
-  grunt.registerTask('compile', ['clean:assets','coffee:app', 'coffee:tests','ember_handlebars','stylus']);
+  grunt.registerTask('compile', ['clean:assets', 'bower', 'concat','coffee:app', 'coffee:tests','ember_handlebars','stylus']);
   grunt.registerTask('c', ['compile']);
   grunt.registerTask('w', ['compile','watch']);
 

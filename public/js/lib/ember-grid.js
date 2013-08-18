@@ -1,5 +1,3 @@
-define('ember-grid', ['ember'], function (Em) {
-
     GRID = Em.Namespace.create();
 
     GRID.QueryMixin = Ember.Mixin.create({
@@ -411,6 +409,3 @@ define('ember-grid', ['ember'], function (Em) {
         classNames: ['form-search', 'btn-group', 'table-filter'],
         defaultTemplate: Ember.Handlebars.compile('{{view Ember.TextField class="search-query input-medium" placeholder="Type to filter" valueBinding="query"}}')
     });
-
- return GRID;
-});

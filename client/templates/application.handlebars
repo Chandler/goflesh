@@ -16,17 +16,17 @@
           <div class="navbar">
             <div class="navbar-inner">
               {{#linkTo discovery class="brand"}} flesh {{/linkTo}}
-              {{#if Em.App.Auth.signedIn}}
+              {{#if App.Auth.signedIn}}
               <div class="btn btn-primary nav-button btn-large pull-right" {{action "signOut"}}><i class="icon icon-signout"></i></div>
               <ul class="nav pull-right nav-link">
                 <li>
-                  {{#linkTo discovery }} Game <i class="icon icon-globe"></i>{{/linkTo}}
+                  {{#linkTo 'discovery' }} Game <i class="icon icon-globe"></i>{{/linkTo}}
                 </li>
                 <li>
-                  {{#linkTo user.home currentUser }} Profile <i class="icon icon-user"></i>{{/linkTo}}
+                  {{#linkTo 'user.home' currentUser }} Profile <i class="icon icon-user"></i>{{/linkTo}}
                 </li>
                 <li>
-                  {{#linkTo discovery }} Orgs <i class="icon icon-sitemap"></i>{{/linkTo}}
+                  {{#linkTo 'discovery' }} Orgs <i class="icon icon-sitemap"></i>{{/linkTo}}
                 </li>
               </ul>                 
               {{else}}
