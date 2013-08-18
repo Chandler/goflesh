@@ -31,10 +31,8 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
     # node.js
       brew install npm
       npm -g install grunt-cli
-      npm -g install jamjs
-      npm -g install ember-auth
       npm install
-      jam install
+      bower install
       
     # database
       brew install postgres
@@ -68,7 +66,7 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
 ## Running Locally
     #assets (check gruntfile.js for all the availiable tasks)
       grunt compile #build assets once
-      grunt w #build assets once and then watch for file changes
+      grunt w #build assets once and then watch for file changes (3rd party libraries not watched)
 
     #server
       revel run flesh

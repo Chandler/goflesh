@@ -5,3 +5,6 @@ App.GameRoute = Ember.Route.extend
   setupController: (controller, model) ->
     @_super arguments...
     @controllerFor('games').set 'selectedGame', model
+
+    
+  
