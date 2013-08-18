@@ -1,43 +1,3 @@
-#requireJS bootstraper.
-require.config
-  baseUrl: "/public/js"
-  packages: [
-      {
-          name: "handlebars"
-          location: "lib"
-          main: "handlebars.js"
-      },
-      {
-          name: "ember"
-          location: "lib"
-          main: "ember.js"
-      },
-      {
-          name: "ember-auth"
-          location: "lib"
-          main: "ember-auth.js"
-
-      },
-      {
-          name: "ember-data"
-          location: "lib"
-          main: "ember-data.js"
-      },
-      {
-          name: "templates"
-          location: "."
-          main: "templates.js"
-      },
-      {
-          name: "ember-grid"
-          location: "lib"
-          main: "ember-grid.js"
-      }
-  ],
-  shim:
-    "templates":
-      exports: 'this["Ember"]["TEMPLATES"]'
-
 #plugins that need to run once to attach themselves to their parents.
 require(['jquery-cookie','handlebars_helpers', 'ember-grid'])
 
@@ -105,14 +65,6 @@ ember_namespace = [
 
 ]
     
-require ["underscore", "app"].concat(ember_namespace), (_, App, ember_namespace...) ->
-  #This is the requirejs-ember secret sauce. Dyanamically set all ember objects to the ember App namespace.
-  _.map _.zip(@ember_namespace, ember_namespace) , (pair) ->
-    App.set(pair[0], pair[1])
-
-  window.App = App
-  Em.App = App
-
   
 
 

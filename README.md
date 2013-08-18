@@ -35,12 +35,7 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
       npm -g install ember-auth
       npm install
       jam install
-
-      # (temporary)
-      # from $FLESHLOCATION:
-      git clone https://github.com/Chandler/grunt-ember-handlebars.git
-      npm install grunt-ember-handlebars
-
+      
     # database
       brew install postgres
       initdb .db -U postgres

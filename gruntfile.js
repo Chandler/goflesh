@@ -25,57 +25,8 @@ module.exports = function(grunt) {
         ext: '.js'
       }
     },
-    jasmine: {
-      taskName: {
-        src: 'public/css/*.js',
-        options: {
-          specs: 'tests/client/js/*.js',
-          template: require('grunt-template-jasmine-requirejs'),
-          templateOptions: {
-            requireConfigFile: ['public/js/jam/require.config.js'],
-            requireConfig: {
-              baseUrl: './public/js',
-              packages: [
-                {
-                    name: "handlebars",
-                    location: "lib",
-                    main: "handlebars.js"
-                },
-                {
-                    name: "ember",
-                    location: "lib",
-                    main: "ember.js"
-                },
-                {
-                    name: "ember-auth",
-                    location: "lib",
-                    main: "ember-auth.js"
-
-                },
-                {
-                    name: "ember-data",
-                    location: "lib",
-                    main: "ember-data.js"
-                },
-                {
-                    name: "templates",
-                    location: ".",
-                    main: "templates.js"
-                }
-              ],
-              shim: {
-                "templates": {
-                  exports: 'this["Ember"]["TEMPLATES"]'
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     ember_handlebars: {
       options: {
-        amd: true,
         processName: function(filename) {
         /* example template structure
             templates/
@@ -134,13 +85,8 @@ module.exports = function(grunt) {
         files: ['client/stylesheets/*.styl'],
         tasks: 'stylus'
       }
-    },
-    madge: {
-      options: {
-        format: 'amd'
-      },
-      all: ['client']
-    },
+    }
+    
   });
 
   grunt.loadNpmTasks('grunt-contrib-handlebars');
@@ -152,15 +98,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-requirejs');
-  grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-madge');
-
-
   
-  grunt.registerTask('spec', ['coffee:tests', 'jasmine']);
+  grunt.loadNpmTasks('grunt-browserify');
 
+  grunt.registerTask('spec', ['coffee:tests', 'jasmine']);
   grunt.registerTask('compile', ['clean:assets','coffee:app', 'coffee:tests','ember_handlebars','stylus']);
   grunt.registerTask('c', ['compile']);
   grunt.registerTask('w', ['compile','watch']);
