@@ -1,5 +1,3 @@
-define('ember-data', ['ember'], function (Ember) {
-
 // Version: v0.13-6-g74df830
 // Last commit: 74df830 (2013-05-28 19:12:31 -0700)
 
@@ -8888,6 +8886,3 @@ DS.RESTAdapter = DS.Adapter.extend({
 
 
 })();
-
-  return DS;
-});

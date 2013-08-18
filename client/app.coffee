@@ -1,7 +1,3 @@
-
-define ["ember"], (Em) ->
-  App = Em.Application.create
-    rootElement: "#app"
-    LOG_TRANSITIONS: true
-  App
-  
+App = Ember.Application.create
+  rootElement: "#app"
+  LOG_TRANSITIONS: true  

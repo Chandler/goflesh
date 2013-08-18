@@ -1,5 +1,4 @@
-define ["ember"], (Em) ->
-  UserHomeController = Em.Controller.extend
-    needs: 'user'
-    user: null
-    userBinding: 'controllers.user'
+App.UserHomeController = Ember.Controller.extend
+  needs: 'user'
+  user: null
+  userBinding: 'controllers.user'

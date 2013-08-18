@@ -1,3 +1,2 @@
-define ["ember"], (Em) ->
-  ApplicationView = Em.View.extend
-    templateName: 'registerKill'
+App.RegisterKillView = Ember.View.extend
+  templateName: 'registerKill'

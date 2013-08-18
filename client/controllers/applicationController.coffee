@@ -1,7 +1,6 @@
-define ["ember"], (Em) ->
-  ApplicationController = Em.Controller.extend
-    signOut:  ->
-      Em.App.Auth.destroySession()
-    currentUser: (->
-      Em.App.Auth.get('user')
-    ).property()
+App.ApplicationController = Ember.Controller.extend
+  signOut:  ->
+    App.Auth.destroySession()
+  currentUser: (->
+    App.Auth.get('user')
+  ).property()
