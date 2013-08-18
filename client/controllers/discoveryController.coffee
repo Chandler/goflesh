@@ -1,4 +1,6 @@
 App.DiscoveryController = Ember.ObjectController.extend
+  search: ->
+    console.log "hey"
   orgs: (->
     string = @get 'filterString'
     if string == ""

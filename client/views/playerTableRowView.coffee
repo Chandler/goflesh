@@ -1,2 +1,2 @@
-App.ApplicationView = Ember.View.extend
+App.PlayerTableRowView = Ember.View.extend
   templateName: 'playerTableRow'

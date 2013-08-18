@@ -1,2 +1,2 @@
-App.ApplicationView = Ember.View.extend
+App.RegisterKillView = Ember.View.extend
   templateName: 'registerKill'

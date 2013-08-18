@@ -1,2 +1,2 @@
-App.OrganizationsController = Ember.ArrayController.extend
+App.OrganizationsController = Ember.ObjectController.extend
   selectedOrganization: null

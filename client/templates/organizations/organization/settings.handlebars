@@ -1,5 +1,5 @@
 <div class="profile-option-tabs">
-  {{#linkTo organization.home classNames=""}} <i class="icon icon-arrow-left"></i> back {{/linkTo}}
+  {{#linkTo 'organization.home' classNames=""}} <i class="icon icon-arrow-left"></i> back {{/linkTo}}
   <span class="clearfix">
 </div>
 <div  id="new-org" class="c">
@@ -26,7 +26,7 @@
   <h3> Games </h3>
     {{#each organization.games}}
       <div class="inline-game"> 
-        {{#linkTo game.home this}} {{name}} {{/linkTo}}
+        {{#linkTo 'game.home' this}} {{name}} {{/linkTo}}
       </div>
     {{/each}}
   <span class="clearfix"></span>

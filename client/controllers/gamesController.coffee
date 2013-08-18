@@ -1,2 +1,2 @@
-App.GamesController = Ember.ArrayController.extend
+App.GamesController = Ember.ObjectController.extend
   selectedGame: null

@@ -19,10 +19,9 @@ module.exports = function(grunt) {
             'public/js/bower/jquery-cookie.js',
             'public/js/bower/d3.js',
             'public/js/bower/underscore.js',
-            'public/js/bower/handlebars.js',
             'bower_components/handlebars/handlebars.runtime.js',
-            'public/js/lib/ember.js',
-            'public/js/lib/ember-data.js',
+            'public/js/lib/new-ember.js',
+            'public/js/lib/new-ember-data.js',
             'public/js/bower/ember-auth.js'
           ],
         dest: 'public/js/libraries.js',

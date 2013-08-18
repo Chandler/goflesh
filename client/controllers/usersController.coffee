@@ -1,2 +1,2 @@
-App.UsersController = Ember.ArrayController.extend
+App.UsersController = Ember.ObjectController.extend
   selectedUser: null

@@ -1,13 +1,13 @@
 <div>
 <div class="top">
-  {{#linkTo organization.home organization}} {{avatar profile class="profile_image pull-left"}} {{/linkTo}}
+  {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-left"}} {{/linkTo}}
   <div class="wrap">
-    <h1>{{#linkTo organization.home organization}} {{organization.name}} {{/linkTo}}</h1>
+    <h1>{{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}</h1>
     <h2>{{name}} Game</h2>
   </div>
   <div class="right-banner-nav">
-    <div> {{#linkTo game.home }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
-    <div> {{#linkTo game.settings }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
+    <div> {{#linkTo 'game.home' }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
+    <div> {{#linkTo 'game.settings' }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
   </div>
 </div>
 
