@@ -26,3 +26,9 @@ func (g *Game) IsRunning() bool {
 	now := time.Now()
 	return g.Running_start_time.Before(now) && g.Running_end_time.After(now)
 }
+
+func (g *Game) TimeToStarve() time.Duration {
+	// TODO: move this into a game-specific setting in the DB
+	duration, _ := time.ParseDuration("72h")
+	return duration
+}

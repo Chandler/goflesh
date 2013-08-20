@@ -38,12 +38,12 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 		return nil, errors.New("Game must be running")
 	}
 
-	if can, err := tagger.CanTag(); !can {
-		return nil, errors.New("Tagger cannot tag: " + err.Error())
+	if can := tagger.IsZombie(); !can {
+		return nil, errors.New("Tagger is not zombie")
 	}
 
-	if can, err := taggee.CanBeTagged(); !can {
-		return nil, errors.New("Taggee cannot be tagged: " + err.Error())
+	if can := taggee.IsHuman(); !can {
+		return nil, errors.New("Taggee is not human")
 	}
 
 	tag := Tag{0, tagger.Id, taggee.Id, claimed, TimeTrackedModel{}}

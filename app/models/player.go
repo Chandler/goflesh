@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"github.com/robfig/revel"
+	"time"
 )
 
 type Player struct {
@@ -46,40 +47,105 @@ func PlayerFromUserIdGameId(user_id int, game_id int) (*Player, error) {
 	return list[0], err
 }
 
-func (p *Player) isZombie() bool {
+func (p *Player) IsHuman() bool {
+	tag := p.TaggedTag()
+
+	return tag == nil
+}
+
+func (p *Player) Status() string {
 	query := `
-		SELECT COUNT(1)
-		FROM player
-		LEFT OUTER JOIN "oz"
-			ON player.id = oz.id
-		LEFT OUTER JOIN "tag"
-			ON player.id = taggee_id
-		WHERE player.id = $1
-			AND (oz.id IS NULL OR oz.confirmed = FALSE)
-			AND taggee_id IS NULL
+		WITH zombies AS (
+			SELECT p.id
+			FROM player p
+			LEFT OUTER JOIN "oz"
+			        ON p.id = oz.id
+			LEFT OUTER JOIN "tag"
+			        ON p.id = taggee_id
+			WHERE p.id = $1
+			        AND (oz.id IS NULL OR oz.confirmed = FALSE)
+			        AND taggee_id IS NULL
+		)
+		SELECT CASE
+			WHEN count(zombies.id) = 0 THEN 'human'
+			WHEN EXISTS (
+				SELECT tag.id
+				FROM tag
+				INNER JOIN zombies z
+				ON tag.tagger_id = z.id
+				AND claimed > $2
+				) THEN 'zombie'
+			ELSE 'starved'
+		END
+		FROM zombies
 	`
-	numFound, err := Dbm.SelectInt(query, p.Id)
+	game, err := GameFromId(p.Game_id)
 	if err != nil {
 		panic(err)
 	}
-	isZombie := numFound == 0
-	return isZombie
-}
 
-func (p *Player) isHuman() bool {
-	return !p.isZombie()
-}
+	mustTagAfter := time.Now().Add(-game.TimeToStarve())
 
-func (p *Player) CanTag() (bool, error) {
-	if !p.isZombie() {
-		return false, errors.New("player is not a zombie!")
+	status, err := Dbm.SelectStr(query, p.Id, mustTagAfter)
+	if err != nil {
+		panic(err)
 	}
-	return true, nil
+
+	return status
 }
 
-func (p *Player) CanBeTagged() (bool, error) {
-	if !p.isHuman() {
-		return false, errors.New("player is not a human!")
+func (p *Player) TaggedTag() *Tag {
+	query := `
+		SELECT *
+		FROM "tag"
+		WHERE taggee_id = $1
+	`
+	var list []*Tag
+	_, err := Dbm.Select(&list, query)
+	if err != nil {
+		panic(err)
 	}
-	return true, nil
+	return list[0]
+}
+
+func (p *Player) GetLastTag() *Tag {
+	query := `
+		SELECT *
+		FROM "tag"
+		WHERE tagger_id = $1
+		ORDER BY claimed DESC
+		LIMIT 1
+	`
+	var list []*Tag
+	_, err := Dbm.Select(&list, query, p.Id)
+	if err != nil {
+		panic(err)
+	}
+
+	if len(list) == 0 {
+		// this player has never tagged anybody
+		return nil
+	}
+	return list[0]
+}
+
+func (p *Player) IsStarved() bool {
+	game, err := GameFromId(p.Game_id)
+	if err != nil {
+		panic(err)
+	}
+	tag := p.GetLastTag()
+	mustTagAfter := time.Now().Add(-game.TimeToStarve())
+
+	if tag == nil {
+		startTime := game.Running_start_time
+		revel.WARN.Print(startTime, mustTagAfter)
+		// return *startTime > mustTagAfter
+	}
+
+	return true
+	// return *(tag.Claimed) > mustTagAfter
+}
+func (p *Player) IsZombie() bool {
+	return p.Status() == "zombie"
 }

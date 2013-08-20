@@ -14,7 +14,7 @@ type Players struct {
 
 type PlayerRead struct {
 	models.Player
-	IsHuman bool `json:"is_human"`
+	StatusString string `json:"status"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -32,6 +32,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	readObjects := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)
+		readObject.StatusString = readObject.Status()
 		if err != nil {
 			return c.RenderJson(err)
 		}
