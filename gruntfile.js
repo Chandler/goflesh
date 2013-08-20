@@ -30,25 +30,16 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-        options: {
-          mangle: false
-        },
-        my_target: {
-          files: {
-            'public/js/libraries.js': [
-              'public/js/bower/jquery.js',
-              'public/js/bower/jquery-cookie.js',
-              'public/js/bower/jquery-ui.js',
-              'public/js/bower/d3.js',
-              'public/js/bower/underscore.js',
-              'public/js/bower/handlebars.js',
-              'public/js/lib/new-ember.js',
-              'public/js/lib/new-ember-data.js',
-              'public/js/bower/ember-auth.js',
-              'public/js/lib/ember-table.js'
-            ]
-          }
+      options: {
+        mangle: false
+      },
+      my_target: {
+        files: {
+          'public/js/libraries.js': [
+            'add/some/files/we/will/need/this/later',
+          ]
         }
+      }
     },
     coffee: { 
       options: {

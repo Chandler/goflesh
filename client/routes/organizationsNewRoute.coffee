@@ -1,3 +1,4 @@
-App.DiscoveryRoute = Ember.Route.extend
+App.OrganizationsNewRoute = Ember.Route.extend
   model: ->
     App.Organization
+

@@ -1,21 +1,7 @@
 <div class="game-home">
   <div class="row">
-    <div class="span6 quadrant info-module">
-      {{view App.RegisterKillView}}
-    </div>
-    <div class="span6 quadrant stats-module">
-      {{view App.TimeSeriesView contentBinding='game'}}
-    </div>
-  </div>
-
-  <div class="row">
     <div class="span6 quadrant activity-feed-module">
-    <div class="span6 quadrant activity-feed-module">
-      {{view App.PlayerListView contentBinding="content"}}
-    </div>
-    </div>
-    <div class="span6 quadrant activity-feed-module">
-      {{view App.PlayerListView contentBinding="content"}}
+      {{view App.EventFeedView contentBinding="content"}}
     </div>
   </div>
 </div>

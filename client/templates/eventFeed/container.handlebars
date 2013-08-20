@@ -1,0 +1,21 @@
+<div class="event-feed-container">
+  <div class="event-feed-header" title="">
+    <span class="event-feed-title"> Event Feed </span>
+    <div class="event-feed-filters"> 
+      <div class="event-feed-checkbox">
+        <span> Tags </span>
+        {{view Ember.Checkbox classNames="squaredThree"}}
+      </div>
+      <div class="event-feed-checkbox">
+        <span> Achievments </span>
+        {{view Ember.Checkbox classNames="squaredThree"}}
+      </div>
+      <div class="event-feed-checkbox">
+        <span> Other </span>
+        {{view Ember.Checkbox classNames="squaredThree"}}
+      </div>
+    </div>
+
+  </div>
+  {{view App.EventFeedListView contentBinding="content"}}
+</div>
