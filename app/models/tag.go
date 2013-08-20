@@ -23,19 +23,27 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 
 	*/
 	if tagger.Game_id != taggee.Game_id {
-		return nil, errors.New("Tagger and tagee must be in same game")
+		return nil, errors.New("Tagger and taggee must be in same game")
+	}
+
+	if game == nil {
+		gameObj, err := Dbm.Get(Game{}, tagger.Game_id)
+		if err != nil {
+			return nil, errors.New("Could not get game")
+		}
+		game = gameObj.(*Game)
 	}
 
 	if !game.IsRunning() {
 		return nil, errors.New("Game must be running")
 	}
 
-	if can, err := tagger.CanTag(); !can {
-		return nil, errors.New("Tagger cannot tag: " + err.Error())
+	if can := tagger.IsZombie(); !can {
+		return nil, errors.New("Tagger is not zombie")
 	}
 
-	if can, err := taggee.CanBeTagged(); !can {
-		return nil, errors.New("Taggee cannot be tagged: " + err.Error())
+	if can := taggee.IsHuman(); !can {
+		return nil, errors.New("Taggee is not human")
 	}
 
 	tag := Tag{0, tagger.Id, taggee.Id, claimed, TimeTrackedModel{}}

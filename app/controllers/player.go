@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
+	"time"
 )
 
 type Players struct {
@@ -14,7 +14,7 @@ type Players struct {
 
 type PlayerRead struct {
 	models.Player
-	IsHuman bool `json:"is_human"`
+	StatusString string `json:"status"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -32,6 +32,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	readObjects := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)
+		readObject.StatusString = readObject.Status()
 		if err != nil {
 			return c.RenderJson(err)
 		}
@@ -102,7 +103,10 @@ func (c *Players) Create() revel.Result {
 				return c.RenderError(err)
 			}
 			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
-			Dbm.Insert(member)
+			err = Dbm.Insert(&member)
+			if err != nil {
+				return c.RenderError(err)
+			}
 		}
 	}
 
@@ -145,8 +149,13 @@ func (c *Players) Tag(code string) revel.Result {
 		FROM human_code
 		WHERE code = $1
 	`
+	err := c.Auth()
+	if err != nil {
+		return c.RenderError(err)
+	}
+
 	human_code := models.HumanCode{}
-	_, err := Dbm.Select(human_code, query, code)
+	_, err = Dbm.Select(human_code, query, code)
 	if err != nil {
 		return c.RenderError(err)
 	}
@@ -155,14 +164,23 @@ func (c *Players) Tag(code string) revel.Result {
 		return c.RenderError(err)
 	}
 	human := player.(models.Player)
-	taggable, err := human.CanBeTagged()
+
+	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	game := gameObj.(*models.Game)
+
+	tagger, err := models.PlayerFromUserIdGameId(c.User.Id, human.Game_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
 
-	if !taggable {
-		c.Response.Status = 412
-		return c.RenderError(errors.New("Player could not be tagged"))
+	now := time.Now()
+	_, err = models.NewTag(game, tagger, &human, &now)
+	if err != nil {
+		return c.RenderError(err)
 	}
+
 	return c.Read(human.Id)
 }

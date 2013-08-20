@@ -231,6 +231,12 @@ func InsertTestPlayer() *models.Player {
 	if err != nil {
 		revel.WARN.Print(err)
 	}
+	human_code := models.HumanCode{player.Id, "", models.TimeTrackedModel{}}
+	human_code.GenerateCode()
+	err = controllers.Dbm.Insert(&human_code)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
 	return player
 }
 

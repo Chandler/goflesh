@@ -28,6 +28,13 @@ type EventPlayer struct {
 	EventRoleId int `json:"event_role"`
 }
 
+type EventTag struct {
+	Id          int `json:"id"`
+	EventId     int `json:"event"`
+	TagId       int `json:"tag"`
+	EventRoleId int `json:"event_role"`
+}
+
 func CreateTagEvent(tag *Tag) error {
 	// TODO: for heaven's sake, don't hardcode these ids!
 	event := Event{0, 1, &TimeTrackedModel{}}
@@ -35,13 +42,8 @@ func CreateTagEvent(tag *Tag) error {
 	if err != nil {
 		return err
 	}
-	tagger := EventPlayer{0, event.Id, tag.Tagger_id, 1}
-	err = Dbm.Insert(tagger)
-	if err != nil {
-		return err
-	}
-	taggee := EventPlayer{0, event.Id, tag.Taggee_id, 2}
-	err = Dbm.Insert(taggee)
+	tagEvent := EventTag{0, event.Id, tag.Id, 1}
+	err = Dbm.Insert(tagEvent)
 	if err != nil {
 		return err
 	}
