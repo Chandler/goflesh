@@ -12,5 +12,13 @@ restAdapter = DS.RESTAdapter.create
       
       @_super(loader, json, type, record)
 
+#TODO: make this generic
+# restAdapter.registerTransform 'avatarHash', 
+#   serialize: (value) ->
+#     return {}
+  
+#   deserialize: (value) ->
+#     return Ember.create({ hash: value["hash"] })
+  
 App.Store = DS.Store.extend
   adapter: restAdapter
