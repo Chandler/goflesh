@@ -15,9 +15,9 @@ type Organizations struct {
 type OrganizationRead struct {
 	models.Organization
 	Games      string `json:"-"`
-	Game_ids   []int  `json:"games"`
+	Game_ids   []int  `json:"game_ids"`
 	Members    string `json:"-"`
-	Member_ids []int  `json:"members"`
+	Member_ids []int  `json:"member_ids"`
 }
 
 /////////////////////////////////////////////////////////////////////

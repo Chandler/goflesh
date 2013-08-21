@@ -1,3 +1,7 @@
+App.GamesNewRoute = Ember.Route.extend
+  model: ->
+    App.Game
+
 App.GameRoute = Ember.Route.extend
   model: (params) ->
     App.Game.find(params.game_id)

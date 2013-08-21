@@ -9707,6 +9707,7 @@ DS.RESTAdapter = DS.Adapter.extend({
     var adapter = this;
     var data = {};
 
+    /* TODO flesh figure out how to override this in our store instead of modifying ember */
     data[root] = this.serialize(record, { includeId: true });
 
     return this.ajax(this.buildURL(root), "POST", {

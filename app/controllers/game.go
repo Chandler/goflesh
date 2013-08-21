@@ -15,7 +15,7 @@ type Games struct {
 type GameRead struct {
 	models.Game
 	Players    string `json:"-"`
-	Player_ids []int  `json:"players"`
+	Player_ids []int  `json:"player_ids"`
 }
 
 func (c *Games) ReadGame(where string, args ...interface{}) revel.Result {

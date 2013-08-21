@@ -9,5 +9,6 @@ Utilities =
     #random for now
     random = Math.random().toString(16).slice(2)
     hash = random + random + random + random
+    hash = "4b6fd4264b6fd4264b6fd4264b6fd426"
     "<img class=\" avatar " + options.hash.class +  "\" src=\"http://www.gravatar.com/avatar/" + hash + "?s=" + px + "&d=identicon\"/>"
 

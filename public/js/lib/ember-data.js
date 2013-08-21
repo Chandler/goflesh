@@ -5816,7 +5816,7 @@ DS.Serializer = Ember.Object.extend({
   */
   serialize: function(record, options) {
     options = options || {};
-
+    debugger
     var serialized = this.createSerializedForm(), id;
     if (options.includeId) {
       if (id = get(record, 'id')) {
@@ -5830,7 +5830,7 @@ DS.Serializer = Ember.Object.extend({
 
     this.addAttributes(serialized, record);
     this.addRelationships(serialized, record);
-
+    debugger
     return serialized;
   },
 

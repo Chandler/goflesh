@@ -1,0 +1,24 @@
+<div class="game-page-list-container">
+  <!-- Handlebars if/else equivlant, ugly but safe-->
+  {{#if eventFeedSelected}}
+    <div class="list-header" title="">
+      <span class="list-title selected"> Event Feed </span>
+      <span class="list-title not-selected"  {{action "showPlayerList"}} > Player List </span>
+      <span class="list-title not-selected"> Event Feed </span>
+    </div>
+    {{view App.EventListView contentBinding="content"}}
+  {{/if}}
+  {{#if playerListSelected}}
+    <div class="list-header" title="">
+      <span class="list-title not-selected"  {{action "showEventFeed"}} > Event Feed </span>
+      <span class="list-title selected"> Player List </span>
+      <span class="list-title not-selected"> Event Feed </span>
+    </div>
+    {{view App.PlayerListView contentBinding="content"}}
+  {{/if}}
+  {{#if teamListSelected}}
+   <div class="list-header" title="">
+      <!-- TODO-->   
+    </div>
+  {{/if}}
+</div>

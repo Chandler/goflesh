@@ -100,8 +100,6 @@ connect with psql
 
     psql -p 5454 -U postgres -d flesh_local
 
-
-
 # Generating test data
 
 drop/update schema/generate test data cycle:
@@ -114,3 +112,4 @@ generate test data:
     # visit localhost:9000/@tests
     # and click Generator > TestGenerateData > Run
     # This will create a bunch of dummy data for you
+

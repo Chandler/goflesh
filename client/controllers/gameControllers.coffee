@@ -8,6 +8,18 @@ App.GameHomeController =  Ember.Controller.extend
     game: null
     gameBinding: 'controllers.game'
     contentBinding: 'game.players'
+    
+    #this is a gross proof of concept
+    #TODO figure out the right way to make a stateful view component
+    #that doesn't rely on controller values like this.
+    eventFeedSelected: true
+    playerListSelected: false
+    showPlayerList: ->
+      @set 'eventFeedSelected', false
+      @set 'playerListSelected', true
+    showEventFeed: ->
+      @set 'eventFeedSelected', true
+      @set 'playerListSelected', false
 
 App.GamesController = Ember.ObjectController.extend
   selectedGame: null

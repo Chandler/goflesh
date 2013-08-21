@@ -8,8 +8,8 @@ import (
 
 type Player struct {
 	Id      int `json:"id"`
-	User_id int `json:"user"`
-	Game_id int `json:"game"`
+	User_id int `json:"user_id"`
+	Game_id int `json:"game_id"`
 	TimeTrackedModel
 }
 

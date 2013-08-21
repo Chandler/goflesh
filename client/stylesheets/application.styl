@@ -17,15 +17,15 @@
   float: left
 
 
-/*event feed */
-.event-feed-container
+/* Lists */
+.game-page-list-container
   border: 1px solid #dce7ee
   background-color: #FCFCFC
   overflow-x: hidden
   overflow-y: hidden
   width: 600px
-  height: (1400-15)px
-  .event-feed-header
+  height: (1400-15)px /*hack to remove scroll bar */
+  .list-header
     box-sizing: border-box
     width: 100%
     padding: 10px 18px
@@ -36,17 +36,16 @@
     color: #747d92
     text-shadow: 0 1px #fff
     background-color: #f3f4f6
-    .event-feed-title
+    .list-title
       margin-right: 20px
       text-transform: uppercase
-    .event-feed-filters
-      float: right
-    .event-feed-checkbox
-      float: left
-      margin-left: 10px
-      margin-right: 10px
-
-
+    .selected
+      padding: 5px
+      border-radius: 4px;
+      box-shadow: 0 0 3px 1px #2b95ca;
+    .not-selected
+      padding: 6px
+      cursor: pointer
   .ember-list-view
     margin-right: -15px
   .event-feed-row
