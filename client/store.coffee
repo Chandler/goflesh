@@ -33,13 +33,12 @@ restAdapter = DS.RESTAdapter.create
     ).then null, DS.rejectionHandler
     
 
-#TODO: make this generic
-# restAdapter.registerTransform 'avatarHash', 
-#   serialize: (value) ->
-#     return {}
+restAdapter.registerTransform 'avatar', 
+  serialize: (value) ->
+    return {avatar: {hash: value}}
   
-#   deserialize: (value) ->
-#     return Ember.create({ hash: value["hash"] })
+  deserialize: (value) ->
+    return value["hash"]
   
 App.Store = DS.Store.extend
   adapter: restAdapter

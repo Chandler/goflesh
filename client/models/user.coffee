@@ -3,6 +3,7 @@ App.User = DS.Model.extend
   last_name: DS.attr 'string'
   screen_name: DS.attr 'string'
   email: DS.attr 'string'
+  avatar: DS.attr 'avatar'
   password: DS.attr 'string'
   player: DS.belongsTo 'App.Player'
 

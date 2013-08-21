@@ -2,7 +2,7 @@
   <div class="row-fluid">
     <span class="span12">
       <div class="discovery-page-header">
-        <center><h1>Find your Organization <small><br>Use the Search box below to see if your Org already plays!</small></center>
+        <center><h1>Find your Organization <small></small></center>
         </h1>
       </div>
     </span>
@@ -16,7 +16,6 @@
           id="login-name"
           valueBinding="filterString"
         }}
-        <div class="search btn btn-success" {{action "search"}}> Go! </div>
       </div>
     </span>
     <div class="listItemContainer">
@@ -25,6 +24,4 @@
     {{/each}}
     </div>
   </div>
-
-  {{#linkTo 'organizations.new' class="nav-button btn"}} Create org {{/linkTo}}
 

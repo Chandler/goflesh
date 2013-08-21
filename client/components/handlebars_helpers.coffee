@@ -4,3 +4,11 @@ Handlebars.registerHelper 'avatar', (size, options) ->
   console.log key, "key"
   new Handlebars.SafeString(Utilities.avatarTag(key, size, options))
 
+
+Ember.Handlebars.registerBoundHelper 'avatar2', (context, options) ->
+  debugger
+  key = context.get('avatar')
+  size = options.hash.size
+  klass = options.hash.class
+  new Handlebars.SafeString(Utilities.avatar2Tag(key, size, klass))
+
