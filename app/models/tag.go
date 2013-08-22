@@ -52,6 +52,9 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 		return nil, err
 	}
 
+	tagger.Feed(claimed)
+	tagger.Save()
+
 	CreateTagEvent(&tag)
 
 	return &tag, nil

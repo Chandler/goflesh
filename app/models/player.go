@@ -56,6 +56,19 @@ func PlayerFromUserIdGameId(user_id int, game_id int) (*Player, error) {
 	return list[0], err
 }
 
+func (p *Player) Feed(fedAt *time.Time) {
+	if fedAt == nil {
+		now := time.Now()
+		fedAt = &now
+	}
+	p.Last_fed = fedAt
+}
+
+func (p *Player) Save() error {
+	_, err := Dbm.Update(p)
+	return err
+}
+
 func (p *Player) Status() string {
 	if p.Last_fed == nil {
 		return "human"

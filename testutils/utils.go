@@ -401,11 +401,7 @@ func TagByRandomOzs() {
 	}
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	tag, err := models.NewTag(game, oz_player, human, &now)
-	if err != nil {
-		revel.WARN.Print(err)
-	}
-	err = controllers.Dbm.Insert(tag)
+	_, err := models.NewTag(game, oz_player, human, &now)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
