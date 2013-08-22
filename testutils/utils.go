@@ -226,7 +226,7 @@ func InsertTestGame() *models.Game {
 func InsertTestPlayer() *models.Player {
 	user := SelectTestUser()
 	game := SelectTestGame()
-	player := &models.Player{0, user.Id, game.Id, models.TimeTrackedModel{}}
+	player := &models.Player{0, user.Id, game.Id, nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(player)
 	if err != nil {
 		revel.WARN.Print(err)
