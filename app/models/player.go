@@ -27,6 +27,11 @@ func PlayerFromId(id int) (*Player, error) {
 	return player.(*Player), err
 }
 
+func (m *Player) Save() error {
+	_, err := Dbm.Update(m)
+	return err
+}
+
 func (p *Player) Game() *Game {
 	game, err := GameFromId(p.Game_id)
 	if err != nil {
@@ -62,11 +67,6 @@ func (p *Player) Feed(fedAt *time.Time) {
 		fedAt = &now
 	}
 	p.Last_fed = fedAt
-}
-
-func (p *Player) Save() error {
-	_, err := Dbm.Update(p)
-	return err
 }
 
 func (p *Player) Status() string {

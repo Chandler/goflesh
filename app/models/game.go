@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -22,6 +23,11 @@ func GameFromId(id int) (*Game, error) {
 	return game.(*Game), err
 }
 
+func (m *Game) Save() error {
+	_, err := Dbm.Update(m)
+	return err
+}
+
 func (g *Game) IsRunning() bool {
 	now := time.Now()
 	return g.Running_start_time.Before(now) && g.Running_end_time.After(now)
@@ -33,8 +39,9 @@ func (g *Game) TimeToStarve() time.Duration {
 	return duration
 }
 
-func (g *Game) TimeToReveal() time.Time {
+func (g *Game) TimeToReveal() *time.Time {
 	// TODO: move this into a game-specific setting in the DB
 	undercoverTime, _ := time.ParseDuration("24h")
-	return g.Running_start_time.Add(undercoverTime)
+	time := g.Running_start_time.Add(undercoverTime)
+	return &time
 }
