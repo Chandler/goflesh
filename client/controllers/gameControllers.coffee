@@ -20,7 +20,7 @@ App.GameHomeController =  Ember.Controller.extend
       @set 'playerListSelected', false
 
     registerTag: ->
-      code = "M2F5F"
+      code = "JNHDB"
       $.post("/api/tag/" + code).done (e) ->
         user = App.User.find({user_id: 2})
         console.log user.get('status')

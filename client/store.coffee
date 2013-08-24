@@ -1,6 +1,11 @@
-# $.ajaxSetup
-#   beforeSend: (xhr) ->
-#     xhr.setRequestHeader('x-my-custom-header', 'some value');
+$.ajaxSetup
+  beforeSend: (xhr) ->
+    password = App.Auth.get('authToken')
+    username = App.Auth.get('userId')
+    if(password && username)
+      token    = username+":"+password
+      xhr.setRequestHeader('Authorization', 'Basic ' + bta(token))
+    
 
 
 #http://www.thomasboyt.com/2013/05/01/why-ember-data-breaks.html

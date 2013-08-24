@@ -7,6 +7,9 @@ App.Auth = Ember.Auth.create
   # strategyAdapter: 'token' # default 'token'
   signInEndPoint: 'api/users/authenticate'
 
+
+  tokenLocation: 'none' # default 'param'
+
   tokenKey: 'api_key'
   tokenIdKey: 'id'
 
