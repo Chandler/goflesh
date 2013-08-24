@@ -60,7 +60,7 @@ func (c *Players) ReadList(ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	return c.ReadPlayer("WHERE u.id = $1", id)
+	return c.ReadPlayer("WHERE p.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////

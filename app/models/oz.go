@@ -15,6 +15,10 @@ func (m *Oz) Confirm() {
 	player := m.Player()
 	game := player.Game()
 	player.Feed(game.TimeToReveal())
+	err = player.Save()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (m *Oz) Save() error {

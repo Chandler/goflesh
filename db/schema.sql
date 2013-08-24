@@ -59,7 +59,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE event (
-    id integer DEFAULT nextval('event_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('event_id_seq'::regclass) NOT NULL,
     event_type_id integer NOT NULL,
     created timestamp without time zone,
     updated timestamp without time zone
@@ -140,8 +140,7 @@ CREATE TABLE event_role (
 CREATE TABLE event_tag (
     id integer NOT NULL,
     event_id integer NOT NULL,
-    tag_id integer NOT NULL,
-    event_role_id integer NOT NULL
+    tag_id integer NOT NULL
 );
 
 
@@ -164,7 +163,8 @@ CREATE SEQUENCE event_type_id_seq
 CREATE TABLE event_type (
     id integer DEFAULT nextval('event_type_id_seq'::regclass) NOT NULL,
     name character varying(255) NOT NULL,
-    description text
+    description text,
+    table_name character varying(255)
 );
 
 
@@ -791,6 +791,14 @@ ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regcl
 
 
 --
+-- Name: constraintname; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY event_type
+    ADD CONSTRAINT constraintname UNIQUE (table_name);
+
+
+--
 -- Name: event_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1021,6 +1029,14 @@ ALTER TABLE ONLY event_player
 
 ALTER TABLE ONLY event_role
     ADD CONSTRAINT event_role_event_type_id_fkey FOREIGN KEY (event_type_id) REFERENCES event_type(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: event_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_tag
+    ADD CONSTRAINT event_tag_id_fkey FOREIGN KEY (id) REFERENCES event(id);
 
 
 --
