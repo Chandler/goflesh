@@ -1,3 +1,8 @@
+# $.ajaxSetup
+#   beforeSend: (xhr) ->
+#     xhr.setRequestHeader('x-my-custom-header', 'some value');
+
+
 #http://www.thomasboyt.com/2013/05/01/why-ember-data-breaks.html
 restAdapter = DS.RESTAdapter.create
   namespace: 'api' 
@@ -5,7 +10,7 @@ restAdapter = DS.RESTAdapter.create
     extract: (loader, json, type, record) ->
       # Conforms ember-data to JSONAPI spec
       # by accepting singular resources in an array
-      root = this.rootForType(type)
+      root = this.rootForType(type) 
       plural = root + "s"
       json[root] = json[plural][0]
       delete json[plural]

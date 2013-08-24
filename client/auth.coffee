@@ -10,6 +10,8 @@ App.Auth = Ember.Auth.create
   tokenKey: 'api_key'
   tokenIdKey: 'id'
 
+  sessionAdapter: 'cookie'
+
   modules: ['emberData', 'authRedirectable', 'actionRedirectable', 'rememberable']
 
   # authRedirectable:
@@ -22,6 +24,7 @@ App.Auth = Ember.Auth.create
   #   signOutRoute: 'posts'
 
   # rememberable:
-  #   tokenKey: 'test'
+  #   tokenKey: 'api_key'
+  #   tokenIdKey: 'id'
   #   period: 7
   #   autoRecall: true

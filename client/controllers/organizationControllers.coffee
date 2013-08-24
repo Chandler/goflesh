@@ -8,7 +8,7 @@ App.OrganizationHomeController = Ember.Controller.extend
   needs: 'organization'
   organization: null
   organizationBinding: 'controllers.organization'
-  contentBinding: 'organization.players'
+  contentBinding: 'organization.games'
 
 App.OrganizationsController = Ember.ObjectController.extend
   selectedOrganization: null

@@ -11,23 +11,14 @@
             </small>
           </h1> 
           <hr>
-          <h3>{{members.length}} Members</h3>
+          <h3>{{users.length}} Members</h3>
             <div class="avatar-grid">
-            {{#each organization.members}}
+            {{#each users}}
               <div class="grid-pic"> 
                 {{avatar tiny}}
               </div>
             {{/each}}
-            {{#each members}}
-              <div class="grid-pic"> 
-                {{avatar tiny}}
-              </div>
-            {{/each}}
-            {{#each members}}
-              <div class="grid-pic"> 
-                {{avatar tiny}}
-              </div>
-            {{/each}}
+  
             </div>
         </div>
       </div>
@@ -42,7 +33,7 @@
         <i class="icon-cog icon-2x"></i>{{/linkTo}}
       </div>
     </div>
-    <span class="span5 profile-content-column">
+    <span class="span8 profile-content-column">
       {{outlet}}
     </span>
   </div>
