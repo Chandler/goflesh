@@ -226,7 +226,7 @@ func InsertTestGame() *models.Game {
 func InsertTestPlayer() *models.Player {
 	user := SelectTestUser()
 	game := SelectTestGame()
-	player := &models.Player{0, user.Id, game.Id, models.TimeTrackedModel{}}
+	player := &models.Player{0, user.Id, game.Id, nil, models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(player)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -378,18 +378,17 @@ func SelectTestHuman(and string, args ...interface{}) *models.Player {
 
 func ConfirmRandomOz() {
 	query := `
-	UPDATE "oz"
-	SET
-		confirmed = TRUE
-	WHERE id IN (
-		SELECT id
-		FROM "oz"
-		WHERE confirmed = FALSE
-		ORDER BY random()
-		LIMIT 1
-	)
+	SELECT oz.*
+	FROM player p
+	INNER JOIN  "oz"
+		ON p.id = oz.id
+	WHERE oz.confirmed = FALSE
+	ORDER BY random()
+	LIMIT 1
     `
-	controllers.Dbm.Exec(query)
+	ozs, _ := controllers.Dbm.Select(models.Oz{}, query)
+	oz := ozs[0].(*models.Oz)
+	oz.Confirm()
 }
 
 func TagByRandomOzs() {
@@ -401,11 +400,7 @@ func TagByRandomOzs() {
 	}
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	tag, err := models.NewTag(game, oz_player, human, &now)
-	if err != nil {
-		revel.WARN.Print(err)
-	}
-	err = controllers.Dbm.Insert(tag)
+	_, err := models.NewTag(game, oz_player, human, &now)
 	if err != nil {
 		revel.WARN.Print(err)
 	}

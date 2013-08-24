@@ -16,14 +16,15 @@ tests/client/js/*.js
 .DS_Store
 public/css/application.css
 
+!public/js/lib
 .db/
 app/routes/
 app/tmp/
-jam/
 bower_components/
+grunt-ember-handlebars/
+jam/
 node_modules/
-test-results/
-public/js/bower
-public/js/*
-!public/js/lib
 public/img/glyphicons/
+public/js/*
+public/js/bower
+test-results/

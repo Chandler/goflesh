@@ -12,17 +12,47 @@ type Members struct {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c *Members) ReadList() revel.Result {
-	if result := c.DevOnly(); result != nil {
-		return *result
+func (c *Members) ReadMember(where string, args ...interface{}) revel.Result {
+	query := `
+	    SELECT *
+	    FROM "member" m
+    ` + where
+	name := "members"
+	type readObjectType models.Member
+
+	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	if err != nil {
+		return c.RenderError(err)
 	}
-	return GetList(models.Member{}, nil)
+	readObjects := make([]*readObjectType, len(results))
+	for i, result := range results {
+		readObject := result.(*readObjectType)
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObjects[i] = readObject
+	}
+
+	out := make(map[string]interface{})
+	out[name] = readObjects
+
+	return c.RenderJson(out)
+}
+func (c *Members) ReadList(ids []int) revel.Result {
+	// if result := c.DevOnly(); result != nil {
+	// 	return *result
+	// }
+	if len(ids) == 0 {
+		return c.ReadMember("")
+	}
+	templateStr := IntArrayToString(ids)
+	return c.ReadMember("WHERE m.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Members) Read(id int) revel.Result {
-	return GetById(models.Member{}, nil, id)
+	return c.ReadMember("WHERE m.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////

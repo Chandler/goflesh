@@ -7,9 +7,10 @@ import (
 )
 
 type Player struct {
-	Id      int `json:"id"`
-	User_id int `json:"user_id"`
-	Game_id int `json:"game_id"`
+	Id       int        `json:"id"`
+	User_id  int        `json:"user_id"`
+	Game_id  int        `json:"game_id"`
+	Last_fed *time.Time `json:"last_fed"`
 	TimeTrackedModel
 }
 
@@ -24,6 +25,19 @@ func (p *Player) HumanCode() *HumanCode {
 func PlayerFromId(id int) (*Player, error) {
 	player, err := Dbm.Get(Player{}, id)
 	return player.(*Player), err
+}
+
+func (m *Player) Save() error {
+	_, err := Dbm.Update(m)
+	return err
+}
+
+func (p *Player) Game() *Game {
+	game, err := GameFromId(p.Game_id)
+	if err != nil {
+		panic(err)
+	}
+	return game
 }
 
 func PlayerFromUserIdGameId(user_id int, game_id int) (*Player, error) {
@@ -47,13 +61,29 @@ func PlayerFromUserIdGameId(user_id int, game_id int) (*Player, error) {
 	return list[0], err
 }
 
-func (p *Player) IsHuman() bool {
-	tag := p.TaggedTag()
-
-	return tag == nil
+func (p *Player) Feed(fedAt *time.Time) {
+	if fedAt == nil {
+		now := time.Now()
+		fedAt = &now
+	}
+	p.Last_fed = fedAt
 }
 
 func (p *Player) Status() string {
+	if p.Last_fed == nil {
+		return "human"
+	}
+
+	mustHaveFedBy := time.Now().Add(-p.Game().TimeToStarve())
+
+	if p.Last_fed.Before(mustHaveFedBy) {
+		return "starved"
+	}
+
+	return "zombie"
+}
+
+func (p *Player) CalculateStatus() string {
 	query := `
 		WITH zombies AS (
 			SELECT p.id
@@ -130,22 +160,13 @@ func (p *Player) GetLastTag() *Tag {
 }
 
 func (p *Player) IsStarved() bool {
-	game, err := GameFromId(p.Game_id)
-	if err != nil {
-		panic(err)
-	}
-	tag := p.GetLastTag()
-	mustTagAfter := time.Now().Add(-game.TimeToStarve())
-
-	if tag == nil {
-		startTime := game.Running_start_time
-		revel.WARN.Print(startTime, mustTagAfter)
-		// return *startTime > mustTagAfter
-	}
-
-	return true
-	// return *(tag.Claimed) > mustTagAfter
+	return p.Status() == "starved"
 }
+
 func (p *Player) IsZombie() bool {
 	return p.Status() == "zombie"
+}
+
+func (p *Player) IsHuman() bool {
+	return p.Status() == "human"
 }
