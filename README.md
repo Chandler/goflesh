@@ -31,16 +31,9 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
     # node.js
       brew install npm
       npm -g install grunt-cli
-      npm -g install jamjs
-      npm -g install ember-auth
       npm install
-      jam install
-
-      # (temporary)
-      # from $FLESHLOCATION:
-      git clone https://github.com/Chandler/grunt-ember-handlebars.git
-      npm install grunt-ember-handlebars
-
+      bower install
+      
     # database
       brew install postgres
       initdb .db -U postgres
@@ -73,7 +66,7 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
 ## Running Locally
     #assets (check gruntfile.js for all the availiable tasks)
       grunt compile #build assets once
-      grunt w #build assets once and then watch for file changes
+      grunt w #build assets once and then watch for file changes (3rd party libraries not watched)
 
     #server
       revel run flesh
@@ -107,8 +100,6 @@ connect with psql
 
     psql -p 5454 -U postgres -d flesh_local
 
-
-
 # Generating test data
 
 drop/update schema/generate test data cycle:
@@ -121,3 +112,4 @@ generate test data:
     # visit localhost:9000/@tests
     # and click Generator > TestGenerateData > Run
     # This will create a bunch of dummy data for you
+

@@ -1,25 +1,27 @@
-define ["ember-auth"], (Auth) ->
-  Auth.create
-    # requestAdapter: 'jquery' # default 'jquery'
-    # responseAdapter: 'json' # default 'json'
-    # strategyAdapter: 'token' # default 'token'
-    signInEndPoint: 'api/users/authenticate'
+App.Auth = Ember.Auth.create
+  modules: ['emberData']
 
-    tokenKey: 'api_key'
-    tokenIdKey: 'id'
+  userModel: 'Em.App.User' # default null
+  # requestAdapter: 'jquery' # default 'jquery'
+  # responseAdapter: 'json' # default 'json'
+  # strategyAdapter: 'token' # default 'token'
+  signInEndPoint: 'api/users/authenticate'
 
-    modules: ['emberData', 'authRedirectable', 'actionRedirectable', 'rememberable']
+  tokenKey: 'api_key'
+  tokenIdKey: 'id'
 
-    # authRedirectable:
-    #   route: 'sign-in'
+  modules: ['emberData', 'authRedirectable', 'actionRedirectable', 'rememberable']
 
-    # actionRedirectable:
-    #   signInRoute: 'users'
-    #   signInSmart: true
-    #   signInBlacklist: ['sign-in']
-    #   signOutRoute: 'posts'
+  # authRedirectable:
+  #   route: 'sign-in'
 
-    # rememberable:
-    #   tokenKey: 'test'
-    #   period: 7
-    #   autoRecall: true
+  # actionRedirectable:
+  #   signInRoute: 'users'
+  #   signInSmart: true
+  #   signInBlacklist: ['sign-in']
+  #   signOutRoute: 'posts'
+
+  # rememberable:
+  #   tokenKey: 'test'
+  #   period: 7
+  #   autoRecall: true

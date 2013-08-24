@@ -1,16 +1,12 @@
-define ["ember"], (Em) ->
-  LoginController = Em.ObjectController.extend
-    email: ''
-    password: ''
-    login: (arg) ->
-      @clearErrors()
-      Em.App.Auth.signIn
-        data:
-          email: this.email
-          password: this.password
-    errors: null,
-    clearErrors: ->
-      @set 'errors', null
-    errorMessages: (->
-      @get 'errors'
-    ).property 'errors' 
+App.LoginController = BaseController.extend
+  email: null
+  password: null
+  login: (arg) ->
+    @clearErrors()
+    App.Auth.signIn
+      data:
+        email: @email
+        password: @password
+
+    App.Auth.on 'signInSuccess', =>
+      @transitionTo('user.home', App.Auth.get('user'))

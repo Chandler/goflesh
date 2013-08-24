@@ -7,38 +7,38 @@
       {{view Ember.TextField
         type="text"
         placeholder=first_name
-        valueBinding="first_name"
+        valueBinding="user.first_name"
       }}
     </div>
     <div class="row last_name field">
       {{view Ember.TextField
         type="text"
         placeholder=last_name
-        valueBinding="last_name"
+        valueBinding="user.last_name"
       }}
     </div>
      <div class="row field">
       {{view Ember.TextField
         type="text"
         placeholder=email
-        valueBinding="email"
+        valueBinding="user.email"
       }}
     </div>
      <div class="row field">
       {{view Ember.TextField
         type="text"
         placeholder=screen_name
-        valueBinding="screen_name"
+        valueBinding="user.screen_name"
       }}
     </div>
      <div class="row field">
       {{view Ember.TextField
         type="text"
         placeholder="password"
-        valueBinding="password"
+        valueBinding="user.password"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "editUser"}}>Save Changes</div>
+    <div class="btn btn-large btn-block  row signup-btn" {{action "save"}}>Save Changes</div>
   </div>
     <span class="clearfix"></span>
 </div>

@@ -26,7 +26,11 @@ func AddTables(dbm *gorp.DbMap) {
 	dbm.AddTable(Oz{}).SetKeys(true, "Id")
 	dbm.AddTable(Tag{}).SetKeys(true, "Id")
 	dbm.AddTable(Member{}).SetKeys(true, "Id")
-	dbm.AddTableWithName(HumanCode{}, "human_code").SetKeys(true, "Id")
+	dbm.AddTable(Event{}).SetKeys(true, "Id")
+	dbm.AddTable(EventType{}).SetKeys(true, "Id")
+	dbm.AddTable(EventRole{}).SetKeys(true, "Id")
+	dbm.AddTable(EventToPlayer{}).SetKeys(true, "Id")
+	dbm.AddTableWithName(HumanCode{}, "human_code").SetKeys(false, "Id")
 	dbm.AddTableWithName(OzPool{}, "oz_pool").SetKeys(true, "Id")
 	dbm.AddTableWithName(PasswordReset{}, "password_reset")
 }

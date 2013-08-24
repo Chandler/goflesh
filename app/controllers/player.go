@@ -5,10 +5,16 @@ import (
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
+	"time"
 )
 
 type Players struct {
 	AuthController
+}
+
+type PlayerRead struct {
+	models.Player
+	StatusString string `json:"status"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -17,7 +23,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	    FROM player p
     ` + where
 	name := "players"
-	type readObjectType models.Player
+	type readObjectType PlayerRead
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
 	if err != nil {
@@ -26,6 +32,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	readObjects := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)
+		readObject.StatusString = readObject.Status()
 		if err != nil {
 			return c.RenderJson(err)
 		}
@@ -53,7 +60,7 @@ func (c *Players) ReadList(ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	return c.ReadPlayer("WHERE u.id = $1", id)
+	return c.ReadPlayer("WHERE p.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -96,7 +103,10 @@ func (c *Players) Create() revel.Result {
 				return c.RenderError(err)
 			}
 			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
-			Dbm.Insert(member)
+			err = Dbm.Insert(&member)
+			if err != nil {
+				return c.RenderError(err)
+			}
 		}
 	}
 
@@ -131,4 +141,46 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	_, err := Dbm.Select(member, query, user_id, game_id)
 
 	return &member, err
+}
+
+func (c *Players) Tag(code string) revel.Result {
+	query := `
+		SELECT *
+		FROM human_code
+		WHERE code = $1
+	`
+	err := c.Auth()
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	human_code := models.HumanCode{}
+	_, err = Dbm.Select(human_code, query, code)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	player, err := Dbm.Get(models.Player{}, human_code.Id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	human := player.(models.Player)
+
+	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	game := gameObj.(*models.Game)
+
+	tagger, err := models.PlayerFromUserIdGameId(c.User.Id, human.Game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	now := time.Now()
+	_, err = models.NewTag(game, tagger, &human, &now)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	return c.Read(human.Id)
 }

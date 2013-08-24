@@ -1,5 +1,3 @@
-define('ember', ['jquery','handlebars'], function ($,Handlebars) {
-
 // Version: v1.0.0-rc.3-292-gbdffb37
 // Last commit: bdffb37 (2013-05-02 07:21:19 -0700)
 
@@ -29261,6 +29259,3 @@ Ember
 */
 
 })();
-
-  return Ember;
-});

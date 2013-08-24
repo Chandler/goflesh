@@ -168,6 +168,9 @@ func createUsers(data []byte) ([]interface{}, error) {
 	for i := range modelObjects {
 		modelObject := modelObjects[i]
 		modelObject.ChangePassword(modelObject.Password)
+		human_code := models.HumanCode{modelObject.Id, "", models.TimeTrackedModel{}}
+		human_code.GenerateCode()
+		Dbm.Insert(human_code)
 		interfaces[i] = interface{}(&modelObject)
 	}
 	return interfaces, nil

@@ -1,4 +1,3 @@
-<div  id="new-org" class="simple-page">
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
@@ -8,17 +7,21 @@
       {{view Ember.TextField
         type="text"
         placeholder=name
-        valueBinding="name"
+        valueBinding="game.name"
       }}
     </div>
     <div class="row slug field">
       {{view Ember.TextField
         type="text"
         placeholder=slug
-        valueBinding="slug"
+        valueBinding="game.slug"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "editGame"}}>Save Changes </div>
+    <div class="btn btn-large btn-block  row signup-btn" {{action "save"}}>Save Changes </div>
   </div>
+      {{#each game.players}}
+      <div class="inline-game"> 
+        {{#linkTo 'game.home' this}} test {{user.first_name}} {{/linkTo}}
+      </div>
+    {{/each}}
     <span class="clearfix"></span>
-</div>

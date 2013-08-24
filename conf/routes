@@ -5,6 +5,8 @@ module:testrunner
 
 GET		/												Application.Index
 
+POST	/api/tag/:code									Players.Tag
+
 GET		/api/organizations								Organizations.ReadList
 GET		/api/organizations/:id/							Organizations.Read
 PUT		/api/organizations/:id/							Organizations.Update

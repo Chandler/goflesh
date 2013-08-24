@@ -14,10 +14,10 @@ type Organizations struct {
 
 type OrganizationRead struct {
 	models.Organization
-	Games      string `json:"-"`
-	Game_ids   []int  `json:"games"`
-	Members    string `json:"-"`
-	Member_ids []int  `json:"members"`
+	Games    string `json:"-"`
+	Game_ids []int  `json:"game_ids"`
+	Users    string `json:"-"`
+	User_ids []int  `json:"user_ids"`
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -32,11 +32,12 @@ func (c *Organizations) ReadOrganization(where string, args ...interface{}) reve
 					ON o.id = g.organization_id
 				) games,
 			array(
-				SELECT DISTINCT m.id
-				FROM game m
-				INNER JOIN member
-					ON o.id = m.organization_id
-				) members
+				SELECT DISTINCT u.id
+				FROM member m
+				INNER JOIN "user" u
+					ON m.user_id = u.id
+				WHERE o.id = m.organization_id
+				) users
 	    FROM "organization" o
     ` + where
 	name := "organizations"
@@ -50,7 +51,7 @@ func (c *Organizations) ReadOrganization(where string, args ...interface{}) reve
 	for i, result := range results {
 		readObject := result.(*readObjectType)
 		readObject.Game_ids, err = PostgresArrayStringToIntArray(readObject.Games)
-		readObject.Member_ids, err = PostgresArrayStringToIntArray(readObject.Members)
+		readObject.User_ids, err = PostgresArrayStringToIntArray(readObject.Users)
 		if err != nil {
 			return c.RenderJson(err)
 		}

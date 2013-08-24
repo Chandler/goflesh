@@ -2,19 +2,61 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      assets: ["public/js/*.js", 'tests/client/js/*.js'],
+      assets: ["public/js/*.js", 'tests/client/js/*.js', 'public/js/bower/*.js'],
     },
-    coffee: {
+    bower: {
+      dev: {
+        dest: 'public/js/bower',
+        options: {
+          stripJsAffix: true
+        }
+      }
+    },
+    concat: {
+      basic: {
+        src: [
+            'public/js/bower/jquery.js',
+            'public/js/bower/jquery-cookie.js',
+            'public/js/bower/jquery-ui.js',
+            'public/js/bower/d3.js',
+            'public/js/bower/underscore.js',
+            'public/js/bower/handlebars.js',
+            'public/js/lib/new-ember.js',
+            'public/js/lib/new-ember-data.js',
+            'public/js/bower/ember-auth.js',
+            'public/js/lib/ember-list-view.js'
+          ],
+        dest: 'public/js/libraries.js',
+      }
+    },
+    uglify: {
+      options: {
+        mangle: false
+      },
+      my_target: {
+        files: {
+          'public/js/libraries.js': [
+            'add/some/files/we/will/need/this/later',
+          ]
+        }
+      }
+    },
+    coffee: { 
       options: {
         bare: true
       },
       app: {
-        flatten: true,
-        expand: true,
-        cwd: 'client',
-        src: ['**/*.coffee'],
-        dest: 'public/js/',
-        ext: '.js'
+        options: {
+          sourceMap: true
+        },
+        files: {
+          'public/js/main.js': [
+            'client/app.coffee',
+            'client/controllers/baseController.coffee',
+            'client/controllers/newController.coffee',
+            'client/**/*.coffee'
+          ] 
+        }
       },
       tests: {
         flatten: true,
@@ -25,57 +67,8 @@ module.exports = function(grunt) {
         ext: '.js'
       }
     },
-    jasmine: {
-      taskName: {
-        src: 'public/css/*.js',
-        options: {
-          specs: 'tests/client/js/*.js',
-          template: require('grunt-template-jasmine-requirejs'),
-          templateOptions: {
-            requireConfigFile: ['public/js/jam/require.config.js'],
-            requireConfig: {
-              baseUrl: './public/js',
-              packages: [
-                {
-                    name: "handlebars",
-                    location: "lib",
-                    main: "handlebars.js"
-                },
-                {
-                    name: "ember",
-                    location: "lib",
-                    main: "ember.js"
-                },
-                {
-                    name: "ember-auth",
-                    location: "lib",
-                    main: "ember-auth.js"
-
-                },
-                {
-                    name: "ember-data",
-                    location: "lib",
-                    main: "ember-data.js"
-                },
-                {
-                    name: "templates",
-                    location: ".",
-                    main: "templates.js"
-                }
-              ],
-              shim: {
-                "templates": {
-                  exports: 'this["Ember"]["TEMPLATES"]'
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     ember_handlebars: {
       options: {
-        amd: true,
         processName: function(filename) {
         /* example template structure
             templates/
@@ -134,13 +127,8 @@ module.exports = function(grunt) {
         files: ['client/stylesheets/*.styl'],
         tasks: 'stylus'
       }
-    },
-    madge: {
-      options: {
-        format: 'amd'
-      },
-      all: ['client']
-    },
+    }
+    
   });
 
   grunt.loadNpmTasks('grunt-contrib-handlebars');
@@ -152,16 +140,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-requirejs');
-  grunt.loadNpmTasks('grunt-amd-dist');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-madge');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-bower');
 
 
-  
   grunt.registerTask('spec', ['coffee:tests', 'jasmine']);
-
-  grunt.registerTask('compile', ['clean:assets','coffee:app', 'coffee:tests','ember_handlebars','stylus']);
+  grunt.registerTask('compile', ['clean:assets', 'bower', 'concat','coffee:app', 'coffee:tests','ember_handlebars','stylus']);
   grunt.registerTask('c', ['compile']);
   grunt.registerTask('w', ['compile','watch']);
 

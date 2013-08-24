@@ -4,6 +4,7 @@
       <div class="side-profile">
         {{avatar profile class="profile_image pull-center"}}
         <div class="page-heading">
+        {{player}}
             <h1>{{first_name}} {{last_name}}'s Profile</h1>
             <hr>
         </div>
@@ -11,8 +12,8 @@
     </span>
     <span class="span5 profile-content-column">
       <div class="profile-option-tabs">
-        {{#linkTo user.home this classNames="profile-option-tab profile-home"}} Home {{/linkTo}}
-        {{#linkTo user.settings this classNames="profile-option-tab profile-home"}} Settings {{/linkTo}}
+        {{#linkTo 'user.home' this classNames="profile-option-tab profile-home"}} Home {{/linkTo}}
+        {{#linkTo 'user.settings' this classNames="profile-option-tab profile-home"}} Settings {{/linkTo}}
         <span class="clearfix">
       </div>
       {{outlet}}

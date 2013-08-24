@@ -1,3 +1,2 @@
-define ["ember"], (Em) ->
-  GameItemView = Em.View.extend
-    templateName: "gameItem"
+App.GameItemView = Ember.View.extend
+  templateName: "gameItem"
