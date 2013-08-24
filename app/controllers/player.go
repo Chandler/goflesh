@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
@@ -154,16 +155,23 @@ func (c *Players) Tag(code string) revel.Result {
 		return c.RenderError(err)
 	}
 
-	human_code := models.HumanCode{}
-	_, err = Dbm.Select(human_code, query, code)
+	var list []*models.HumanCode
+	_, err = Dbm.Select(&list, query, code)
 	if err != nil {
 		return c.RenderError(err)
 	}
+	if len(list) != 1 {
+		return c.RenderError(errors.New("Invalid human code"))
+	}
+	human_code := list[0]
 	player, err := Dbm.Get(models.Player{}, human_code.Id)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	human := player.(models.Player)
+
+	revel.WARN.Print(human_code)
+	human := player.(*models.Player)
+	revel.WARN.Print(human)
 
 	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
 	if err != nil {
@@ -177,7 +185,7 @@ func (c *Players) Tag(code string) revel.Result {
 	}
 
 	now := time.Now()
-	_, err = models.NewTag(game, tagger, &human, &now)
+	_, err = models.NewTag(game, tagger, human, &now)
 	if err != nil {
 		return c.RenderError(err)
 	}

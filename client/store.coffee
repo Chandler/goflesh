@@ -21,7 +21,7 @@ restAdapter = DS.RESTAdapter.create
     data = {};
 
     #old version: data[root] = this.serialize(record, { includeId: true });
-    data[root] = [this.serialize(record, { includeId: true })];
+    data[this.pluralize(root)] = [this.serialize(record, { includeId: true })];
 
     @ajax(@buildURL(root), "POST",
       data: data

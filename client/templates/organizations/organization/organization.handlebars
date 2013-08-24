@@ -1,4 +1,4 @@
-<div  id="org" class="simple-page">
+<div class="simple-page">
   <div class="row-fluid">
     <span class="span4">
       <div class="side-profile">
@@ -29,20 +29,19 @@
               </div>
             {{/each}}
             </div>
-
-            <h3>{{members.length}} Teams</h3>
-            <div class="avatar-grid">
-            {{#each members}}
-              <div class="grid-pic"> 
-                {{avatar tiny}}
-              </div>
-            {{/each}}
-            </div>
-
-
         </div>
       </div>
     </span>
+    <div class="profile-options">
+      <div>
+        {{#linkTo 'organization.home' this classNames="profile-option-tab profile-home"}} 
+        <i class="icon-home icon-2x"></i>{{/linkTo}}
+      </div>
+      <div>
+        {{#linkTo 'organization.settings' this classNames="profile-option-tab profile-home"}}
+        <i class="icon-cog icon-2x"></i>{{/linkTo}}
+      </div>
+    </div>
     <span class="span5 profile-content-column">
       {{outlet}}
     </span>
