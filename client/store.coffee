@@ -4,7 +4,7 @@ $.ajaxSetup
     username = App.Auth.get('userId')
     if(password && username)
       token    = username+":"+password
-      xhr.setRequestHeader('Authorization', 'Basic ' + bta(token))
+      xhr.setRequestHeader('Authorization', 'Basic ' + btoa(token))
     
 
 
