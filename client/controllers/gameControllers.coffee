@@ -4,26 +4,27 @@ App.GamesNewController = NewController.extend
   slug: '',
 
 App.GameHomeController =  Ember.Controller.extend
-    needs: 'game'
-    game: null
-    gameBinding: 'controllers.game'
-    contentBinding: 'game.players'
-    
-    #TODO change these
-    eventFeedSelected: false
-    playerListSelected: true
-    showPlayerList: ->
-      @set 'eventFeedSelected', false
-      @set 'playerListSelected', true
-    showEventFeed: ->
-      @set 'eventFeedSelected', true
-      @set 'playerListSelected', false
+  code: ''
+  needs: 'game'
+  game: null
+  gameBinding: 'controllers.game'
+  contentBinding: 'game.players'
+  
+  #TODO change these
+  eventFeedSelected: false
+  playerListSelected: true
+  showPlayerList: ->
+    @set 'eventFeedSelected', false
+    @set 'playerListSelected', true
+  showEventFeed: ->
+    @set 'eventFeedSelected', true
+    @set 'playerListSelected', false
 
-    registerTag: ->
-      code = "JNHDB"
-      $.post("/api/tag/" + code).done (e) ->
-        user = App.User.find({user_id: 2})
-        console.log user.get('status')
+  registerTag: ->
+    code = "JNHDB"
+    $.post("/api/tag/" + code).done (e) ->
+      user = App.User.find({user_id: 2})
+      console.log user.get('status')
     
 
 App.GamesController = Ember.ObjectController.extend
