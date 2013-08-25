@@ -1,4 +1,4 @@
-App.OrganizationsNewController = NewController.extend
+
   editableRecordFields: ['name', 'slug', 'location']
   name: ''
   slug: ''
@@ -8,6 +8,7 @@ App.OrganizationHomeController = Ember.Controller.extend
   needs: 'organization'
   organization: null
   organizationBinding: 'controllers.organization'
+  contentBinding: 'organization.games'
 
 App.OrganizationsController = Ember.ObjectController.extend
   selectedOrganization: null

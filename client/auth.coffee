@@ -1,14 +1,19 @@
 App.Auth = Ember.Auth.create
   modules: ['emberData']
 
-  userModel: 'Em.App.User' # default null
+  userModel: 'App.User' # default null
   # requestAdapter: 'jquery' # default 'jquery'
   # responseAdapter: 'json' # default 'json'
   # strategyAdapter: 'token' # default 'token'
   signInEndPoint: 'api/users/authenticate'
 
+
+  tokenLocation: 'none' # default 'param'
+
   tokenKey: 'api_key'
   tokenIdKey: 'id'
+
+  sessionAdapter: 'cookie'
 
   modules: ['emberData', 'authRedirectable', 'actionRedirectable', 'rememberable']
 
@@ -22,6 +27,7 @@ App.Auth = Ember.Auth.create
   #   signOutRoute: 'posts'
 
   # rememberable:
-  #   tokenKey: 'test'
+  #   tokenKey: 'api_key'
+  #   tokenIdKey: 'id'
   #   period: 7
   #   autoRecall: true

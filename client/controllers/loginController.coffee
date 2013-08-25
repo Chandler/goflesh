@@ -9,4 +9,4 @@ App.LoginController = BaseController.extend
         password: @password
 
     App.Auth.on 'signInSuccess', =>
-      @transitionTo('user.home', App.Auth.get('user'))
+      @transitionToRoute('user.home', App.User.find(App.Auth.get('userId')))
