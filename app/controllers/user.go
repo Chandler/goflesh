@@ -187,6 +187,7 @@ type UserAuthenticateInput struct {
 	Email       string `json:"email"`
 	Screen_name string `json:"screen_name"`
 	Password    string `json:"password"`
+	Api_key     string `json:"api_key"` // TODO: fix client-side auth so we don't have this hack
 }
 
 type UserAuthenticateOutput struct {
@@ -201,9 +202,11 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 		WHERE
 		email = $1
 		OR screen_name = $2
+		OR api_key = $3 -- TODO: fix client-side auth so we don't have this hack
 		`
 
-	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name)
+	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
+		userInfo.Api_key) // TODO: fix client-side auth so we don't have this hack
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}
@@ -227,14 +230,18 @@ func (c *Users) Authenticate() revel.Result {
 		return c.RenderError(err)
 	}
 
+	out := UserAuthenticateOutput{user.Id, user.Api_key}
+
+	if authInfo.Api_key == user.Api_key { // TODO: fix client-side auth so we don't have this hack
+		return c.RenderJson(out)
+	}
+
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(authInfo.Password))
 
 	if err != nil {
 		c.Response.Status = 401
 		return c.RenderText("")
 	}
-
-	out := UserAuthenticateOutput{user.Id, user.Api_key}
 
 	return c.RenderJson(out)
 }

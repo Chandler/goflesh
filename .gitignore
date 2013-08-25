@@ -21,6 +21,7 @@ public/css/application.css
 app/routes/
 app/tmp/
 bower_components/
+components/
 grunt-ember-handlebars/
 jam/
 node_modules/

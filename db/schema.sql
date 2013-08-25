@@ -59,7 +59,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE event (
-    id integer DEFAULT nextval('event_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('event_id_seq'::regclass) NOT NULL,
     event_type_id integer NOT NULL,
     created timestamp without time zone,
     updated timestamp without time zone
@@ -98,18 +98,6 @@ CREATE SEQUENCE event_player_id_seq
 
 
 --
--- Name: event_player; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE event_player (
-    id integer DEFAULT nextval('event_player_id_seq'::regclass) NOT NULL,
-    event_id integer NOT NULL,
-    player_id integer NOT NULL,
-    event_role_id integer NOT NULL
-);
-
-
---
 -- Name: event_role_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -138,11 +126,89 @@ CREATE TABLE event_role (
 --
 
 CREATE TABLE event_tag (
-    id integer NOT NULL,
-    event_id integer NOT NULL,
-    tag_id integer NOT NULL,
-    event_role_id integer NOT NULL
+    id bigint NOT NULL,
+    tag_id integer NOT NULL
 );
+
+
+--
+-- Name: event_tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE event_tag_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: event_tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE event_tag_id_seq OWNED BY event_tag.id;
+
+
+--
+-- Name: event_to_game; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE event_to_game (
+    id bigint NOT NULL,
+    event_id integer,
+    game_id integer
+);
+
+
+--
+-- Name: event_to_game_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE event_to_game_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: event_to_game_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE event_to_game_id_seq OWNED BY event_to_game.id;
+
+
+--
+-- Name: event_to_player; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE event_to_player (
+    id bigint NOT NULL,
+    event_id integer,
+    player_id integer,
+    event_role_id integer
+);
+
+
+--
+-- Name: event_to_player_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE event_to_player_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: event_to_player_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE event_to_player_id_seq OWNED BY event_to_player.id;
 
 
 --
@@ -164,7 +230,8 @@ CREATE SEQUENCE event_type_id_seq
 CREATE TABLE event_type (
     id integer DEFAULT nextval('event_type_id_seq'::regclass) NOT NULL,
     name character varying(255) NOT NULL,
-    description text
+    description text,
+    table_name character varying(255)
 );
 
 
@@ -668,6 +735,27 @@ ALTER SEQUENCE user_id_seq OWNED BY "user".id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY event_tag ALTER COLUMN id SET DEFAULT nextval('event_tag_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_game ALTER COLUMN id SET DEFAULT nextval('event_to_game_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_player ALTER COLUMN id SET DEFAULT nextval('event_to_player_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY game ALTER COLUMN id SET DEFAULT nextval('game_id_seq'::regclass);
 
 
@@ -791,6 +879,14 @@ ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regcl
 
 
 --
+-- Name: constraintname; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY event_type
+    ADD CONSTRAINT constraintname UNIQUE (table_name);
+
+
+--
 -- Name: event_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -807,19 +903,27 @@ ALTER TABLE ONLY event_tag
 
 
 --
--- Name: event_player_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY event_player
-    ADD CONSTRAINT event_player_pkey PRIMARY KEY (id);
-
-
---
 -- Name: event_role_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY event_role
     ADD CONSTRAINT event_role_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: event_to_game_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY event_to_game
+    ADD CONSTRAINT event_to_game_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: event_to_player_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY event_to_player
+    ADD CONSTRAINT event_to_player_pkey PRIMARY KEY (id);
 
 
 --
@@ -992,30 +1096,6 @@ CREATE UNIQUE INDEX user_email_idx ON "user" USING btree (email);
 
 
 --
--- Name: event_player_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY event_player
-    ADD CONSTRAINT event_player_event_id_fkey FOREIGN KEY (event_id) REFERENCES event(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: event_player_event_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY event_player
-    ADD CONSTRAINT event_player_event_role_id_fkey FOREIGN KEY (event_role_id) REFERENCES event_role(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: event_player_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY event_player
-    ADD CONSTRAINT event_player_player_id_fkey FOREIGN KEY (player_id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: event_role_event_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1024,11 +1104,59 @@ ALTER TABLE ONLY event_role
 
 
 --
+-- Name: event_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_tag
+    ADD CONSTRAINT event_tag_id_fkey FOREIGN KEY (id) REFERENCES event(id);
+
+
+--
 -- Name: event_tag_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY event_tag
     ADD CONSTRAINT event_tag_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES tag(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: event_to_game_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_game
+    ADD CONSTRAINT event_to_game_event_id_fkey FOREIGN KEY (event_id) REFERENCES event(id);
+
+
+--
+-- Name: event_to_game_game_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_game
+    ADD CONSTRAINT event_to_game_game_id_fkey FOREIGN KEY (game_id) REFERENCES game(id);
+
+
+--
+-- Name: event_to_player_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_player
+    ADD CONSTRAINT event_to_player_event_id_fkey FOREIGN KEY (event_id) REFERENCES event(id);
+
+
+--
+-- Name: event_to_player_event_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_player
+    ADD CONSTRAINT event_to_player_event_role_id_fkey FOREIGN KEY (event_role_id) REFERENCES event_role(id);
+
+
+--
+-- Name: event_to_player_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_to_player
+    ADD CONSTRAINT event_to_player_player_id_fkey FOREIGN KEY (player_id) REFERENCES player(id);
 
 
 --

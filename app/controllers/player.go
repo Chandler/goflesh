@@ -61,7 +61,7 @@ func (c *Players) ReadList(ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	return c.ReadPlayer("WHERE u.id = $1", id)
+	return c.ReadPlayer("WHERE p.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -125,7 +125,6 @@ func (c *Players) Create() revel.Result {
 		human_code.GenerateCode()
 		err = Dbm.Insert(&human_code)
 		if err != nil {
-			revel.WARN.Print(err, human_code)
 			return c.RenderError(err)
 		}
 	}
@@ -144,7 +143,7 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	return &member, err
 }
 
-func (c *Players) Tag(code string) revel.Result {
+func (c *Players) Tag(player_id int, code string) revel.Result {
 	query := `
 		SELECT *
 		FROM human_code
@@ -153,6 +152,31 @@ func (c *Players) Tag(code string) revel.Result {
 	err := c.Auth()
 	if err != nil {
 		return c.RenderError(err)
+	}
+
+	if c.Request.Header.Get("Authorization") == "" {
+		c.Response.Status = 401
+		return c.RenderText("")
+	}
+
+	if c.User == nil {
+		c.Response.Status = 403
+		return c.RenderText("User credentials bad")
+	}
+
+	tagger, err := models.PlayerFromId(player_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	if !tagger.IsZombie() {
+		c.Response.Status = 403
+		return c.RenderText("You are cannot tag because you are not a zombie")
+	}
+
+	if tagger.User_id != c.User.Id {
+		c.Response.Status = 403
+		return c.RenderText("Tags cannot be registered for other users")
 	}
 
 	var list []*models.HumanCode
@@ -169,20 +193,13 @@ func (c *Players) Tag(code string) revel.Result {
 		return c.RenderError(err)
 	}
 
-	revel.WARN.Print(human_code)
 	human := player.(*models.Player)
-	revel.WARN.Print(human)
 
 	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
 	game := gameObj.(*models.Game)
-
-	tagger, err := models.PlayerFromUserIdGameId(c.User.Id, human.Game_id)
-	if err != nil {
-		return c.RenderError(err)
-	}
 
 	now := time.Now()
 	_, err = models.NewTag(game, tagger, human, &now)

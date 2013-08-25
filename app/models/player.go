@@ -24,6 +24,12 @@ func (p *Player) HumanCode() *HumanCode {
 
 func PlayerFromId(id int) (*Player, error) {
 	player, err := Dbm.Get(Player{}, id)
+	if err != nil {
+		return nil, err
+	}
+	if player == nil {
+		return nil, errors.New("Player could not be found")
+	}
 	return player.(*Player), err
 }
 

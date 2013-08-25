@@ -18,9 +18,9 @@ func (c *AuthController) Auth() error {
 		return nil // already authorized
 	}
 
-	if isDisabled := revel.Config.BoolDefault("auth.disabled", false); isDisabled {
-		return nil
-	}
+	// if isDisabled := revel.Config.BoolDefault("auth.disabled", false); isDisabled {
+	// 	return nil
+	// }
 
 	encodedAuth := strings.TrimPrefix(c.Request.Header.Get("Authorization"), "Basic ")
 	decodedAuth, err := base64.StdEncoding.DecodeString(encodedAuth)
