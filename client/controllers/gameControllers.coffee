@@ -22,10 +22,12 @@ App.GameHomeController =  Ember.Controller.extend
 
   registerTag: ->
     code = "JNHDB"
-    $.post("/api/tag/" + code).done (e) ->
+    $.post
+      url: "/api/tag/" + code +"?player_id=" + @get('user.player.id')
+    .done (e) ->
       user = App.User.find({user_id: 2})
       console.log user.get('status')
-    
+
 
 App.GamesController = Ember.ObjectController.extend
   selectedGame: null
