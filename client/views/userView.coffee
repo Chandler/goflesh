@@ -7,6 +7,7 @@ App.UserView = Ember.View.extend
 
   didInsertElement: ->
     console.log("inserted")
+    #yes I'm checking a key into github sue me.
     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcml2YXRlX3Rva2VuIjoiYjdhZGFkNjI2YWI0NTc0ZmMwYTE5M2MyOWQ0YjBiMTkxYjQxYWNlOWQwMzUzNTU5YzhhMzRhMDhkOWRiNGI2ZCJ9.V0JQ5FygLaWiXn1yzN-gdmywkki6V1V8r2y1TqSMPUU"
     client = new AvatarsIO(token) # obtain at http://avatars.io/
     $ ->
