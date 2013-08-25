@@ -8,7 +8,7 @@ import datetime
 def main():
 	print 'testing'
 	tester = TestCasePlayer()
-	tester.test_get_one()
+	tester.test_player_auth()
 
 def create_dicts(filename):
 	with open(filename, 'r') as f:
@@ -58,24 +58,28 @@ class TestCaseUser(TestCase):
 		query = self.url_encoder.encode_list(users, 'ids')
 		response = self.requests_gen.get(''.join(['users?', query]))
 		n.assert_equal(response.status_code, 200)
-		n.assert_equal(len(response.json()["users"]), len(users))
+		n.assert_equal(len(response.json()['users']), len(users))
 		return response.json()
 
 	def test_login(self):
 		user = self.object_gen.generate_user_data(1) # creating user here to extract password
-		response = self.requests_gen.post(user, 'users')
-		n.assert_equal(response.status_code, 200)
+		user_response = self.requests_gen.post(user, 'users')
+		n.assert_equal(user_response.status_code, 200)
 		login_credentials = self.object_gen.generate_login_data(user['users'])
 		response = self.requests_gen.post(user, 'login')
 		n.assert_equal(response.status_code, 200)
-		return user
+		return user_response.json()
 
 	def test_login_get_one(self):
 		user = self.test_login()
 		user_id = extract_obj_attr(user, 'id')
-		response = self.requests_gen.get('users/{}'.format(user_id))
+		api_key = extract_obj_attr(user, 'api_key')
+		response = self.requests_gen.get_with_auth('users/{}'.format(user_id), (user_id, api_key))
 		n.assert_equal(response.status_code, 200)
-		n.assert_equal(extract_obj_attr(response.json(), 'email'), extract_obj_attr(user['users'], 'email'))
+		email_exists = 'email' in response.json()['users'][0].keys()
+		print response.json()
+		print response.request.headers
+		n.assert_true(email_exists)
 
 	def test_bad_create(self):
 		user = self.object_gen.generate_user_data(1)
@@ -112,6 +116,12 @@ class TestCaseOrg(TestCase): # location fails with colon. Supposed to?
 		n.assert_equal(len(response.json()["organizations"]), len(orgs))
 		return response.json()
 
+	def test_list_games(self):
+		org = self.test_create()
+		org_id = extract_obj_attr(org, 'id')
+		response = self.requests_gen.get('organizations/{}/games'.format(org_id))
+		n.assert_equal(response.status_code, 200)
+
 	def test_bad_create(self):
 		org = self.object_gen.generate_org_data(1)
 		response = self.requests_gen.bad_post(org, 'organizations')
@@ -147,6 +157,29 @@ class TestCaseGame(TestCase):
 		n.assert_equal(len(response.json()["games"]), len(games))
 		return response.json()
 
+	# def test_select_ozs(self):
+	# 	game = self.test_create()
+	# 	game_id = extract_obj_attr(game, 'id')
+	# 	response = self.requests_gen.post()
+
+	def test_list_emails_all(self):
+		game = self.test_create()
+		game_id = extract_obj_attr(game, 'id')
+		response = self.requests_gen.get('games/{}/emails/all'.format(game_id))
+		n.assert_equal(response.status_code, 200)
+
+	def test_list_emails_human(self):
+		game = self.test_create()
+		game_id = extract_obj_attr(game, 'id')
+		response = self.requests_gen.get('games/{}/emails/human'.format(game_id))
+		n.assert_equal(response.status_code, 200)
+
+	def test_list_emails_zombie(self):
+		game = self.test_create()
+		game_id = extract_obj_attr(game, 'id')
+		response = self.requests_gen.get('games/{}/emails/zombie'.format(game_id))
+		n.assert_equal(response.status_code, 200)
+
 	def test_bad_create(self):
 		game = self.object_gen.generate_game_data(1)
 		response = self.requests_gen.bad_post(game, 'games')
@@ -156,6 +189,7 @@ class TestCasePlayer(TestCase):
 	def test_create(self):
 		player = self.object_gen.generate_player_data(1)
 		response = self.requests_gen.post(player, 'players')
+		print response.text
 		n.assert_equal(response.status_code, 200)
 		n.assert_equal(extract_obj_attr(response.json(), 'user_id'), extract_obj_attr(player['players'], 'user_id'))
 		return response.json()
@@ -183,10 +217,35 @@ class TestCasePlayer(TestCase):
 		n.assert_equal(len(response.json()["players"]), len(players))
 		return response.json()
 
+	def test_player_auth(self):
+		user = TestCaseUser().test_login()
+		user_id = extract_obj_attr(user, 'id')
+		api_key = extract_obj_attr(user, 'api_key')
+		player = self.test_create()
+		player_id = extract_obj_attr(player, 'id')
+		response = self.requests_gen.get_with_auth('players/{}'.format(player_id), (user_id, api_key))
+		n.assert_equal(response.status_code, 200)
+		# email_exists = 'email' in response.json()['users'][0].keys()
+		print response.json()
+		# print response.request.headers
+		# n.assert_true(email_exists)
+
 	def test_bad_create(self):
 		player = self.object_gen.generate_player_data(1)
 		response = self.requests_gen.bad_post(player, 'players')
 		n.assert_not_equal(response.status_code, 200)
+
+	def test_oz_pool_all(self):
+		player = self.test_create()
+		response = self.requests_gen.get('players/oz_pool')
+		n.assert_equal(response.status_code, 200)
+
+	def test_oz_pool_get_one(self):
+		# not authenticated, gives a 403 (permission denied)
+		player = self.test_create()
+		player_id = extract_obj_attr(player, 'id')
+		response = self.requests_gen.get('players/{}/oz_pool'.format(player_id))
+		n.assert_equal(response.status_code, 403)
 
 # class TestCaseMember(TestCase):
 # 	def test_create(self):
@@ -216,7 +275,14 @@ class APIRequestsGenerator():
 
 	def get(self, url):
 		url = ''.join([self.base_url, url])
+		print url
 		r = requests.get(url)
+		return r
+
+	def get_with_auth(self, url, auth_params):
+		url = ''.join([self.base_url, url])
+		r = requests.get(url, auth=auth_params)
+		print auth_params
 		return r
 
 class UrlEncode():
@@ -297,6 +363,7 @@ class ObjectGenerator():
 			}
 			players.append(player)
 		return {'players': [player]}
+
 
 class DataGenerator():
 	''' Generates random data needed to create objects '''
@@ -430,10 +497,7 @@ class DataGenerator():
 		''' generates a json serializable datetime string given the number of days past the current time to add '''
 
 		date_time = datetime.datetime.now() + datetime.timedelta(days)
-		# strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
-		# formatted_datetime = date_time.strftime('%Y-%m-%d') # %H:%M:%S %Z
 		formatted_date_time = date_time.isoformat()
-		# print formatted_datetime
 		return formatted_date_time + 'Z'
 
 	def generate_timezone(self):
