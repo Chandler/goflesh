@@ -13,7 +13,7 @@ App.Auth = Ember.Auth.create
   tokenKey: 'api_key'
   tokenIdKey: 'id'
 
-  sessionAdapter: 'cookie'
+  sessionAdapter: 'localStorage' # default 'cookie'
 
   modules: ['emberData', 'authRedirectable', 'actionRedirectable', 'rememberable']
 
@@ -26,8 +26,8 @@ App.Auth = Ember.Auth.create
   #   signInBlacklist: ['sign-in']
   #   signOutRoute: 'posts'
 
-  # rememberable:
-  #   tokenKey: 'api_key'
-  #   tokenIdKey: 'id'
-  #   period: 7
-  #   autoRecall: true
+  rememberable:
+    tokenKey: 'api_key'
+    tokenIdKey: 'id'
+    period: 7
+    autoRecall: true
