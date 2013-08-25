@@ -73,6 +73,9 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 	tagger.Feed(claimed)
 	tagger.Save()
 
+	taggee.Feed(claimed)
+	taggee.Save()
+
 	if err := CreateTagEvent(&tag); err != nil {
 		return &tag, err
 	}
