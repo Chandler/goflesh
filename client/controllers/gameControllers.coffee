@@ -4,30 +4,31 @@ App.GamesNewController = NewController.extend
   slug: '',
 
 App.GameHomeController =  Ember.Controller.extend
-    needs: 'game'
-    game: null
-    gameBinding: 'controllers.game'
-    contentBinding: 'game.players'
-    
-    #this is a gross proof of concept
-    #TODO figure out the right way to make a stateful view component
-    #that doesn't rely on controller values like this.
-    eventFeedSelected: false
-    playerListSelected: true
-    showPlayerList: ->
-      @set 'eventFeedSelected', false
-      @set 'playerListSelected', true
-    showEventFeed: ->
-      @set 'eventFeedSelected', true
-      @set 'playerListSelected', false
+  code: ''
+  needs: 'game'
+  game: null
+  gameBinding: 'controllers.game'
+  contentBinding: 'game.players'
+  
+  #TODO change these
+  eventFeedSelected: false
+  playerListSelected: true
+  showPlayerList: ->
+    @set 'eventFeedSelected', false
+    @set 'playerListSelected', true
+  showEventFeed: ->
+    @set 'eventFeedSelected', true
+    @set 'playerListSelected', false
 
-    registerTag: ->
-      code = "CR66W"
-      # $.post("/api/tag/" + code).done (e) ->
+  registerTag: =>
+    code = "JNHDB"
+    debugger
+    $.post
+      url: "/api/tag/" + code +"?player_id=" + @get('user.player.id').toString()
+    .done (e) ->
       user = App.User.find({user_id: 2})
-      
       console.log user.get('status')
-    
+
 
 App.GamesController = Ember.ObjectController.extend
   selectedGame: null

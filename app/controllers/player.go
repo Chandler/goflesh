@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
@@ -15,6 +16,7 @@ type Players struct {
 type PlayerRead struct {
 	models.Player
 	StatusString string `json:"status"`
+	HumanCode    string `json:"human_code,omitempty"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -25,6 +27,8 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	name := "players"
 	type readObjectType PlayerRead
 
+	c.Auth()
+
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
 	if err != nil {
 		return c.RenderError(err)
@@ -33,6 +37,10 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	for i, result := range results {
 		readObject := result.(*readObjectType)
 		readObject.StatusString = readObject.Status()
+		if c.User != nil && c.User.Id == readObject.Player.User_id {
+			human_code := readObject.Player.HumanCode()
+			readObject.HumanCode = human_code.Code
+		}
 		if err != nil {
 			return c.RenderJson(err)
 		}
@@ -124,7 +132,6 @@ func (c *Players) Create() revel.Result {
 		human_code.GenerateCode()
 		err = Dbm.Insert(&human_code)
 		if err != nil {
-			revel.WARN.Print(err, human_code)
 			return c.RenderError(err)
 		}
 	}
@@ -143,7 +150,7 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	return &member, err
 }
 
-func (c *Players) Tag(code string) revel.Result {
+func (c *Players) Tag(player_id int, code string) revel.Result {
 	query := `
 		SELECT *
 		FROM human_code
@@ -154,16 +161,46 @@ func (c *Players) Tag(code string) revel.Result {
 		return c.RenderError(err)
 	}
 
-	human_code := models.HumanCode{}
-	_, err = Dbm.Select(human_code, query, code)
+	if c.Request.Header.Get("Authorization") == "" {
+		c.Response.Status = 401
+		return c.RenderText("")
+	}
+
+	if c.User == nil {
+		c.Response.Status = 403
+		return c.RenderText("User credentials bad")
+	}
+
+	tagger, err := models.PlayerFromId(player_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
+
+	if !tagger.IsZombie() {
+		c.Response.Status = 403
+		return c.RenderText("You are cannot tag because you are not a zombie")
+	}
+
+	if tagger.User_id != c.User.Id {
+		c.Response.Status = 403
+		return c.RenderText("Tags cannot be registered for other users")
+	}
+
+	var list []*models.HumanCode
+	_, err = Dbm.Select(&list, query, code)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	if len(list) != 1 {
+		return c.RenderError(errors.New("Invalid human code"))
+	}
+	human_code := list[0]
 	player, err := Dbm.Get(models.Player{}, human_code.Id)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	human := player.(models.Player)
+
+	human := player.(*models.Player)
 
 	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
 	if err != nil {
@@ -171,13 +208,8 @@ func (c *Players) Tag(code string) revel.Result {
 	}
 	game := gameObj.(*models.Game)
 
-	tagger, err := models.PlayerFromUserIdGameId(c.User.Id, human.Game_id)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
 	now := time.Now()
-	_, err = models.NewTag(game, tagger, &human, &now)
+	_, err = models.NewTag(game, tagger, human, &now)
 	if err != nil {
 		return c.RenderError(err)
 	}

@@ -24,7 +24,8 @@ module.exports = function(grunt) {
             'public/js/lib/new-ember.js',
             'public/js/lib/new-ember-data.js',
             'public/js/bower/ember-auth.js',
-            'public/js/lib/ember-list-view.js'
+            'public/js/lib/ember-list-view.js',
+            'public/js/lib/avatar.io.js'
           ],
         dest: 'public/js/libraries.js',
       }
@@ -54,7 +55,8 @@ module.exports = function(grunt) {
             'client/app.coffee',
             'client/controllers/baseController.coffee',
             'client/controllers/newController.coffee',
-            'client/**/*.coffee'
+            'client/**/*.coffee',
+            'client/bad.coffee'
           ] 
         }
       },

@@ -6,8 +6,9 @@ Handlebars.registerHelper 'avatar', (size, options) ->
 
 
 Ember.Handlebars.registerBoundHelper 'avatar2', (context, options) ->
-  debugger
   key = context.get('avatar')
+  console.log(context)
+  console.log(key)
   size = options.hash.size
   klass = options.hash.class
   new Handlebars.SafeString(Utilities.avatar2Tag(key, size, klass))
