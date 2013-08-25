@@ -14,12 +14,6 @@ var (
 	Dbm *gorp.DbMap
 )
 
-func init() {
-	revel.InterceptMethod((*GorpController).Begin, revel.BEFORE)
-	revel.InterceptMethod((*GorpController).Commit, revel.AFTER)
-	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
-}
-
 func GorpInit() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	db.Init()

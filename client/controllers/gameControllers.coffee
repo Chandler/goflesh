@@ -20,15 +20,16 @@ App.GameHomeController =  Ember.Controller.extend
     @set 'eventFeedSelected', true
     @set 'playerListSelected', false
 
-  registerTag: =>
-    code = "JNHDB"
-    debugger
-    $.post
-      url: "/api/tag/" + code +"?player_id=" + @get('user.player.id').toString()
-    .done (e) ->
-      user = App.User.find({user_id: 2})
-      console.log user.get('status')
-
+  registerTag: ->
+    code = "VPCQG"
+    game_id = @get('game.id')
+    current_player = App.Auth.get('user.players').filter (p) =>
+      p.get('game.id') == game_id
+    current_player = App.Auth.get('user.players').filter (p) =>
+      p.get('game.id') == game_id
+    player_id = current_player[0].get('id')
+    $.post("/api/tag/" + code + "?player_id=" + player_id).done(e) ->
+      console.log(e)
 
 App.GamesController = Ember.ObjectController.extend
   selectedGame: null

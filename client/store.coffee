@@ -1,3 +1,4 @@
+
 $.ajaxSetup
   beforeSend: (xhr) ->
     password = App.Auth.get('authToken')

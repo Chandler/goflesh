@@ -1,8 +1,8 @@
 
-  editableRecordFields: ['name', 'slug', 'location']
-  name: ''
-  slug: ''
-  location: ''
+  # editableRecordFields: ['name', 'slug', 'location']
+  # name: ''
+  # slug: ''
+  # location: ''
 
 App.OrganizationHomeController = Ember.Controller.extend
   needs: 'organization'

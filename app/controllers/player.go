@@ -171,7 +171,7 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 
 	if !tagger.IsZombie() {
 		c.Response.Status = 403
-		return c.RenderText("You are cannot tag because you are not a zombie")
+		return c.RenderText("You are cannot tag because you are not a zombie" + tagger.Status())
 	}
 
 	if tagger.User_id != c.User.Id {

@@ -5,20 +5,7 @@
 # NewController
 
 BaseController = Ember.Controller.extend
-  upload: ->
-    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcml2YXRlX3Rva2VuIjoiYjdhZGFkNjI2YWI0NTc0ZmMwYTE5M2MyOWQ0YjBiMTkxYjQxYWNlOWQwMzUzNTU5YzhhMzRhMDhkOWRiNGI2ZCJ9.V0JQ5FygLaWiXn1yzN-gdmywkki6V1V8r2y1TqSMPUU"
-    client = new AvatarsIO(prompt('Enter your public token'));
-    uploader = client.create($('#upload'))
-    uploader.setAllowedExtensions ["png", "jpg"]
-    uploader.setIdentifier "4"
-    
-    uploader.on "complete", (url) ->
-      console.log url
-      
-    uploader.on "error", (err) ->
-      console.log "error happened during request"
 
-  
   errors: null
 
   #list of fields on the record which you are going to expose in the 
