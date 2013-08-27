@@ -17,7 +17,7 @@
   float: left
 .avatar
   border-radius: 4px;
-  box-shadow: 0 0 3px 1px #2b95ca;
+  box-shadow: 0 0 3px 0.1px #2b95ca;
 
 .grid-pic
   margin: 5px
@@ -37,19 +37,18 @@
   width: 100%
   padding: 10px 18px
   line-height: 20px
-  border-bottom: 1px solid #bfcdd7
   font-family: proxima-nova,sans-serif
   font-size: 15px
   color: #747d92
   text-shadow: 0 1px #fff
-  background-color: #f3f4f6
+  background-color: #fff
   .list-title
     margin-right: 20px
     text-transform: uppercase
   .selected
     padding: 5px
     border-radius: 4px;
-    box-shadow: 0 0 3px 1px #2b95ca;
+    box-shadow: 0 0 3px 0.1px #2b95ca;
   .not-selected
     padding: 6px
     cursor: pointer
@@ -60,7 +59,7 @@
   width: 600px
   line-height: 25px
   font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif
-  font-size: 13px
+  font-size: 15px
   padding: 14px 18px
   border-top: 1px solid #dce7ee
   background-color: #fff
@@ -82,8 +81,25 @@
     font-weight:bold;
 
 /* user/org home */
+.description 
+  font-size: 17px
 .profile-home
   margin-left: 2px
+
+.game-badge
+  position: relative;
+  height: 50px;
+  background-color: #F7F7F7;
+  padding-top: 17px;
+  border-radius: 5px;
+  span
+   margin-left: 6px
+   bottom: 0;
+   left: 0;
+   padding-left: 10px;
+   padding-bottom: 10px;
+
+
 
 
 /*game page */
@@ -101,19 +117,17 @@
   .player-list-module 
     height: 500px
 
-  .register-kill-module
-    padding: 5px
-    height: 200px
-    float: right
-    background-color: #f4645f
-    margin: 5px
-    border: solid
-    border-size: 1px
-
+  .register-tag-module
+    height: 143px;
+    float: left;
+    background-color: #E26B67;
+    width: 100%;
+    btn 
+     width: 200px
 
 /* Game profile banner, obviously stolen */
 .top 
-  background:#bfcdd7;
+  background:#1abc9c;
   color:#fff
   a
    color: #fff

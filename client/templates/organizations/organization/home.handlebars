@@ -1,3 +1,12 @@
+<h3> Upcoming Games </h3>
+{{#each organization.games}}
+  <div class="game-badge">
+  <span>{{#linkTo 'game.home' this}} {{name}} {{/linkTo}}</span>
+  <span>{{#linkTo 'game.home' this}} {{running_start_time}} {{/linkTo}}</span>
+  <span> <a {{action "joinGame" this}}> Join This Game !! </a> </span>
+  </div>
+{{/each}}
+<h3> Activity</h3>
 <div class="profile-home">
   {{view App.PlayerListView contentBinding="content"}}
 </div>

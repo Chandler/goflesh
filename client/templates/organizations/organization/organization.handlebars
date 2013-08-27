@@ -9,21 +9,19 @@
             <small>
               <br>{{location}}
             </small>
-          </h1> 
+          </h1>
+          <div class="description">
+            This welcome to our university, our facebook group is facebook.com/whatever
+            email the admins at casdsd@gmail.com for problems
+          </div> 
           <hr>
           <div class="grids">
             <div class="avatar-grid">
               <h3>{{users.length}} Members</h3>
               {{#each users}}
                 <div class="grid-pic"> 
-                  {{#linkTo 'user.home' this}} {{avatar tiny}} {{/linkTo}}
+                  {{#linkTo 'user.home' this}} {{avatar2 this size="tiny"}} {{/linkTo}}
                 </div>
-              {{/each}}
-            </div>
-            <div class="avatar-grid">
-              <h3> Games </h3>
-              {{#each games}}
-                  {{#linkTo 'game.home' this}} {{name}} {{/linkTo}}
               {{/each}}
             </div>
           </div> 

@@ -2,15 +2,11 @@
   <div class="row-fluid">
     <span class="span4">
       <div class="side-profile">
-        {{#if userIsCurrentUser}}
-          {{avatar2 this size="large" class="profile_image pull-center file_upload"}}
-        {{else}}
           {{avatar2 this size="large" class="profile_image pull-center"}}
-        {{/if}}
         <div class="page-heading">
-        {{player}}
-            <h1>{{first_name}} {{last_name}}'s Profile</h1>
-            <hr>  
+          {{player}}
+          <h1>{{first_name}} {{last_name}}'s Profile</h1>
+          <hr>  
         </div>
       </div>
     </span>

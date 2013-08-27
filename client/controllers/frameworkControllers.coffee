@@ -56,20 +56,24 @@ BaseMixin = Ember.Mixin.create
       @get('store').get('defaultTransaction').commit()
       record.on 'becameError', =>
         @set 'errors', 'SERVER ERROR'
-      record.on 'didCreate', =>\
+      record.on 'becameInvalid', =>
+        @set 'errors', 'SERVER ERROR'
+      record.on 'didCreate', =>        
         @successTransition()
     else
-      @set 'errors', "Empty Fields"
+      @set 'errors', "Please fill in all fields"
 
 BaseController = Ember.Controller.extend(BaseMixin)
 BaseObjectController = Ember.ObjectController.extend(BaseMixin)
 
-
-NewController = BaseController.extend
+NewMixin = Ember.Mixin.create
   recordToSave: ->
     @get('model').createRecord(@getRecordProperties())
 
   #we have no model object the values are saved right on the controller
   getRecordProperties: ->
     @getProperties(@editableRecordFields)
+
+NewController = BaseController.extend(NewMixin)
+
 

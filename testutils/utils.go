@@ -45,7 +45,7 @@ func GenerateTestData() {
 	isDev := revel.Config.BoolDefault("mode.dev", false)
 	if isDev {
 		revel.INFO.Print("Inserting random Organizations")
-		for i := 0; i < 20; i++ {
+		for i := 0; i < 2; i++ {
 			InsertTestOrganization()
 		}
 		revel.INFO.Print("Inserting random Users")
@@ -53,31 +53,31 @@ func GenerateTestData() {
 			InsertTestUser()
 		}
 		revel.INFO.Print("Inserting random Members")
-		for i := 0; i < 40; i++ {
+		for i := 0; i < 380; i++ {
 			InsertTestMember()
 		}
 		revel.INFO.Print("Inserting random Games")
-		for i := 0; i < 40; i++ {
+		for i := 0; i < 2; i++ {
 			InsertTestGame()
 		}
 		revel.INFO.Print("Inserting random Players")
-		for i := 0; i < 800; i++ {
+		for i := 0; i < 300; i++ {
 			InsertTestPlayer()
 		}
 		revel.INFO.Print("Inserting random OZ Candidates")
-		for i := 0; i < 160; i++ {
+		for i := 0; i < 50; i++ {
 			InsertTestOzPool()
 		}
 		revel.INFO.Print("Inserting random OZs")
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 5; i++ {
 			InsertTestOz()
 		}
 		revel.INFO.Print("Confirming random OZs")
-		for i := 0; i < 80; i++ {
+		for i := 0; i < 1; i++ {
 			ConfirmRandomOz()
 		}
 		revel.INFO.Print("Simulating tags by OZs")
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 50; i++ {
 			TagByRandomOzs()
 		}
 	}

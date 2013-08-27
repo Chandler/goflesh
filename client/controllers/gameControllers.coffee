@@ -25,8 +25,6 @@ App.GameHomeController =  Ember.Controller.extend
     game_id = @get('game.id')
     current_player = App.Auth.get('user.players').filter (p) =>
       p.get('game.id') == game_id
-    current_player = App.Auth.get('user.players').filter (p) =>
-      p.get('game.id') == game_id
     player_id = current_player[0].get('id')
     $.post("/api/tag/" + code + "?player_id=" + player_id).done(e) ->
       console.log(e)
