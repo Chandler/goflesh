@@ -11,6 +11,10 @@ type Events struct {
 	AuthController
 }
 
+// interface DatedSortable struct {
+// 	Date() *time.Time
+// }
+
 type ClientEvent struct {
 	Type     string     `json:"type"`
 	SortDate *time.Time `json:"-"`
