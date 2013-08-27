@@ -9,7 +9,7 @@ type Tag struct {
 	Id        int        `json:"id"`
 	Tagger_id int        `json:"tagger_id"`
 	Taggee_id int        `json:"taggee_id"`
-	Claimed   *time.Time `json:"running_end_time"`
+	Claimed   *time.Time `json:"claimed"`
 	TimeTrackedModel
 }
 
