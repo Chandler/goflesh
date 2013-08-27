@@ -1,24 +1,20 @@
-<form id="test_form">
-  <input type="file" id="avatar">
-  <button>Upload</button>
-</form>
-
-
 <div class="simple-page">
   <div class="row-fluid">
     <span class="span4">
       <div class="side-profile">
-        <div class="btn btn-large btn-block  row signup-btn" {{action "upload" target="view"}}>upload</div>
-
-        {{avatar2 this size="profile" class="profile_image pull-center"}}
+        {{#if userIsCurrentUser}}
+          {{avatar2 this size="large" class="profile_image pull-center file_upload"}}
+        {{else}}
+          {{avatar2 this size="large" class="profile_image pull-center"}}
+        {{/if}}
         <div class="page-heading">
         {{player}}
             <h1>{{first_name}} {{last_name}}'s Profile</h1>
-            <hr>
+            <hr>  
         </div>
       </div>
     </span>
-
+    {{#if userIsCurrentUser}}
     <div class="profile-options">
       <div>
         {{#linkTo 'user.home' this classNames="profile-option-tab profile-home"}} 
@@ -29,8 +25,14 @@
         <i class="icon-cog icon-2x"></i>{{/linkTo}}
       </div>
     </div>
+    {{/if}}
     <span class="span5 profile-content-column">
       {{outlet}}
     </span>
   </div>
 </div>
+<!-- This is a hidden form needed by the avatar.io javascript library -->
+<form class="hidden_form hover">
+  <input type="file" id="avatar">
+</form>
+

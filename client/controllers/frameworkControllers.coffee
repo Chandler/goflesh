@@ -4,7 +4,9 @@
 # BaseController
 # NewController
 
-BaseController = Ember.Controller.extend
+BaseMixin = Ember.Mixin.create
+  signedIn: ->
+    App.Auth.signedIn
 
   errors: null
 
@@ -19,6 +21,12 @@ BaseController = Ember.Controller.extend
     @get 'errors'
   ).property 'errors'
 
+  currentUser: (->
+    App.Auth.get('user')
+  ).property()
+
+  signOut:  ->
+    App.Auth.destroySession()
 
   fieldsPopulated: ->
     for k,v of @getRecordProperties()
@@ -37,7 +45,10 @@ BaseController = Ember.Controller.extend
   recordToSave: ->
     @get('content')
 
-  save:(update) ->
+  edit: ->
+    @get('store').get('defaultTransaction').commit()
+
+  save: ->
     @clearErrors()
     if @fieldsPopulated()
       console.log "Begining save record"
@@ -45,14 +56,16 @@ BaseController = Ember.Controller.extend
       @get('store').get('defaultTransaction').commit()
       record.on 'becameError', =>
         @set 'errors', 'SERVER ERROR'
-      record.on 'didUpdate', =>
+      record.on 'didCreate', =>\
         @successTransition()
     else
       @set 'errors', "Empty Fields"
-  
+
+BaseController = Ember.Controller.extend(BaseMixin)
+BaseObjectController = Ember.ObjectController.extend(BaseMixin)
+
 
 NewController = BaseController.extend
-  #@override
   recordToSave: ->
     @get('model').createRecord(@getRecordProperties())
 

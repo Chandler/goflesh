@@ -8,12 +8,14 @@ App.Router.map ->
   @route 'discovery' 
   @resource 'organizations', path: "/orgs", ->
     @resource 'organization', path: ":organization_id", ->
-      @route 'settings'
+      #TODO: unhide settings when moderators are implemented
+      # @route 'settings'
       @route 'home'
     @route 'new'
   @resource 'games', ->
     @resource 'game', path: ":game_id", ->
-      @route 'settings'
+      #TODO: unhide settings when moderators are implemented
+      # @route 'settings'
       @route 'home'
     @route 'new'
   @resource 'users', ->

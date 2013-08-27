@@ -32,7 +32,7 @@ body {
    line-height: 40px;
  }
  .nav-button {
-   margin: 8px 0px 0px 0px;
+   margin-left: 5px;
    -moz-box-shadow: none;
    -webkit-box-shadow: none;
    -o-box-shadow: none;
@@ -48,7 +48,7 @@ body {
    margin-top: 8px;
 }
  .nav-button .icon.icon-signin {
-   margin: 0px 0px 4px;
+   margin: 5px 0px 4px;
  }
  .container-fluid .container-fluid.inner-discovery {
    background: rgba(0, 0, 0, 0) url(../img/UIadmin_vignette.jpg) no-repeat 0px 0px;

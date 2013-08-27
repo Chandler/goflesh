@@ -53,10 +53,8 @@ module.exports = function(grunt) {
         files: {
           'public/js/main.js': [
             'client/app.coffee',
-            'client/controllers/baseController.coffee',
-            'client/controllers/newController.coffee',
-            'client/**/*.coffee',
-            'client/bad.coffee'
+            'client/controllers/frameworkControllers.coffee',
+            'client/**/*.coffee'
           ] 
         }
       },

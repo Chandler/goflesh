@@ -13,11 +13,5 @@ Utilities =
 
 
   avatar2Tag: (key, size, klass) ->
-    sizes =
-      tiny:  25
-      small: 50
-      large: 100
-      profile: 150
-    px = sizes[size] || sizes['small']
-    "<img class=\" avatar " + klass +  "\" src=\"http://www.gravatar.com/avatar/" + key + "?s=" + px + "&d=identicon\"/>"
+    "<img class=\" avatar " + klass +  "\" src=\"http://avatars.io/5219420f20885b315500004c/" + key + "?size=" + size + "\"/>"
 

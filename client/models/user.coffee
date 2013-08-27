@@ -6,6 +6,6 @@ App.User = DS.Model.extend
   avatar: DS.attr 'avatar'
   password: DS.attr 'string'
   players: DS.hasMany 'App.Player'
-
+  organization: DS.belongsTo 'App.Organization'
 App.User.toString = -> 
   "User"

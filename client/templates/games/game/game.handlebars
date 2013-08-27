@@ -5,10 +5,11 @@
       <h1>{{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}</h1>
       <h2>{{name}} Game</h2>
     </div>
-    <div class="right-banner-nav">
-      <div> {{#linkTo 'game.home' }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
-      <div> {{#linkTo 'game.settings' }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
-    </div>
+<!--{{!-- TODO: unhide settings when moderators are implemented
+    <-div class="right-banner-nav">
+      <div> {{!#linkTo 'game.home' }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
+      <div> {{!#linkTo 'game.settings' }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
+    </div> --}}-->
   </div>
   {{outlet}}
 </div>
