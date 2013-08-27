@@ -21,6 +21,10 @@ func SendEmail(
 	to_name string,
 	to_address string,
 ) error {
+	isDisabled := revel.Config.BoolDefault("email.disabled", false)
+	if isDisabled {
+		return nil
+	}
 
 	smtp_host, found := revel.Config.String("smtp.host")
 	if !found {
@@ -73,8 +77,6 @@ func SendEmail(
 		message += fmt.Sprintf("%s: %s\r\n", k, v)
 	}
 	message += "\r\n" + base64.StdEncoding.EncodeToString([]byte(body))
-
-	revel.WARN.Print(message)
 
 	return smtp.SendMail(
 		smtp_host+":"+smtp_port,

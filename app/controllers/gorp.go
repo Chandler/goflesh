@@ -57,3 +57,7 @@ func (c *GorpController) Rollback() revel.Result {
 	c.Txn = nil
 	return nil
 }
+
+func (c *GorpController) isDevMode() bool {
+	return revel.Config.BoolDefault("mode.dev", false)
+}

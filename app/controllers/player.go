@@ -2,30 +2,74 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
+	"time"
 )
 
 type Players struct {
-	GorpController
+	AuthController
 }
 
-/////////////////////////////////////////////////////////////////////
+type PlayerRead struct {
+	models.Player
+	StatusString string `json:"status"`
+}
 
-func (c *Players) ReadList() revel.Result {
-	return GetList(models.Player{}, nil)
+func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
+	query := `
+	    SELECT p.*
+	    FROM player p
+    ` + where
+	name := "players"
+	type readObjectType PlayerRead
+
+	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	readObjects := make([]*readObjectType, len(results))
+	for i, result := range results {
+		readObject := result.(*readObjectType)
+		readObject.StatusString = readObject.Status()
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObjects[i] = readObject
+	}
+
+	out := make(map[string]interface{})
+	out[name] = readObjects
+
+	return c.RenderJson(out)
+}
+
+func (c *Players) ReadList(ids []int) revel.Result {
+	// TODO: when revel is fixed, support getting by game id (game_id *int)
+	// if game_id != nil {
+	// 	return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", *game_id)
+	// }
+	if len(ids) == 0 {
+		return c.ReadPlayer("")
+	}
+	templateStr := IntArrayToString(ids)
+	return c.ReadPlayer("WHERE p.id = ANY('{" + templateStr + "}')")
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	return GetById(models.Player{}, nil, id)
+	return c.ReadPlayer("WHERE p.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Create() revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		return c.RenderError(err)
@@ -60,7 +104,10 @@ func (c *Players) Create() revel.Result {
 				return c.RenderError(err)
 			}
 			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
-			Dbm.Insert(member)
+			err = Dbm.Insert(&member)
+			if err != nil {
+				return c.RenderError(err)
+			}
 		}
 	}
 
@@ -78,7 +125,6 @@ func (c *Players) Create() revel.Result {
 		human_code.GenerateCode()
 		err = Dbm.Insert(&human_code)
 		if err != nil {
-			revel.WARN.Print(err, human_code)
 			return c.RenderError(err)
 		}
 	}
@@ -95,4 +141,71 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	_, err := Dbm.Select(member, query, user_id, game_id)
 
 	return &member, err
+}
+
+func (c *Players) Tag(player_id int, code string) revel.Result {
+	query := `
+		SELECT *
+		FROM human_code
+		WHERE code = $1
+	`
+	err := c.Auth()
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	if c.Request.Header.Get("Authorization") == "" {
+		c.Response.Status = 401
+		return c.RenderText("")
+	}
+
+	if c.User == nil {
+		c.Response.Status = 403
+		return c.RenderText("User credentials bad")
+	}
+
+	tagger, err := models.PlayerFromId(player_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	if !tagger.IsZombie() {
+		c.Response.Status = 403
+		return c.RenderText("You are cannot tag because you are not a zombie" + tagger.Status())
+	}
+
+	if tagger.User_id != c.User.Id {
+		c.Response.Status = 403
+		return c.RenderText("Tags cannot be registered for other users")
+	}
+
+	var list []*models.HumanCode
+	_, err = Dbm.Select(&list, query, code)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	if len(list) != 1 {
+		return c.RenderError(errors.New("Invalid human code"))
+	}
+	human_code := list[0]
+	player, err := Dbm.Get(models.Player{}, human_code.Id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	human := player.(*models.Player)
+
+	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	game := gameObj.(*models.Game)
+
+	now := time.Now()
+	_, err = models.NewTag(game, tagger, human, &now)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	return c.Read(human.Id)
 }

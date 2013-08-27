@@ -15,23 +15,23 @@
         <div>
           <div class="navbar">
             <div class="navbar-inner">
-              {{#linkTo discovery class="brand"}} flesh {{/linkTo}}
-              {{#if Em.App.Auth.signedIn}}
+              {{#linkTo 'discovery' class="brand"}} flesh {{/linkTo}}
+              {{#if App.Auth.signedIn}}
               <div class="btn btn-primary nav-button btn-large pull-right" {{action "signOut"}}><i class="icon icon-signout"></i></div>
               <ul class="nav pull-right nav-link">
                 <li>
-                  {{#linkTo discovery }} Game <i class="icon icon-globe"></i>{{/linkTo}}
+                  {{#linkTo 'user.home' currentUser }} Profile <i class="icon icon-user"></i>{{/linkTo}}
                 </li>
                 <li>
-                  {{#linkTo user.home currentUser }} Profile <i class="icon icon-user"></i>{{/linkTo}}
+                  {{#linkTo 'discovery' }} Game <i class="icon icon-globe"></i>{{/linkTo}}
                 </li>
                 <li>
-                  {{#linkTo discovery }} Orgs <i class="icon icon-sitemap"></i>{{/linkTo}}
+                  {{#linkTo 'discovery' }} Organization <i class="icon icon-sitemap"></i>{{/linkTo}}
                 </li>
               </ul>                 
               {{else}}
-                {{#linkTo login class="btn nav-button btn-large pull-right"}} Sign in  {{/linkTo}}
-                {{#linkTo users.new class="btn nav-button btn-large pull-right"}} Sign up  {{/linkTo}}
+                {{#linkTo 'login' class="btn nav-button btn-large pull-right sign-in"}} Sign in  {{/linkTo}}
+                {{#linkTo 'users.new' class="btn nav-button btn-large pull-right sign-up"}} Sign up  {{/linkTo}}
               {{/if}}
             </div>
           </div>
@@ -41,34 +41,3 @@
     </div>
   </body>
 </html>
-
-<!--           <div class="navbar">
-            <div class="navbar-inner">
-              <a class="brand" href="#">flesh</a>
-              <button class="btn btn-primary nav-button btn-large pull-right"><i class="icon icon-signout"></i> 
-              </button>
-                <ul class="nav pull-right nav-link">
-                <li>
-                  <a href="#">Game <i class="icon icon-globe"></i> 
-                  </a>
-                </li>
-                <li>
-                  <a href="#">Profile <i class="icon icon-user"></i> 
-                  </a>
-                </li>
-                <li>
-                  <a href="#">Orgs <i class="icon icon-sitemap"></i> 
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div> -->
-<!-- <div id="footer">
-  <div class="footer-item">
-    <a href="https://twitter.com/MikeOfSolomon"> @MikeOfSolomon </a> <br>
-    <a href="https://twitter.com/theSachee"> @theSachee </a> <br>
-    <a href="https://twitter.com/cba"> @cba </a> <br>
-    <a href="https://github.com/Chandler/fles"> Find us on Github </a> <br>
-  </div>
-</div> -->

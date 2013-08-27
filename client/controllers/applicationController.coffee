@@ -1,12 +1,6 @@
-define ["ember"], (Em) ->
-  ApplicationController = Em.Controller.extend
-    signOut:  ->
-      console.log "ok"
-      Em.App.Auth.get('module.rememberable').forget()
-      Em.App.Auth.set('signedIn', false)
-    
-    currentUser: (->
-      debugger
-      #Em.Store.User.find(Em.App.get('user.id'))
-      Em.User
-    ).property
+App.ApplicationController = Ember.Controller.extend
+  signOut:  ->
+    App.Auth.destroySession()
+  currentUser: (->
+    App.Auth.get('user')
+  ).property()

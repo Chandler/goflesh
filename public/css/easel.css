@@ -220,7 +220,6 @@ h4 small {
    float: left;
    padding: 5px;
  }
-<<<<<<< HEAD
 
  .org-data {
    display: block;
@@ -233,12 +232,7 @@ h4 small {
 
 /* Chandler land */
 .profile-option-tab {
-   height: 23px;
-   width: 125px;
-   border-top: 2px solid #f3f3f3;
-   border-bottom: 2px solid #f3f3f3;
-   border-right: 2px solid #f3f3f3;
-   float: left;
+   float: right;
    padding-top: 7px;
 }
 
@@ -260,11 +254,6 @@ h4 small {
    background-position: top left;
 }*/
 
-.profile-option-tab:hover {
-   box-shadow: inset 1px 1px 2px 2px rgba(255, 115, 115, 0.34);
-   cursor: hand;
-   cursor: pointer; 
-}
 .games {
    clear: both;
 }
@@ -275,8 +264,8 @@ h4 small {
 
 .gameitem {
    margin-top: 25px;
-   background-color:  rgb(52, 43, 70);
-   width: 600px;
+/*   background-color:  rgb(52, 43, 70);
+*/   width: 600px;
    height: 150px;
    -webkit-filter: drop-shadow(0 2px 2px hsla(0,0%,100%,.75))
                   drop-shadow(0 -2px 2px hsla(0,0%,0%,.5));
@@ -306,7 +295,6 @@ h4 small {
    border-radius: 10px
 }
 
-=======
 
  .org-data {
    display: block;
@@ -315,4 +303,3 @@ h4 small {
  .org-properties {
    font-size: 15px;
  }
->>>>>>> client

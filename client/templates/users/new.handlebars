@@ -20,28 +20,28 @@
             valueBinding="last_name"
           }}
         </div>
-         <div class="">
+         <div>
           {{view Ember.TextField
             type="text"
             placeholder="email"
             valueBinding="email"
           }}
         </div>
-         <div class="">
+         <div>
           {{view Ember.TextField
             type="text"
             placeholder="screen name"
             valueBinding="screen_name"
           }}
         </div>
-         <div class="">
+         <div>
           {{view Ember.TextField
-            type="text"
+            type="password"
             placeholder="password"
             valueBinding="password"
           }}
         </div>
-        <div class="btn btn-large btn-block signup-btn" {{action "create"}}> Sign Up! </div>
+        <div class="btn btn-large btn-block signup-btn" {{action "save"}}> Sign Up! </div>
       </div>
     </span>
   </div>

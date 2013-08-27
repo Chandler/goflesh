@@ -1,5 +1,3 @@
-define('ember-data', ['ember'], function (Ember) {
-
 // Version: v0.13-6-g74df830
 // Last commit: 74df830 (2013-05-28 19:12:31 -0700)
 
@@ -5818,7 +5816,7 @@ DS.Serializer = Ember.Object.extend({
   */
   serialize: function(record, options) {
     options = options || {};
-
+    debugger
     var serialized = this.createSerializedForm(), id;
     if (options.includeId) {
       if (id = get(record, 'id')) {
@@ -5832,7 +5830,7 @@ DS.Serializer = Ember.Object.extend({
 
     this.addAttributes(serialized, record);
     this.addRelationships(serialized, record);
-
+    debugger
     return serialized;
   },
 
@@ -8888,6 +8886,3 @@ DS.RESTAdapter = DS.Adapter.extend({
 
 
 })();
-
-  return DS;
-});

@@ -9,20 +9,23 @@
 *~
 ._*
 .nfs.*
+.db
 public/js/*.js
 tests/client/js/*.js
 
 .DS_Store
 public/css/application.css
 
+!public/js/lib
 .db/
 app/routes/
 app/tmp/
+bower_components/
+components/
 grunt-ember-handlebars/
 jam/
 node_modules/
-public/js/jam/
-test-results/
-
-!public/js/lib
 public/img/glyphicons/
+public/js/*
+public/js/bower
+test-results/

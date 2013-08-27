@@ -17,7 +17,7 @@ import (
 )
 
 type Users struct {
-	GorpController
+	AuthController
 }
 
 type UserRead struct {
@@ -41,7 +41,7 @@ func init() {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
+func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
 	query := `
 	    SELECT *, array(
 			SELECT DISTINCT p.id
@@ -53,6 +53,8 @@ func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
     ` + where
 	name := "users"
 	type readObjectType UserRead
+
+	c.Auth()
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
 	if err != nil {
@@ -69,7 +71,10 @@ func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
 		// omit passsword and api key
 		readObject.Password = ""
 		readObject.Api_key = ""
-		readObject.Email = ""
+		// blank out email
+		if c.User == nil || c.User.Id != readObject.Id {
+			readObject.Email = ""
+		}
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
 		if err != nil {
 			return c.RenderJson(err)
@@ -83,7 +88,7 @@ func (c Users) ReadUser(where string, args ...interface{}) revel.Result {
 	return c.RenderJson(out)
 }
 
-func (c Users) ReadList(ids []int) revel.Result {
+func (c *Users) ReadList(ids []int) revel.Result {
 	if len(ids) == 0 {
 		return c.ReadUser("")
 	}
@@ -93,13 +98,18 @@ func (c Users) ReadList(ids []int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Users) Read(id int) revel.Result {
+func (c *Users) Read(id int) revel.Result {
 	return c.ReadUser("WHERE u.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Users) Update(id int) revel.Result {
+func (c *Users) Update(id int) revel.Result {
+	c.Auth()
+	if c.User == nil || c.User.Id != id {
+		return c.PermissionDenied()
+	}
+
 	var typedJson map[string]models.User
 	keyname := "user"
 	query := `
@@ -158,12 +168,15 @@ func createUsers(data []byte) ([]interface{}, error) {
 	for i := range modelObjects {
 		modelObject := modelObjects[i]
 		modelObject.ChangePassword(modelObject.Password)
+		human_code := models.HumanCode{modelObject.Id, "", models.TimeTrackedModel{}}
+		human_code.GenerateCode()
+		Dbm.Insert(human_code)
 		interfaces[i] = interface{}(&modelObject)
 	}
 	return interfaces, nil
 }
 
-func (c Users) Create() revel.Result {
+func (c *Users) Create() revel.Result {
 	return CreateList(createUsers, c.Request.Body)
 }
 
@@ -174,6 +187,7 @@ type UserAuthenticateInput struct {
 	Email       string `json:"email"`
 	Screen_name string `json:"screen_name"`
 	Password    string `json:"password"`
+	Api_key     string `json:"api_key"` // TODO: fix client-side auth so we don't have this hack
 }
 
 type UserAuthenticateOutput struct {
@@ -188,9 +202,11 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 		WHERE
 		email = $1
 		OR screen_name = $2
+		OR api_key = $3 -- TODO: fix client-side auth so we don't have this hack
 		`
 
-	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name)
+	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
+		userInfo.Api_key) // TODO: fix client-side auth so we don't have this hack
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}
@@ -202,7 +218,7 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 Endpoint: given email (or screen_name) + password,
 return user_id and api_key
 */
-func (c Users) Authenticate() revel.Result {
+func (c *Users) Authenticate() revel.Result {
 	var authInfo UserAuthenticateInput
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
@@ -214,6 +230,12 @@ func (c Users) Authenticate() revel.Result {
 		return c.RenderError(err)
 	}
 
+	out := UserAuthenticateOutput{user.Id, user.Api_key}
+
+	if authInfo.Api_key == user.Api_key { // TODO: fix client-side auth so we don't have this hack
+		return c.RenderJson(out)
+	}
+
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(authInfo.Password))
 
 	if err != nil {
@@ -221,14 +243,12 @@ func (c Users) Authenticate() revel.Result {
 		return c.RenderText("")
 	}
 
-	out := UserAuthenticateOutput{user.Id, user.Api_key}
-
 	return c.RenderJson(out)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Users) SendPasswordReset() revel.Result {
+func (c *Users) SendPasswordReset() revel.Result {
 	var authInfo UserAuthenticateInput
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
@@ -271,11 +291,12 @@ func (c Users) SendPasswordReset() revel.Result {
 	return c.RenderText("")
 }
 
-func (c Users) PasswordReset(code string) revel.Result {
+func (c *Users) PasswordReset(code string) revel.Result {
 	if code == "" {
 		c.Response.Status = 400
 		c.RenderJson("")
 	}
+
 	query := `
 		SELECT id
 		FROM password_reset

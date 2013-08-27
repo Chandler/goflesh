@@ -9,25 +9,35 @@ import (
 )
 
 type Organizations struct {
-	GorpController
+	AuthController
 }
 
 type OrganizationRead struct {
 	models.Organization
 	Games    string `json:"-"`
-	Game_ids []int  `json:"games"`
+	Game_ids []int  `json:"game_ids"`
+	Users    string `json:"-"`
+	User_ids []int  `json:"user_ids"`
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Organizations) ReadOrganization(where string, args ...interface{}) revel.Result {
+func (c *Organizations) ReadOrganization(where string, args ...interface{}) revel.Result {
 	query := `
-	    SELECT *, array(
-			SELECT DISTINCT g.id
-			FROM game g
-			INNER JOIN organization
-				ON o.id = g.organization_id
-			) games
+	    SELECT *,
+		    array(
+				SELECT DISTINCT g.id
+				FROM game g
+				INNER JOIN organization
+					ON o.id = g.organization_id
+				) games,
+			array(
+				SELECT DISTINCT u.id
+				FROM member m
+				INNER JOIN "user" u
+					ON m.user_id = u.id
+				WHERE o.id = m.organization_id
+				) users
 	    FROM "organization" o
     ` + where
 	name := "organizations"
@@ -41,6 +51,7 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 	for i, result := range results {
 		readObject := result.(*readObjectType)
 		readObject.Game_ids, err = PostgresArrayStringToIntArray(readObject.Games)
+		readObject.User_ids, err = PostgresArrayStringToIntArray(readObject.Users)
 		if err != nil {
 			return c.RenderJson(err)
 		}
@@ -53,7 +64,7 @@ func (c Organizations) ReadOrganization(where string, args ...interface{}) revel
 	return c.RenderJson(out)
 }
 
-func (c Organizations) ReadList(ids []int) revel.Result {
+func (c *Organizations) ReadList(ids []int) revel.Result {
 	if len(ids) == 0 {
 		return c.ReadOrganization("")
 	}
@@ -63,13 +74,16 @@ func (c Organizations) ReadList(ids []int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Organizations) Read(id int) revel.Result {
+func (c *Organizations) Read(id int) revel.Result {
 	return c.ReadOrganization("WHERE o.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Organizations) Update(id int) revel.Result {
+func (c *Organizations) Update(id int) revel.Result {
+	if result := c.DevOnly(); result != nil {
+		return *result
+	}
 	var typedJson map[string]models.Organization
 	keyname := "organization"
 	query := `
@@ -130,13 +144,13 @@ func createOrganizations(data []byte) ([]interface{}, error) {
 	return interfaces, nil
 }
 
-func (c Organizations) Create() revel.Result {
+func (c *Organizations) Create() revel.Result {
 	return CreateList(createOrganizations, c.Request.Body)
 }
 
 /////////////////////////////////////////////////////////////////////
 
-func (c Organizations) ListGames(organization_id int) revel.Result {
+func (c *Organizations) ListGames(organization_id int) revel.Result {
 	query := `
 		SELECT *
 		FROM game
@@ -161,7 +175,7 @@ type OrganizationInformation struct {
 }
 
 // Endpoint for discovery page organizations list
-func (c Organizations) DiscoveryInformationList() revel.Result {
+func (c *Organizations) DiscoveryInformationList() revel.Result {
 	query := `
 		SELECT *
 		FROM organization
