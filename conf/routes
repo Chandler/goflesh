@@ -31,6 +31,7 @@ POST	/api/users/authenticate							Users.Authenticate
 POST	/api/users/password_reset						Users.SendPasswordReset
 GET		/api/users/password_reset/:code					Users.PasswordReset
 
+GET		/api/ozs/create_test_oz/:player_id				Oz.CreateTestOz
 GET		/api/players/oz_pool							OzPools.ReadList
 GET		/api/players/:id/oz_pool						OzPools.Read
 DELETE	/api/players/:id/oz_pool						OzPools.Delete

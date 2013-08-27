@@ -3,12 +3,25 @@ import requests
 import random
 import nose.tools as n
 import datetime
+import logging
 
+# These two lines enable debugging at httplib level (requests->urllib3->httplib)
+# You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+# The only thing missing will be the response.body which is not logged.
+# import httplib
+# httplib.HTTPConnection.debuglevel = 1
+
+# # You must initialize logging, otherwise you'll not see debug output.
+# logging.basicConfig() 
+# logging.getLogger().setLevel(logging.DEBUG)
+# requests_log = logging.getLogger("requests.packages.urllib3")
+# requests_log.setLevel(logging.DEBUG)
+# requests_log.propagate = True
 
 def main():
 	print 'testing'
 	tester = TestCasePlayer()
-	tester.test_player_auth()
+	tester.test_create_oz()
 
 def create_dicts(filename):
 	with open(filename, 'r') as f:
@@ -187,9 +200,8 @@ class TestCaseGame(TestCase):
 
 class TestCasePlayer(TestCase):
 	def test_create(self):
-		player = self.object_gen.generate_player_data(1)
+		player = self.object_gen.generate_player_data(1, None, None)
 		response = self.requests_gen.post(player, 'players')
-		print response.text
 		n.assert_equal(response.status_code, 200)
 		n.assert_equal(extract_obj_attr(response.json(), 'user_id'), extract_obj_attr(player['players'], 'user_id'))
 		return response.json()
@@ -202,8 +214,6 @@ class TestCasePlayer(TestCase):
 		player = self.test_create()
 		player_id = extract_obj_attr(player, 'id')
 		response = self.requests_gen.get('players/{}'.format(player_id))
-		print player
-		print response.text
 		n.assert_equal(response.status_code, 200)
 
 	def test_array(self):
@@ -218,20 +228,24 @@ class TestCasePlayer(TestCase):
 		return response.json()
 
 	def test_player_auth(self):
-		user = TestCaseUser().test_login()
-		user_id = extract_obj_attr(user, 'id')
-		api_key = extract_obj_attr(user, 'api_key')
-		player = self.test_create()
-		player_id = extract_obj_attr(player, 'id')
+		user = self.object_gen.generate_user_data(1) # creating user here to extract password
+		response = self.requests_gen.post(user, 'users')
+		user_id = extract_obj_attr(response.json(), 'id')
+		api_key = extract_obj_attr(response.json(), 'api_key')
+		n.assert_equal(response.status_code, 200)
+
+		player = self.object_gen.generate_player_data(1, user_id, None)
+		response = self.requests_gen.post(player, 'players')
+		player_id = extract_obj_attr(response.json(), 'id')
+		n.assert_equal(response.status_code, 200)
+		
 		response = self.requests_gen.get_with_auth('players/{}'.format(player_id), (user_id, api_key))
 		n.assert_equal(response.status_code, 200)
-		# email_exists = 'email' in response.json()['users'][0].keys()
-		print response.json()
-		# print response.request.headers
-		# n.assert_true(email_exists)
+		human_code_exists = 'human_code' in response.json()['players'][0].keys()
+		n.assert_true(human_code_exists)
 
 	def test_bad_create(self):
-		player = self.object_gen.generate_player_data(1)
+		player = self.object_gen.generate_player_data(1, None, None)
 		response = self.requests_gen.bad_post(player, 'players')
 		n.assert_not_equal(response.status_code, 200)
 
@@ -246,6 +260,71 @@ class TestCasePlayer(TestCase):
 		player_id = extract_obj_attr(player, 'id')
 		response = self.requests_gen.get('players/{}/oz_pool'.format(player_id))
 		n.assert_equal(response.status_code, 403)
+
+	def test_create_oz(self):
+		player = self.test_create()
+		player_id = extract_obj_attr(player, 'id')
+		response = self.requests_gen.get('ozs/create_test_oz/{}'.format(player_id))
+		n.assert_equal(response.status_code, 200)
+		return player, response.json()
+
+	def test_tag(self):
+		# create zombie user
+		zombie_user = self.object_gen.generate_user_data(1) # creating user here to extract password
+		response = self.requests_gen.post(zombie_user, 'users')
+		n.assert_equal(response.status_code, 200)
+		zombie_user_id = extract_obj_attr(response.json(), 'id')
+		zombie_api_key = extract_obj_attr(response.json(), 'api_key')
+
+		# create a zombie player
+		zombie_player = self.object_gen.generate_player_data(1, zombie_user_id, None)
+		response = self.requests_gen.post(zombie_player, 'players')
+		n.assert_equal(response.status_code, 200)
+		zombie_player_id = extract_obj_attr(response.json(), 'id')
+		game_id = extract_obj_attr(response.json(), 'game_id')
+		response = self.requests_gen.get('ozs/create_test_oz/{}'.format(zombie_player_id))
+		n.assert_equal(response.status_code, 200)
+
+		# create a human user
+		human_user = self.object_gen.generate_user_data(1) # creating user here to extract password
+		response = self.requests_gen.post(human_user, 'users')
+		human_user_id = extract_obj_attr(response.json(), 'id')
+		human_api_key = extract_obj_attr(response.json(), 'api_key')
+		n.assert_equal(response.status_code, 200)
+
+		# create human player
+		human_player = self.object_gen.generate_player_data(1, human_user_id, game_id)
+		response = self.requests_gen.post(human_player, 'players')
+		n.assert_equal(response.status_code, 200)
+		human_player_id = extract_obj_attr(response.json(), 'id')
+		human_user_id = extract_obj_attr(response.json(), 'user_id')
+
+		# authenticate the human and get the human code
+		response = self.requests_gen.get_with_auth('players/{}'.format(human_player_id), (human_user_id, human_api_key))
+		n.assert_equal(response.status_code, 200)
+		human_code_exists = 'human_code' in response.json()['players'][0].keys()
+		n.assert_true(human_code_exists)
+		human_code = extract_obj_attr(response.json()['players'], 'human_code')
+
+		# authenticate the zombie
+		response = self.requests_gen.get_with_auth('players/{}'.format(zombie_player_id), (zombie_user_id, zombie_api_key))
+		n.assert_equal(response.status_code, 200)
+		human_code_exists = 'human_code' in response.json()['players'][0].keys()		
+		n.assert_true(human_code_exists)
+
+		# tag the human
+		response = self.requests_gen.post_with_auth({},'tag/{}'.format(human_code), (zombie_user_id, zombie_api_key))
+		print response.text
+		n.assert_equal(response.status_code, 200)
+
+
+		# create a zombie
+		# create a human
+		# get human code (login as human to grab human code for tagging)
+		# login as zombie
+		# go to endpoint/code to 'tag' human
+
+
 
 # class TestCaseMember(TestCase):
 # 	def test_create(self):
@@ -268,6 +347,11 @@ class APIRequestsGenerator():
 		r = requests.post(url, json.dumps(test_object))	
 		return r
 
+	def post_with_auth(self, test_object, post_string, auth_params):
+		url = ''.join([self.base_url, post_string])
+		r = requests.post(url, json.dumps(test_object), auth=auth_params)
+		return r
+
 	def bad_post(self, test_object, post_string):
 		url = ''.join([self.base_url, post_string])
 		r = requests.post(url, test_object)	
@@ -275,14 +359,13 @@ class APIRequestsGenerator():
 
 	def get(self, url):
 		url = ''.join([self.base_url, url])
-		print url
 		r = requests.get(url)
 		return r
 
 	def get_with_auth(self, url, auth_params):
 		url = ''.join([self.base_url, url])
 		r = requests.get(url, auth=auth_params)
-		print auth_params
+		# print auth_params
 		return r
 
 class UrlEncode():
@@ -352,14 +435,36 @@ class ObjectGenerator():
 			games.append(game)
 		return {'games': games}
 
-	def generate_player_data(self, num_players):
+	def generate_started_game_data(self, num_games):
+		games = []
+		org = TestCaseOrg().test_create()
+		org_id = extract_obj_attr(org, 'id')
+		for _ in xrange(num_games):
+			game = {
+				'name': self.test_data_generator.generate_game_name(),
+				'slug': self.test_data_generator.generate_game_slug(),
+				'organization_id': org_id,
+				'timezone': self.test_data_generator.generate_timezone(),
+				'registration_start_time': self.test_data_generator.generate_date(-2),
+				'registration_end_time': self.test_data_generator.generate_date(-1),
+				'running_start_time': self.test_data_generator.generate_date(0),
+				'running_end_time': self.test_data_generator.generate_date(1),
+			}
+			games.append(game)
+		return {'games': games}
+
+	def generate_player_data(self, num_players, user_id, game_id):
 		players = []
 		for _ in xrange(num_players):
-			user = TestCaseUser().test_create()
-			game = TestCaseGame().test_create()
+			if not user_id:
+				user = TestCaseUser().test_create()
+				user_id = extract_obj_attr(user, 'id')
+			if not game_id:
+				game = TestCaseGame().test_create()
+				game_id = extract_obj_attr(game, 'id')
 			player = {
-				'user_id': extract_obj_attr(user, 'id'),
-				'game_id': extract_obj_attr(game, 'id'),
+				'user_id': user_id,
+				'game_id': game_id,
 			}
 			players.append(player)
 		return {'players': [player]}
