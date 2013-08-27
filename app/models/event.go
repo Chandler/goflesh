@@ -1,11 +1,5 @@
 package models
 
-const (
-	// TODO: fetch these values from the database at startup instead of hard-coding them
-	// EventType IDs
-	EVENT_TYPE_TAG = 1
-)
-
 var (
 	// TODO: fetch these values from the database at startup instead of hard-coding them
 	// EventRole ID values
@@ -18,8 +12,7 @@ var (
 
 // An Event is an occurrence that can be displayed in an event feed
 type Event struct {
-	Id            int `json:"id"`
-	Event_type_id int `json:"event_type"`
+	Id int `json:"id"`
 	TimeTrackedModel
 }
 
@@ -62,7 +55,7 @@ type EventTag struct {
 
 func CreateTagEvent(tag *Tag) error {
 	// create the base event
-	event := Event{0, 1, TimeTrackedModel{}} // TODO: remove hardcoded id
+	event := Event{0, TimeTrackedModel{}}
 	err := Dbm.Insert(&event)
 	if err != nil {
 		return err

@@ -18,10 +18,6 @@ func (c *AuthController) Auth() error {
 		return nil // already authorized
 	}
 
-	// if isDisabled := revel.Config.BoolDefault("auth.disabled", false); isDisabled {
-	// 	return nil
-	// }
-
 	encodedAuth := strings.TrimPrefix(c.Request.Header.Get("Authorization"), "Basic ")
 	decodedAuth, err := base64.StdEncoding.DecodeString(encodedAuth)
 	if err != nil {
@@ -61,4 +57,8 @@ func (c *AuthController) DevOnly() *revel.Result {
 func (c *AuthController) PermissionDenied() revel.Result {
 	c.Response.Status = 403
 	return c.RenderError(errors.New("Permission denied"))
+}
+
+func (c *AuthController) SentAuth() bool {
+	return c.Request.Header.Get("Authorization") != ""
 }

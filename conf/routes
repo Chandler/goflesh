@@ -38,6 +38,8 @@ GET		/api/players									Players.ReadList
 GET		/api/players/:id								Players.Read
 POST	/api/players									Players.Create
 
+GET		/api/events/players								Events.ReadPlayers
+
 GET		/favicon.ico									Static.Serve("public/img/favicon.png")
 
 # Map static resources from the /app/public folder to the /public path
