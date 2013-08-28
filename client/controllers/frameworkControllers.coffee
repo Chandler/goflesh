@@ -19,6 +19,8 @@ BaseController = Ember.Controller.extend
     @get 'errors'
   ).property 'errors'
 
+  clearMessages: ->
+    @set 'messages', null
 
   fieldsPopulated: ->
     for k,v of @getRecordProperties()

@@ -1,28 +1,32 @@
-define ["ember", "PasswordReset", "jquery"], (Em, PasswordReset, $) ->
-  PasswordResetRoute = Em.Route.extend
-    model: (params) ->
-      result = PasswordReset.find(params)
-      if result == ''
-        console.log 'boo'
-      console.log result
-      console.log 'happy'
+App.PasswordResetRoute = Ember.Route.extend
+  model: (params) ->
+    console.log 'router'
+    result = App.PasswordReset.find(params)
+    # @transitionTo('login')
+    console.log 'found object'
+    result
+    # if result
+      # console.log result
+    # console.log result['store']
+    # console.log 'happy'
+    # result.commit()
   
     # events: 
     #   error: (error, transition) ->
     #     console.log 'error'
-      # $.ajax "/api/password_resets?code="+params["code"],
-      #   type: "GET"
-      #   contentType: "application/json" 
-      # .done =>
-      # 	console.log 'yay'
-      # 	redirect: ->
-	     #  @transitionTo('login')
-      #   # @set 'messages', this.email
-      # .fail => 
-      # 	console.log 'boo'
-      # 	redirect: ->
-      # 	  @transitionTo('discovery')
-        # @set 'errors', 'SERVER ERROR' 
+    # $.ajax "/api/password_resets?code="+params["code"],
+    #   type: "GET"
+    #   contentType: "application/json" 
+    # .done =>
+    # 	console.log 'yay'
+    # 	redirect: ->
+    #   @transitionTo('login')
+    #   # @set 'messages', this.email
+    # .fail => 
+    # 	console.log 'boo'
+    # 	redirect: ->
+    # 	  @transitionTo('discovery')
+    #   @set 'errors', 'SERVER ERROR' 
 
 
       # if Em.Error
