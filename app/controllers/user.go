@@ -22,9 +22,11 @@ type Users struct {
 
 type UserRead struct {
 	models.User
-	Avatar     map[string]string `json:"avatar"`
-	Players    string            `json:"-"`
-	Player_ids []int             `json:"player_ids"`
+	Avatar           map[string]string `json:"avatar"`
+	Players          string            `json:"-"`
+	Player_ids       []int             `json:"player_ids"`
+	Organizations    string            `json:"-"`
+	Organization_ids []int             `json:"organization_ids"`
 }
 
 var reset_password_email_template *template.Template
@@ -48,7 +50,12 @@ func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
 			FROM player p
 			INNER JOIN "user"
 				ON u.id = p.user_id
-			) players
+			) players, array(
+			SELECT DISTINCT m.organization_id
+			FROM member m
+			INNER JOIN "user"
+				ON u.id = m.user_id
+			) organizations
 	    FROM "user" u
     ` + where
 	name := "users"
@@ -76,6 +83,10 @@ func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
 			readObject.Email = ""
 		}
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
+		if err != nil {
+			return c.RenderJson(err)
+		}
+		readObject.Organization_ids, err = PostgresArrayStringToIntArray(readObject.Organizations)
 		if err != nil {
 			return c.RenderJson(err)
 		}
