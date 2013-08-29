@@ -3,7 +3,6 @@ package controllers
 import (
 	"bytes"
 	"code.google.com/p/go.crypto/bcrypt"
-	"crypto/md5"
 	"encoding/json"
 	"errors"
 	"flesh/app/models"
@@ -13,20 +12,10 @@ import (
 	"github.com/robfig/revel"
 	"html/template"
 	"io/ioutil"
-	"strings"
 )
 
 type Users struct {
 	AuthController
-}
-
-type UserRead struct {
-	models.User
-	Avatar           map[string]string `json:"avatar"`
-	Players          string            `json:"-"`
-	Player_ids       []int             `json:"player_ids"`
-	Organizations    string            `json:"-"`
-	Organization_ids []int             `json:"organization_ids"`
 }
 
 var reset_password_email_template *template.Template
@@ -59,30 +48,21 @@ func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
 	    FROM "user" u
     ` + where
 	name := "users"
-	type readObjectType UserRead
 
 	c.Auth()
 
-	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	results, err := Dbm.Select(&models.UserRead{}, query, args...)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	readObjects := make([]*readObjectType, len(results))
+	readObjects := make([]*models.UserRead, len(results))
 	for i, result := range results {
-		readObject := result.(*readObjectType)
-		// make a Gravatar-compatible email hash
-		emailHash := md5.New()
-		emailHash.Write([]byte(strings.ToLower(strings.TrimSpace(readObject.Email))))
-		readObject.Avatar = make(map[string]string)
-		readObject.Avatar["hash"] = fmt.Sprintf("%x", emailHash.Sum(nil))
-		// omit passsword and api key
-		readObject.Password = ""
-		readObject.Api_key = ""
-		// blank out email
-		if c.User == nil || c.User.Id != readObject.Id {
-			readObject.Email = ""
-		}
+		readObject := result.(*models.UserRead)
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
+		readObject.User.CleanSensitiveFields(c.User == nil || c.User.Id != readObject.Id)
+		readObject.AddAvatars()
+		if c.User == nil || c.User.Id != readObject.Id {
+		}
 		if err != nil {
 			return c.RenderJson(err)
 		}

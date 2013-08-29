@@ -15,8 +15,9 @@ type Players struct {
 
 type PlayerRead struct {
 	models.Player
-	StatusString string `json:"status"`
-	HumanCode    string `json:"human_code,omitempty"`
+	StatusString string           `json:"status"`
+	HumanCode    string           `json:"human_code,omitempty"`
+	UserRead     *models.UserRead `json:"user"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -44,6 +45,9 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 		if err != nil {
 			return c.RenderJson(err)
 		}
+		user := readObject.Player.User()
+		user.CleanSensitiveFields(c.User == nil || c.User.Id != user.Id)
+		readObject.UserRead = user.UserRead()
 		readObjects[i] = readObject
 	}
 

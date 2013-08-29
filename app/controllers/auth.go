@@ -10,7 +10,8 @@ import (
 
 type AuthController struct {
 	GorpController
-	User *models.User // the logged-in user
+	User  *models.User // the logged-in user
+	Cache map[string]interface{}
 }
 
 func (c *AuthController) Auth() error {

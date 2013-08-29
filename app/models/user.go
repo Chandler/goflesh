@@ -1,9 +1,13 @@
 package models
 
 import (
+	"crypto/md5"
+	"errors"
 	"flesh/app/routes"
 	"flesh/app/utils"
+	"fmt"
 	uuid "github.com/nu7hatch/gouuid"
+	"strings"
 	"time"
 )
 
@@ -22,6 +26,51 @@ type User struct {
 type UserGetAuthenticate struct {
 	Id      int    `json:"id"`
 	Api_key string `json:"api_key,omitempty"`
+}
+
+type UserRead struct {
+	User
+	Avatar           map[string]string `json:"avatar"`
+	Players          string            `json:"-"`
+	Player_ids       []int             `json:"player_ids"`
+	Organizations    string            `json:"-"`
+	Organization_ids []int             `json:"organization_ids"`
+}
+
+func UserFromId(id int) (*User, error) {
+	user, err := Dbm.Get(User{}, id)
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, errors.New("User could not be found")
+	}
+	return user.(*User), err
+}
+
+func (u *User) CleanSensitiveFields(clearEmail bool) {
+	// omit passsword and api key
+	u.Password = ""
+	u.Api_key = ""
+	// blank out email
+	if clearEmail {
+		u.Email = ""
+	}
+}
+
+func (u *User) UserRead() *UserRead {
+	userRead := new(UserRead)
+	userRead.User = *u
+	userRead.AddAvatars()
+	return userRead
+}
+
+func (ur *UserRead) AddAvatars() {
+	// make a Gravatar-compatible email hash
+	emailHash := md5.New()
+	emailHash.Write([]byte(strings.ToLower(strings.TrimSpace(ur.Email))))
+	ur.Avatar = make(map[string]string)
+	ur.Avatar["hash"] = fmt.Sprintf("%x", emailHash.Sum(nil))
 }
 
 /*
