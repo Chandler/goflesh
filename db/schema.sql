@@ -60,7 +60,6 @@ SET default_with_oids = false;
 
 CREATE TABLE event (
     id bigint DEFAULT nextval('event_id_seq'::regclass) NOT NULL,
-    event_type_id integer NOT NULL,
     created timestamp without time zone,
     updated timestamp without time zone
 );
@@ -1082,6 +1081,13 @@ CREATE UNIQUE INDEX screen_name_idx ON "user" USING btree (screen_name);
 
 
 --
+-- Name: tag_claimed_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX tag_claimed_idx ON tag USING btree (claimed);
+
+
+--
 -- Name: tag_taggee; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1245,14 +1251,6 @@ ALTER TABLE ONLY tag
 
 ALTER TABLE ONLY tag
     ADD CONSTRAINT tag_fk_player_tagger FOREIGN KEY (tagger_id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: type; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY event
-    ADD CONSTRAINT type FOREIGN KEY (event_type_id) REFERENCES event_type(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
