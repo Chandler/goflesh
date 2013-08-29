@@ -1,25 +1,6 @@
-
-# Custom controller stack
-#
-# BaseController
-# NewController
-
 BaseMixin = Ember.Mixin.create
   signedIn: ->
     App.Auth.signedIn
-
-  errors: null
-
-  #list of fields on the record which you are going to expose in the 
-  #template for editing/saving
-  editableRecordFields: null,
-  
-  clearErrors: ->
-    @set 'errors', null
-  
-  errorMessages: (->
-    @get 'errors'
-  ).property 'errors'
 
   currentUser: (->
     App.Auth.get('user')
@@ -28,6 +9,19 @@ BaseMixin = Ember.Mixin.create
   signOut:  ->
     App.Auth.destroySession()
 
+  errors: null
+
+  clearErrors: ->
+    @set 'errors', null
+  
+  errorMessages: (->
+    @get 'errors'
+  ).property 'errors'
+
+  #list of fields on the record which you are going to expose in the 
+  #template for editing/saving
+  editableRecordFields: null,
+  
   fieldsPopulated: ->
     for k,v of @getRecordProperties()
       return false if !v
@@ -45,6 +39,7 @@ BaseMixin = Ember.Mixin.create
   recordToSave: ->
     @get('content')
 
+  #assumes edit forms were bound to model, need to commit the changes
   edit: ->
     @get('store').get('defaultTransaction').commit()
 
@@ -63,9 +58,6 @@ BaseMixin = Ember.Mixin.create
     else
       @set 'errors', "Please fill in all fields"
 
-BaseController = Ember.Controller.extend(BaseMixin)
-BaseObjectController = Ember.ObjectController.extend(BaseMixin)
-
 NewMixin = Ember.Mixin.create
   recordToSave: ->
     @get('model').createRecord(@getRecordProperties())
@@ -73,6 +65,10 @@ NewMixin = Ember.Mixin.create
   #we have no model object the values are saved right on the controller
   getRecordProperties: ->
     @getProperties(@editableRecordFields)
+
+BaseController = Ember.Controller.extend(BaseMixin)
+
+BaseObjectController = Ember.ObjectController.extend(BaseMixin)
 
 NewController = BaseController.extend(NewMixin)
 

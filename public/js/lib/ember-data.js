@@ -1,5 +1,5 @@
-// Version: v0.13-102-g6bdebe7
-// Last commit: 6bdebe7 (2013-08-14 00:51:19 -0500)
+// Version: v0.13-221-gef11bff
+// Last commit: ef11bff (2013-08-26 20:54:06 -0700)
 
 
 (function() {
@@ -1815,7 +1815,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
   },
 
   /**
-    This method returns a record for a given record refeence.
+    This method returns a record for a given record reference.
 
     If no record for the reference has yet been materialized, this method will
     materialize a new `DS.Model` instance. This allows adapters to eagerly load
@@ -9707,7 +9707,6 @@ DS.RESTAdapter = DS.Adapter.extend({
     var adapter = this;
     var data = {};
 
-    /* TODO flesh figure out how to override this in our store instead of modifying ember */
     data[root] = this.serialize(record, { includeId: true });
 
     return this.ajax(this.buildURL(root), "POST", {
@@ -9957,8 +9956,7 @@ DS.RESTAdapter = DS.Adapter.extend({
     @param  xhr
   */
   didError: function(store, type, record, xhr) {
-    debugger
-    if (xhr.status != 200) {
+    if (xhr.status === 422) {
       var json = JSON.parse(xhr.responseText),
           serializer = get(this, 'serializer'),
           errors = serializer.extractValidationErrors(type, json);

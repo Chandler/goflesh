@@ -135,7 +135,10 @@ func (c *Players) Create() revel.Result {
 			return c.RenderError(err)
 		}
 	}
-	return c.RenderJson(interfaces)
+
+	out := make(map[string]interface{})
+	out[keyName] = interfaces
+	return c.RenderJson(out)
 }
 func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	query := `

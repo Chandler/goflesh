@@ -1,4 +1,4 @@
-App.User = DS.Model.extend
+App.User = DS.Model.extend(
   first_name: DS.attr 'string'
   last_name: DS.attr 'string'
   screen_name: DS.attr 'string'
@@ -7,5 +7,6 @@ App.User = DS.Model.extend
   password: DS.attr 'string'
   players: DS.hasMany 'App.Player'
   organization: DS.belongsTo 'App.Organization'
+)
 App.User.toString = -> 
   "User"

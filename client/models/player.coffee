@@ -3,7 +3,6 @@ App.Player = DS.Model.extend
   game: DS.belongsTo 'App.Game'
   user: DS.belongsTo 'App.User'
 
-
   isHuman: (->
     @get('status') == 'human'
   ).property()

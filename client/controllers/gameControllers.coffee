@@ -10,7 +10,10 @@ App.GameHomeController =  Ember.Controller.extend
   gameBinding: 'controllers.game'
   contentBinding: 'game.players'
   
-  #TODO change these
+  #this can be refactored into something like
+  #selected: 'eventFeed'
+  #showEventFeed = Ember.computed(selected, 'eventFeed')
+
   eventFeedSelected: false
   playerListSelected: true
   showPlayerList: ->
@@ -20,13 +23,14 @@ App.GameHomeController =  Ember.Controller.extend
     @set 'eventFeedSelected', true
     @set 'playerListSelected', false
 
+  showRegisterTag: (->
+    currentUser.belongsToGame(@get('game.id')) && currentUser.isZombie() 
+  ).property()
+
   registerTag: ->
     code = "VPCQG"
-    game_id = @get('game.id')
-    current_player = App.Auth.get('user.players').filter (p) =>
-      p.get('game.id') == game_id
-    player_id = current_player[0].get('id')
-    $.post("/api/tag/" + code + "?player_id=" + player_id).done(e) ->
+    currentPlayer = currentUser.playerForGame(@get('game.id'))
+    $.post("/api/tag/" + code + "?player_id=" + currentPlayer.get('id')).done(e) ->
       console.log(e)
 
 App.GamesController = Ember.ObjectController.extend
