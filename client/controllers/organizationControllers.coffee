@@ -10,8 +10,8 @@ App.OrganizationHomeController = Ember.Controller.extend
       user: App.Auth.get('user')
     @get('store').get('defaultTransaction').commit()
 
-App.OrganizationsController = Ember.ObjectController.extend
-  selectedOrganization: null
+# App.OrganizationsController = Ember.ObjectController.extend
+#   selectedOrganization: null
 
 App.OrganizationSettingsController = BaseController.extend
   editableRecordFields: ['name', 'slug']

@@ -37,11 +37,15 @@ restAdapter = DS.RESTAdapter.create
     @ajax(@buildURL(root), "POST",
       data: data
     ).then((json) ->
+      console.log "one"
       adapter.didCreateRecord store, type, record, json
     , (xhr) ->
+      console.log "two"
       adapter.didError store, type, record, xhr
       throw xhr
-    ).then null, DS.rejectionHandler
+    ).then null, ->
+      console.log "three"
+      DS.rejectionHandler
     
 
 restAdapter.registerTransform 'avatar', 

@@ -6,11 +6,11 @@ App.UserSettingsController = BaseController.extend
 
 App.UsersNewController = NewController.extend
   editableRecordFields: ['first_name', 'last_name', 'email', 'screen_name', 'password']
-  first_name: '',
-  last_name: '',
-  email: '',
-  screen_name: '',
-  password: ''
+  first_name: 'n',
+  last_name: 'n',
+  email: 'n',
+  screen_name: 'n',
+  password: 'n'
 
 App.UserController = BaseObjectController.extend
   userIsCurrentUser: (->
