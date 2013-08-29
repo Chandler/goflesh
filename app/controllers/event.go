@@ -3,7 +3,7 @@ package controllers
 import (
 	"flesh/app/models"
 	"github.com/robfig/revel"
-	// "sort"
+	"sort"
 	"time"
 )
 
@@ -11,31 +11,32 @@ type Events struct {
 	AuthController
 }
 
-// interface DatedSortable struct {
-// 	Date() *time.Time
-// }
-
-type ClientEvent struct {
-	Type     string     `json:"type"`
-	SortDate *time.Time `json:"-"`
+type Dated interface {
+	Date() *time.Time
 }
 
-type ClientEvents []*ClientEvent
+type DatedSortable []Dated
 
-func (s ClientEvents) Len() int { return len(s) }
+func (s DatedSortable) Len() int { return len(s) }
 
-type ByDate struct{ ClientEvents }
-
-func (s ByDate) Less(i, j int) bool {
-	return s.ClientEvents[i].SortDate.Before(*s.ClientEvents[j].SortDate)
+func (s DatedSortable) Less(i, j int) bool {
+	return s[i].Date().Before(*s[j].Date())
+}
+func (s DatedSortable) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
 }
 
 type ClientTagEvent struct {
-	ClientEvent
-	Tag models.Tag `json:"tag"`
+	Type     string     `json:"type"`
+	SortDate *time.Time `json:"-"`
+	Tag      models.Tag `json:"tag"`
 }
 
-func (c *Events) GetTagEvents(inner_join string, where string, args ...interface{}) []*ClientTagEvent {
+func (c ClientTagEvent) Date() *time.Time {
+	return c.SortDate
+}
+
+func (c *Events) GetTagEvents(inner_join string, where string, args ...interface{}) DatedSortable {
 	query := `
 		SELECT tag.*
 		FROM event
@@ -50,14 +51,15 @@ func (c *Events) GetTagEvents(inner_join string, where string, args ...interface
 	var list []*models.Tag
 	_, err := Dbm.Select(&list, query, args...)
 	if err != nil {
-		return []*ClientTagEvent{}
+		return DatedSortable{}
 	}
-	clientObjects := make([]*ClientTagEvent, len(list))
+	clientObjects := make(DatedSortable, len(list))
 	for i, readObject := range list {
-		clientObject := ClientTagEvent{ClientEvent{"tag", readObject.Claimed}, *readObject}
-		clientObjects[i] = &clientObject
+		clientObject := ClientTagEvent{"tag", readObject.Claimed, *readObject}
+		clientObjects[i] = clientObject
 	}
-	// sort.Sort(ByDate{clientObjects})
+
+	sort.Sort(clientObjects)
 
 	return clientObjects
 }

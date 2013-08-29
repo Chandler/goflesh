@@ -15,8 +15,9 @@ type Players struct {
 
 type PlayerRead struct {
 	models.Player
-	StatusString string `json:"status"`
-	HumanCode    string `json:"human_code,omitempty"`
+	StatusString string           `json:"status"`
+	HumanCode    string           `json:"human_code,omitempty"`
+	UserRead     *models.UserRead `json:"user"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -44,6 +45,9 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 		if err != nil {
 			return c.RenderJson(err)
 		}
+		user := readObject.Player.User()
+		user.CleanSensitiveFields(c.User == nil || c.User.Id != user.Id)
+		readObject.UserRead = user.UserRead()
 		readObjects[i] = readObject
 	}
 
@@ -53,11 +57,10 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	return c.RenderJson(out)
 }
 
-func (c *Players) ReadList(ids []int) revel.Result {
-	// TODO: when revel is fixed, support getting by game id (game_id *int)
-	// if game_id != nil {
-	// 	return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", *game_id)
-	// }
+func (c *Players) ReadList(game_id int, ids []int) revel.Result {
+	if game_id != 0 {
+		return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", game_id)
+	}
 	if len(ids) == 0 {
 		return c.ReadPlayer("")
 	}

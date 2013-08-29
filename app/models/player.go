@@ -22,6 +22,14 @@ func (p *Player) HumanCode() *HumanCode {
 	return human.(*HumanCode)
 }
 
+func (p *Player) User() *User {
+	user, err := UserFromId(p.User_id)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
 func PlayerFromId(id int) (*Player, error) {
 	player, err := Dbm.Get(Player{}, id)
 	if err != nil {
