@@ -275,8 +275,6 @@ class TestCasePlayer(TestCase):
 		n.assert_equal(response.status_code, 200)
 		zombie_user_id = extract_obj_attr(response.json(), 'id')
 		zombie_api_key = extract_obj_attr(response.json(), 'api_key')
-		print 'user id ', extract_obj_attr(zombie_user['users'], 'password')
-		print 'email ', extract_obj_attr(zombie_user['users'], 'email')
 
 		# create a zombie player
 		zombie_player = self.object_gen.generate_player_data(1, zombie_user_id, None)
@@ -286,9 +284,6 @@ class TestCasePlayer(TestCase):
 		game_id = extract_obj_attr(response.json(), 'game_id')
 		response = self.requests_gen.get('ozs/create_test_oz/{}'.format(zombie_player_id))
 		n.assert_equal(response.status_code, 200)
-
-		print 'zombie id ', zombie_player_id
-		print 'game_id ',game_id
 
 		# create a human user
 		human_user = self.object_gen.generate_user_data(1) # creating user here to extract password
@@ -303,8 +298,6 @@ class TestCasePlayer(TestCase):
 		n.assert_equal(response.status_code, 200)
 		human_player_id = extract_obj_attr(response.json(), 'id')
 		human_user_id = extract_obj_attr(response.json(), 'user_id')
-		print 'human user id ', human_user_id
-		print 'human id ', human_player_id
 
 		# authenticate the human and get the human code
 		response = self.requests_gen.get_with_auth('players/{}'.format(human_player_id), (human_user_id, human_api_key))
@@ -319,18 +312,11 @@ class TestCasePlayer(TestCase):
 		human_code_exists = 'human_code' in response.json()['players'][0].keys()		
 		n.assert_true(human_code_exists)
 
-		print human_code
 		# tag the human
-		response = self.requests_gen.post_with_auth({},'tag/{}'.format(human_code), (zombie_user_id, zombie_api_key))
-		print response.text
+		response = self.requests_gen.post_with_auth({},'tag/{}?player_id={}'.format(human_code, zombie_player_id), (zombie_user_id, zombie_api_key))
 		n.assert_equal(response.status_code, 200)
+		n.assert_equal(extract_obj_attr(response.json()['players'], 'status'), 'zombie')
 
-
-		# create a zombie
-		# create a human
-		# get human code (login as human to grab human code for tagging)
-		# login as zombie
-		# go to endpoint/code to 'tag' human
 
 class ObjectCreator(TestCase):
 	def create_user(self):
@@ -455,16 +441,17 @@ class JSONObjectGenerator():
 				'timezone': self.test_data_generator.generate_timezone(),
 				'registration_start_time': self.test_data_generator.generate_date(0),
 				'registration_end_time': self.test_data_generator.generate_date(1),
-				'running_start_time': self.test_data_generator.generate_date(2),
-				'running_end_time': self.test_data_generator.generate_date(5),
+				'running_start_time': self.test_data_generator.generate_date(0),
+				'running_end_time': self.test_data_generator.generate_date(1),
 			}
 			games.append(game)
 		return {'games': games}
 
-	def generate_started_game_data(self, num_games):
+	def generate_started_game_data(self, num_games, org_id):
 		games = []
-		org = TestCaseOrg().test_create()
-		org_id = extract_obj_attr(org, 'id')
+		if not org_id:
+			org = TestCaseOrg().test_create()
+			org_id = extract_obj_attr(org, 'id')
 		for _ in xrange(num_games):
 			game = {
 				'name': self.test_data_generator.generate_game_name(),

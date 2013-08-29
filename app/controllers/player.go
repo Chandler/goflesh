@@ -161,7 +161,7 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 		return c.RenderError(err)
 	}
 
-	if c.SentAuth() {
+	if !c.SentAuth() {
 		c.Response.Status = 401
 		return c.RenderText("")
 	}
@@ -172,6 +172,7 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 	}
 
 	tagger, err := models.PlayerFromId(player_id)
+	revel.WARN.Print(player_id)
 	if err != nil {
 		return c.RenderError(err)
 	}

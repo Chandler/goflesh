@@ -54,8 +54,8 @@ func (t *MemberTest) TestRead() {
 	t.Assert(strings.Index(body, "organization_id") != -1)
 }
 
-func (t *MemberTest) TestList() {
-	t.Get(routes.Members.ReadList())
-	t.AssertOk()
-	t.AssertContentType(JSON_CONTENT)
-}
+// func (t *MemberTest) TestList() {
+// 	t.Get(routes.Members.ReadList())
+// 	t.AssertOk()
+// 	t.AssertContentType(JSON_CONTENT)
+// }
