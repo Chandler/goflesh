@@ -4,7 +4,6 @@ App.OrganizationHomeController = BaseController.extend
   organization: null
   organizationBinding: 'controllers.organization'
   contentBinding: 'organization.games'
-  
 
 App.OrganizationSettingsController = BaseController.extend
   editableRecordFields: ['name', 'slug']

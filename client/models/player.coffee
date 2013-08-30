@@ -5,15 +5,15 @@ App.Player = DS.Model.extend
 
   isHuman: (->
     @get('status') == 'human'
-  ).property()
+  ).property('status')
 
   isZombie: (->
     @get('status') == 'zombie'
-  ).property()
+  ).property('status')
 
   isStaved: (->
     @get('status') == 'starved'    
-  ).property()
+  ).property('status')
 
 App.Player.toString = -> 
   "Player"

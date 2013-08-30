@@ -4,14 +4,11 @@ App.Game = DS.Model.extend
   organization: DS.belongsTo 'App.Organization'
   running_start_time: DS.attr 'string'
   players: DS.hasMany 'App.Player'
-  myMethod: (->
-    @get('players.length') > 0
-  ).property()
-
+  
   isCurrentUserGame: (->
-   false
-  ).property('players')
-
+    user = App.Auth.get('user')
+    @get('players').findProperty('user', user)
+  ).property('players.@each.user')
 
 App.Game.toString = -> 
   "Game"

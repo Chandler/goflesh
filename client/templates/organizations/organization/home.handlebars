@@ -1,17 +1,15 @@
 <h3> Upcoming Games </h3>
-{{organization.myMethod}}
 {{#each game in organization.games}}  
-  {{game.myMethod}}
   <div class="game-badge">
+  {{game.isCurrentUserGame}}
   <span>{{#linkTo 'game.home' game}} {{game.name}} {{/linkTo}}</span>
   <span>{{#linkTo 'game.home' game}} {{game.running_start_time}} {{/linkTo}}</span>
-  {{game.isCurrentUserGame}}a
-<!--   {{#if game.isCurrentUserGame}}
+  {{#if game.isCurrentUserGame}}
     <span> You are in this game! </span>
   {{else}}
     <span> <a {{action "joinGame" game}}> Join This Game !! </a> </span>
   {{/if}}
- -->
+
   </div>
 {{/each}}
 <h3> Activity</h3>
