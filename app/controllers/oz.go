@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"flesh/app/models"
 	"encoding/json"
 	"github.com/robfig/revel"
 	"io/ioutil"
@@ -50,3 +51,11 @@ func (c *Oz) SelectOzs(game_id int) revel.Result {
 
 	return c.RenderJson(rowsAffected)
 }
+
+func (c *Oz) CreateTestOz(player_id int) revel.Result {
+	oz := &models.Oz{player_id, false, models.TimeTrackedModel{}}
+
+	oz.Confirm()
+	return c.RenderJson(oz)
+}
+
