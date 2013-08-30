@@ -32,7 +32,7 @@ func init() {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
+func FetchUsers(current_user *models.User, where string, args ...interface{}) ([]*models.UserRead, error) {
 	query := `
 	    SELECT *, array(
 			SELECT DISTINCT p.id
@@ -47,34 +47,40 @@ func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
 			) organizations
 	    FROM "user" u
     ` + where
-	name := "users"
-
-	c.Auth()
 
 	results, err := Dbm.Select(&models.UserRead{}, query, args...)
 	if err != nil {
-		return c.RenderError(err)
+		return nil, err
 	}
 	readObjects := make([]*models.UserRead, len(results))
 	for i, result := range results {
 		readObject := result.(*models.UserRead)
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
-		readObject.User.CleanSensitiveFields(c.User == nil || c.User.Id != readObject.Id)
+		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
 		readObject.AddAvatars()
-		if c.User == nil || c.User.Id != readObject.Id {
+		if current_user == nil || current_user.Id != readObject.Id {
 		}
 		if err != nil {
-			return c.RenderJson(err)
+			return nil, err
 		}
 		readObject.Organization_ids, err = PostgresArrayStringToIntArray(readObject.Organizations)
 		if err != nil {
-			return c.RenderJson(err)
+			return nil, err
 		}
 		readObjects[i] = readObject
 	}
+	return readObjects, nil
+}
+
+func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
+	c.Auth()
+	readObjects, err := FetchUsers(c.User, where, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
 
 	out := make(map[string]interface{})
-	out[name] = readObjects
+	out["users"] = readObjects
 
 	return c.RenderJson(out)
 }

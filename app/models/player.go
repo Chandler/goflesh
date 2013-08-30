@@ -88,7 +88,9 @@ func (p *Player) Status() string {
 		return "human"
 	}
 
-	mustHaveFedBy := time.Now().Add(-p.Game().TimeToStarve())
+	// TODO: support custom TimeToStarve without looking up game objects in DB
+	// mustHaveFedBy := time.Now().Add(-p.Game().TimeToStarve())
+	mustHaveFedBy := time.Now().Add(-new(Game).TimeToStarve())
 
 	if p.Last_fed.Before(mustHaveFedBy) {
 		return "starved"

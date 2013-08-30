@@ -15,9 +15,8 @@ type Players struct {
 
 type PlayerRead struct {
 	models.Player
-	StatusString string           `json:"status"`
-	HumanCode    string           `json:"human_code,omitempty"`
-	UserRead     *models.UserRead `json:"user"`
+	StatusString string `json:"status"`
+	HumanCode    string `json:"human_code,omitempty"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -25,7 +24,6 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	    SELECT p.*
 	    FROM player p
     ` + where
-	name := "players"
 	type readObjectType PlayerRead
 
 	c.Auth()
@@ -34,7 +32,8 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	if err != nil {
 		return c.RenderError(err)
 	}
-	readObjects := make([]*readObjectType, len(results))
+	user_ids := make([]int, len(results))
+	players := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)
 		readObject.StatusString = readObject.Status()
@@ -42,17 +41,22 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 			human_code := readObject.Player.HumanCode()
 			readObject.HumanCode = human_code.Code
 		}
+		user_ids[i] = readObject.Player.User_id
 		if err != nil {
 			return c.RenderJson(err)
 		}
-		user := readObject.Player.User()
-		user.CleanSensitiveFields(c.User == nil || c.User.Id != user.Id)
-		readObject.UserRead = user.UserRead()
-		readObjects[i] = readObject
+		players[i] = readObject
+	}
+
+	templateStr := IntArrayToString(user_ids)
+	users, err := FetchUsers(c.User, "WHERE u.id = ANY('{"+templateStr+"}')")
+	if err != nil {
+		return c.RenderJson(err)
 	}
 
 	out := make(map[string]interface{})
-	out[name] = readObjects
+	out["players"] = players
+	out["users"] = users
 
 	return c.RenderJson(out)
 }
