@@ -113,7 +113,9 @@ func (c *Events) ReadPlayers(ids []int) revel.Result {
 		return c.RenderText("")
 	}
 	events := c.ReadEvents(ids, make([]int, 0))
-	return c.RenderJson(events)
+	out := make(map[string]interface{})
+	out["events"] = events
+	return c.RenderJson(out)
 }
 
 func (c *Events) ReadGames(ids []int) revel.Result {
@@ -121,5 +123,7 @@ func (c *Events) ReadGames(ids []int) revel.Result {
 		return c.RenderText("")
 	}
 	events := c.ReadEvents(make([]int, 0), ids)
-	return c.RenderJson(events)
+	out := make(map[string]interface{})
+	out["events"] = events
+	return c.RenderJson(out)
 }
