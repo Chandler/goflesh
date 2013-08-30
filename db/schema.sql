@@ -85,6 +85,16 @@ ALTER SEQUENCE event_event_seq OWNED BY event.id;
 
 
 --
+-- Name: event_player; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE event_player (
+    id bigint NOT NULL,
+    player_id integer NOT NULL
+);
+
+
+--
 -- Name: event_player_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -94,6 +104,25 @@ CREATE SEQUENCE event_player_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- Name: event_player_id_seq1; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE event_player_id_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: event_player_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE event_player_id_seq1 OWNED BY event_player.id;
 
 
 --
@@ -734,6 +763,13 @@ ALTER SEQUENCE user_id_seq OWNED BY "user".id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY event_player ALTER COLUMN id SET DEFAULT nextval('event_player_id_seq1'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY event_tag ALTER COLUMN id SET DEFAULT nextval('event_tag_id_seq'::regclass);
 
 
@@ -899,6 +935,14 @@ ALTER TABLE ONLY event
 
 ALTER TABLE ONLY event_tag
     ADD CONSTRAINT event_player_copy_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: event_player_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY event_player
+    ADD CONSTRAINT event_player_pkey PRIMARY KEY (id);
 
 
 --
@@ -1115,6 +1159,22 @@ ALTER TABLE ONLY event_role
 
 ALTER TABLE ONLY event_tag
     ADD CONSTRAINT event_tag_id_fkey FOREIGN KEY (id) REFERENCES event(id);
+
+
+--
+-- Name: event_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_player
+    ADD CONSTRAINT event_tag_id_fkey FOREIGN KEY (id) REFERENCES event(id);
+
+
+--
+-- Name: event_tag_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_player
+    ADD CONSTRAINT event_tag_player_id_fkey FOREIGN KEY (player_id) REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
