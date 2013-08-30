@@ -1,4 +1,4 @@
-
+#send authorization headers for all logged in users
 $.ajaxSetup
   beforeSend: (xhr) ->
     password = App.Auth.get('authToken')
@@ -22,10 +22,10 @@ restAdapter = DS.RESTAdapter.create
       delete json[plural]
       
       @_super(loader, json, type, record)
-    
-    # Conforms ember-data to JSONAPI spec
-    # by posting singular resources in an array
-    # TODO mind this when upgrading ember data, it could change.
+  
+  # Conforms ember-data to JSONAPI spec
+  # by posting singular resources in an array
+  # TODO mind this when upgrading ember data, it could change.
   createRecord: (store, type, record) ->
     root = this.rootForType(type);
     adapter = this;
@@ -54,3 +54,15 @@ restAdapter.registerTransform 'avatar',
   
 App.Store = DS.Store.extend
   adapter: restAdapter
+
+App.Store.registerAdapter 'App.PlayerEvent', DS.RESTAdapter.extend
+  namespace: 'api'
+  customUrl: 'events/players'
+  buildURL: (root, suffix, record) ->
+    url = [@url]
+    url.push @namespace  unless Ember.isNone(@namespace)
+    url.push @customUrl
+    return url.join("/");
+
+
+

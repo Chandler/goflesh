@@ -33,8 +33,6 @@ App.GameHomeController =  Ember.Controller.extend
     $.post("/api/tag/" + code + "?player_id=" + currentPlayer.get('id')).done(e) ->
       console.log(e)
 
-App.GamesController = Ember.ObjectController.extend
-  selectedGame: null
 
 App.GameSettingsController = BaseController.extend
   needs: 'game'

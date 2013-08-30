@@ -1,4 +1,4 @@
 App.PlayerEvent = DS.Model.extend
-  name: DS.attr 'string'
+  type: DS.attr 'string'
 App.PlayerEvent.toString = -> 
   "PlayerEvent"
