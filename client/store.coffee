@@ -55,7 +55,14 @@ restAdapter.registerTransform 'avatar',
 App.Store = DS.Store.extend
   adapter: restAdapter
 
+
+DS.RESTAdapter.configure('App.PlayerEvent',
+    sideLoadAs: 'events'
+)
+
 App.Store.registerAdapter 'App.PlayerEvent', DS.RESTAdapter.extend
+  mappings:
+    events: App.PlayerEvent
   namespace: 'api'
   customUrl: 'events/players'
   buildURL: (root, suffix, record) ->
