@@ -1,4 +1,4 @@
-#send authorization headers for all logged in users
+#send authorization headers in all Ajax calls when user is logged in.
 $.ajaxSetup
   beforeSend: (xhr) ->
     password = App.Auth.get('authToken')
@@ -8,24 +8,36 @@ $.ajaxSetup
       xhr.setRequestHeader('Authorization', 'Basic ' + btoa(token))
     
 
-
 #http://www.thomasboyt.com/2013/05/01/why-ember-data-breaks.html
-restAdapter = DS.RESTAdapter.create
+
+#Custom extensions of the ember rest adapter. Review these changes when upgrading ember-data
+#works with ember-data commit: ef11bff (2013-08-26 20:54:06 -0700)
+FleshRestAdapter = DS.RESTAdapter.extend
   namespace: 'api' 
   serializer: DS.RESTSerializer.createWithMixins
+    
+    #support overriding a model's type
+    modelTypeOverrides:
+      PlayerEvent: 'Event'
+
+    rootForType: (type) ->
+      newType = @modelTypeOverrides[type] || type
+      @_super(newType)
+
     extract: (loader, json, type, record) ->
       # Conforms ember-data to JSONAPI spec
-      # by accepting singular resources in an array
+      # by *accepting* singular resources in an array
+      # with a plural key
       root = this.rootForType(type) 
-      plural = root + "s"
+      plural = this.pluralize(root)
       json[root] = json[plural][0]
       delete json[plural]
       
       @_super(loader, json, type, record)
   
   # Conforms ember-data to JSONAPI spec
-  # by posting singular resources in an array
-  # TODO mind this when upgrading ember data, it could change.
+  # by *sending* singular resources in an array
+  # with a pural key
   createRecord: (store, type, record) ->
     root = this.rootForType(type);
     adapter = this;
@@ -44,8 +56,8 @@ restAdapter = DS.RESTAdapter.create
     ).then null, ->
       DS.rejectionHandler
     
-
-restAdapter.registerTransform 'avatar', 
+#
+FleshRestAdapter.registerTransform 'avatar', 
   serialize: (value) ->
     return {avatar: {hash: value}}
   
@@ -53,17 +65,10 @@ restAdapter.registerTransform 'avatar',
     return value["hash"]
   
 App.Store = DS.Store.extend
-  adapter: restAdapter
+  adapter: FleshRestAdapter
 
-
-DS.RESTAdapter.configure('App.PlayerEvent',
-    sideLoadAs: 'events'
-)
-
-App.Store.registerAdapter 'App.PlayerEvent', DS.RESTAdapter.extend
-  mappings:
-    events: App.PlayerEvent
-  namespace: 'api'
+#Extensions specific to our events models
+App.Store.registerAdapter 'App.PlayerEvent', FleshRestAdapter.extend
   customUrl: 'events/players'
   buildURL: (root, suffix, record) ->
     url = [@url]

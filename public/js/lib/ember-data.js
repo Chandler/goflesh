@@ -7686,7 +7686,6 @@ DS.JSONSerializer = DS.Serializer.extend({
   extractMany: function(loader, json, type, records) {
     var root = this.rootForType(type);
     root = this.pluralize(root);
-
     this.sideload(loader, type, json, root);
     this.extractMeta(loader, type, json);
 

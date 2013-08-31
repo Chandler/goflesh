@@ -8,20 +8,17 @@ App.GameHomeController =  Ember.Controller.extend
   needs: 'game'
   game: null
   gameBinding: 'controllers.game'
-  contentBinding: 'game.players'
+  playersBinding: 'game.players'
+  eventsBinding: 'events'
   
-  #this can be refactored into something like
-  #selected: 'eventFeed'
-  #showEventFeed = Ember.computed(selected, 'eventFeed')
+  selectedList: 'eventList'
+  
+  selectList: (list) ->
+    @set 'selectedList', list
 
-  eventFeedSelected: false
-  playerListSelected: true
-  showPlayerList: ->
-    @set 'eventFeedSelected', false
-    @set 'playerListSelected', true
-  showEventFeed: ->
-    @set 'eventFeedSelected', true
-    @set 'playerListSelected', false
+  eventListSelected:  Ember.computed.equal('selectedList', 'eventList')
+  playerListSelected: Ember.computed.equal('selectedList', 'playerList')
+
 
   showRegisterTag: (->
     currentUser.belongsToGame(@get('game.id')) && currentUser.isZombie() 

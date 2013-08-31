@@ -28,11 +28,17 @@ App.PlayerListView = Ember.ListView.extend
 # Event Feed
 #
 App.EventRowView = Ember.ListItemView.extend
-  templateName: "eventList/playerTaggedPlayerRow"
+
+  templateName: (=>
+    rowTemplate = "tag"
+    "eventList/" + rowTemplate
+  ).property()
 
 App.EventListView = Ember.ListView.extend
   height: 1400,
   rowHeight: 50,
-  itemViewClass: App.EventRowView
+  itemViewClass: (->
+    App.EventRowView
+  ).property()
 
 

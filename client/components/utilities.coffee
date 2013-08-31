@@ -11,7 +11,7 @@ Utilities =
     hash = random + random + random + random
     hash = "9c4f51f89c4f51f89c4f51f89c4f51f8"
     "<img class=\" avatar " + options.hash.class +  "\" src=\"http://www.gravatar.com/avatar/" + hash + "?s=" + px + "&d=identicon\"/>"
-
+    "empty"
 
   avatar2Tag: (key, size, klass) ->
     sizes =
@@ -21,7 +21,7 @@ Utilities =
       profile: 150
     px = sizes[size]
     "<img class=\" avatar " + klass +  "\" src=\"http://www.gravatar.com/avatar/" + key + "?s=" + px + "&d=identicon\"/>"
-
+    "empty"
 
   avatarIOTag: (key, size, klass) ->
     "<img class=\" avatar " + klass +  "\" src=\"http://avatars.io/5219420f20885b315500004c/" + key + "?size=" + size + "\"/>"

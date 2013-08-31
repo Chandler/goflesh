@@ -5,8 +5,6 @@ App.Organization = DS.Model.extend
   users: DS.hasMany 'App.User'
   games: DS.hasMany 'App.Game',
     inverse: 'organization'
-  myMethod: (->
-    @get('games.length') > 0
-  ).property()
+    
 App.Organization.toString = -> 
   "Organization"

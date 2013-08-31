@@ -8,5 +8,6 @@ App.User = DS.Model.extend(
   players: DS.hasMany 'App.Player'
   organization: DS.belongsTo 'App.Organization'
 )
+
 App.User.toString = -> 
   "User"
