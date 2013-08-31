@@ -49,7 +49,7 @@ func GenerateTestData() {
 			InsertTestOrganization()
 		}
 		revel.INFO.Print("Inserting random Users")
-		for i := 0; i < 400; i++ {
+		for i := 0; i < 40; i++ {
 			InsertTestUser()
 		}
 		revel.INFO.Print("Inserting random Members")
@@ -234,6 +234,10 @@ func InsertTestPlayer() *models.Player {
 	human_code := models.HumanCode{player.Id, "", models.TimeTrackedModel{}}
 	human_code.GenerateCode()
 	err = controllers.Dbm.Insert(&human_code)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	err = models.CreateJoinedGameEvent(player)
 	if err != nil {
 		revel.WARN.Print(err)
 	}

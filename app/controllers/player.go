@@ -141,6 +141,10 @@ func (c *Players) Create() revel.Result {
 		if err != nil {
 			return c.RenderError(err)
 		}
+		err = models.CreateJoinedGameEvent(playerInterface.(*models.Player))
+		if err != nil {
+			return c.RenderError(err)
+		}
 	}
 	return c.RenderJson(interfaces)
 }
