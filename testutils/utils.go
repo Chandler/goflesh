@@ -188,7 +188,7 @@ func InsertTestUser() *models.User {
 func InsertTestOrganization() *models.Organization {
 	name := GenerateName().(string)
 	slug := strings.Replace(name, " ", "_", -1)
-	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
+	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", "A testing organization", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -214,6 +214,7 @@ func InsertTestGame() *models.Game {
 		&oneDayHence,
 		&oneDayAgo,
 		&twoDaysHence,
+		"A testing game",
 		models.TimeTrackedModel{},
 	}
 	err := controllers.Dbm.Insert(game)
