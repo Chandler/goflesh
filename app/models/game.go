@@ -14,6 +14,7 @@ type Game struct {
 	Registration_end_time   *time.Time `json:"registration_end_time"`
 	Running_start_time      *time.Time `json:"running_start_time"`
 	Running_end_time        *time.Time `json:"running_end_time"`
+	Description             string     `json:"description"`
 	TimeTrackedModel
 }
 
