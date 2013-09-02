@@ -1,18 +1,23 @@
 <h3> Upcoming Games </h3>
-{{#each game in organization.games}}  
-  <div class="game-badge">
-  {{game.isCurrentUserGame}}
-  <span>{{#linkTo 'game.home' game}} {{game.name}} {{/linkTo}}</span>
-  <span>{{#linkTo 'game.home' game}} {{game.running_start_time}} {{/linkTo}}</span>
-  {{#if game.isCurrentUserGame}}
-    <span> You are in this game! </span>
-  {{else}}
-    <span> <a {{action "joinGame" game}}> Join This Game !! </a> </span>
-  {{/if}}
-
+{{#each game in organization.games}}
+<!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
+<div class="row gamelistitem game-list-item">
+  <div class="span4">
+    {{#linkTo 'game.home' game classNames="game-list-name"}} {{game.name}} {{/linkTo}}
+    <div class="timeseries"></div>
   </div>
-{{/each}}
-<h3> Activity</h3>
-<div class="profile-home">
+  <div class="span4 game-list-item">
   {{view App.PlayerListView contentBinding="content"}}
+  </div>
+  <div class="span4 game-list-item">
+    <h4>Begins 8/14</h4>
+    <h4>Ends 8/21</h4>
+    <h4>Players: {{game.players.length}}</h4>
+    {{#if game.isCurrentUserGame}}
+    You're in!
+    {{else}}
+      <div class="span1"><button class="btn signin btn-large" {{action "joinGame" game}}>Join</button></div>
+    {{/if}}
+  </div>
 </div>
+{{/each}}

@@ -11,7 +11,7 @@ App.Player = DS.Model.extend
     @get('status') == 'zombie'
   ).property('status')
 
-  isStaved: (->
+  isStarved: (->
     @get('status') == 'starved'    
   ).property('status')
 

@@ -1,10 +1,27 @@
 <div class="game-home">
-  <div class="row">
-    <div class="span6 quadrant activity-feed-module">
-      {{view App.GamePageListView contentBinding="content"}}
-    </div>
-    <div class="span6 quadrant activity-feed-module">
-      {{view App.RegisterTagView}}
-    </div>
-  </div>
+	<div class="row">
+	  	<div class="row oneone">
+	    	<div class="span4">
+	    		<div class="register-tag">
+	    			{{view App.RegisterTagView}}
+	    		</div>
+	    		<div class="player-grid">
+	    			<div class="page-heading">
+			  			<h2>123 Players</h2>
+			  			<small>View all Players >></small>
+					</div>
+				</div>
+				<div class="grid-image">
+				</div>
+	    	</div>
+
+	    	<div class="span4">
+	    		<center>WHERE THE STATS GO</center>
+	    	</div>
+
+	    	<div class="span6 player-list-module">
+		  		{{ view App.GamePageListView contentBinding="content"}}
+			</div>
+	  	</div>
+	</div>
 </div>

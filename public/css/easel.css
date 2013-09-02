@@ -59,6 +59,7 @@ body {
  .page-heading{
    margin-top: 20px;
    text-align: center;
+   padding-bottom: 5px;
  }
  .edit-profile-btn {
    display: inline;
@@ -69,12 +70,38 @@ body {
   padding-top: 20px;
  }
 .profile_image {
-   border-radius: 150px;
-   height: 150px;
-   width: 150px;
+   border-radius: 100px;
+   height: 100px;
+   width: 100px;
    display: block;
    margin-left: auto;
    margin-right: auto;
+   /*border: 5px;*/
+   /*border-color: #6666ff;*/
+   /*border-style: solid;*/
+ }
+
+ .human-border {
+   border: 5px;
+   border-color: #6666ff;
+   border-style: solid;
+ }
+
+ .zombie-border {
+   border: 5px;
+   border-color: #f5cc5f;
+   border-style: solid;
+ }
+
+ .avatar {
+   border-radius: 100px;
+ }
+
+ .list-view {
+   text-align: center;
+ }
+ .profile-sub-heading {
+   padding: 5px;
  }
 .form-fields {
    width: 200px;
@@ -110,7 +137,7 @@ h4 small {
    border: none;
    background: #6c6c6c;
    padding: 15px 20px 15px 20px;
-   width: 310px;
+   width: 400px;
    height: 50px;
    display: block;
    float: left;
@@ -302,4 +329,20 @@ h4 small {
 
  .org-properties {
    font-size: 15px;
+ }
+
+ .grid-image {
+   background: rgba(0, 0, 0, 0) url(../img/users.png) no-repeat 0px 0px;
+   background-size: cover;
+   height: 265px;
+   width: 269px;
+   margin: auto auto;
+ }
+
+ .timeseries {
+   background: rgba(0, 0, 0, 0) url(../img/time_series.jpg) no-repeat 0px 0px;
+   background-size: cover;
+   height: 210.32px;
+   width: 270px;
+   margin: auto auto;
  }

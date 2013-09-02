@@ -1,10 +1,11 @@
-<div>
   <div class="top">
     {{myMethod}}
     {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-left"}} {{/linkTo}}
-    <div class="wrap">
+    <div class="banner-heading">
       <h1>{{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}</h1>
-      <h2>{{name}} Game</h2>
+      <h2>{{name}}</h2>
+      <div class="remaining"> 3 days remain...</div>
+
     </div>
 <!--{{!-- TODO: unhide settings when moderators are implemented
     <-div class="right-banner-nav">
@@ -13,4 +14,3 @@
     </div> --}}-->
   </div>
   {{outlet}}
-</div>
