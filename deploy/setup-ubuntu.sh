@@ -22,7 +22,7 @@ $FLESH_DEPLOY_DIR/postgres-ppa.sh
 apt-get update
 apt-get upgrade -y
 
-apt-get install -yf postgresql-$PG_VERSION postgresql-client-$PG_VERSION pgpool2 nginx nginx-common nginx-full git mercurial python-pip zsh nodejs golang make
+apt-get install -yf postgresql-$PG_VERSION postgresql-client-$PG_VERSION pgpool2 nginx nginx-common nginx-full git mercurial python-pip zsh nodejs golang make htop
 
 # Node.js dependencies
 npm -g install grunt-cli bower
