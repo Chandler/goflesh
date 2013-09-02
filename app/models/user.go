@@ -37,6 +37,52 @@ type UserRead struct {
 	Organization_ids []int             `json:"organization_ids"`
 }
 
+func NewUser(
+	email string,
+	first_name string,
+	last_name string,
+	screen_name string,
+	password string,
+) (user *User, status_code int, err error) {
+	// Naive password checks
+	if len(password) < 8 {
+		return nil, 422, errors.New("Password must be at least 8 characters")
+	}
+	if strings.Contains(email, password) {
+		return nil, 422, errors.New("Password cannot be part of email")
+	}
+	if strings.Contains(password, first_name) ||
+		strings.Contains(password, last_name) ||
+		strings.Contains(password, screen_name) {
+		return nil, 422, errors.New("Password cannot contain your name or screen name")
+	}
+	now := time.Now()
+	user = &User{0, email, first_name, last_name, screen_name, "", "", &now, TimeTrackedModel{}}
+	user.ChangePassword(password)
+	err = Dbm.Insert(user)
+	if err != nil {
+		// insert failed. Perform some diagnostic queries to find out why
+		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email=?`, email)
+		if diagnostic_err != nil {
+			return nil, 500, diagnostic_err
+		}
+		if count > 1 {
+			return nil, 409, errors.New("An account with this email already exists")
+		}
+
+		count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name=?`, email)
+		if diagnostic_err != nil {
+			return nil, 500, diagnostic_err
+		}
+		if count > 1 {
+			return nil, 409, errors.New("An account with this screen name already exists")
+		}
+		// couldn't determine the source of the error. let's just return it
+		return nil, 500, err
+	}
+	return user, 209, nil
+}
+
 func UserFromId(id int) (*User, error) {
 	user, err := Dbm.Get(User{}, id)
 	if err != nil {

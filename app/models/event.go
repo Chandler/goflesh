@@ -114,8 +114,8 @@ func CreateJoinedGameEvent(player *Player) error {
 	}
 
 	// record players involved in this event
-	tagger_m2m := EventToPlayer{0, event.Id, player.Id, EVENT_ROLE_TAGGER}
-	err = Dbm.Insert(&tagger_m2m)
+	player_m2m := EventToPlayer{0, event.Id, player.Id, EVENT_ROLE_JOINER}
+	err = Dbm.Insert(&player_m2m)
 	if err != nil {
 		return err
 	}

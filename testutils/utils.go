@@ -53,19 +53,19 @@ func GenerateTestData() {
 			InsertTestUser()
 		}
 		revel.INFO.Print("Inserting random Members")
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 400; i++ {
 			InsertTestMember()
 		}
 		revel.INFO.Print("Inserting random Games")
-		for i := 0; i < 2; i++ {
+		for i := 0; i < 6; i++ {
 			InsertTestGame()
 		}
 		revel.INFO.Print("Inserting random Players")
-		for i := 0; i < 50; i++ {
+		for i := 0; i < 900; i++ {
 			InsertTestPlayer()
 		}
 		revel.INFO.Print("Inserting random OZ Candidates")
-		for i := 0; i < 5; i++ {
+		for i := 0; i < 200; i++ {
 			InsertTestOzPool()
 		}
 		revel.INFO.Print("Inserting random OZs")
@@ -175,12 +175,9 @@ func InsertTestUser() *models.User {
 	screen_name_long := first_name + sep + last_name
 	screen_name := screen_name_long[:int(math.Min(20, float64(len(screen_name_long))))]
 	email := screen_name + "@gmail.com"
-	now := time.Now()
-	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
-	user.ChangePassword("password")
-	err := controllers.Dbm.Insert(user)
+	user, statusCode, err := models.NewUser(email, first_name, last_name, screen_name, "password")
 	if err != nil {
-		revel.WARN.Print(err)
+		revel.WARN.Print(statusCode, err)
 	}
 	return user
 }
@@ -188,7 +185,7 @@ func InsertTestUser() *models.User {
 func InsertTestOrganization() *models.Organization {
 	name := GenerateName().(string)
 	slug := strings.Replace(name, " ", "_", -1)
-	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
+	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", "A testing organization", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -214,6 +211,7 @@ func InsertTestGame() *models.Game {
 		&oneDayHence,
 		&oneDayAgo,
 		&twoDaysHence,
+		"A testing game",
 		models.TimeTrackedModel{},
 	}
 	err := controllers.Dbm.Insert(game)
@@ -234,6 +232,10 @@ func InsertTestPlayer() *models.Player {
 	human_code := models.HumanCode{player.Id, "", models.TimeTrackedModel{}}
 	human_code.GenerateCode()
 	err = controllers.Dbm.Insert(&human_code)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	err = models.CreateJoinedGameEvent(player)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
