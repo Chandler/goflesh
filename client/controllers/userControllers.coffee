@@ -3,6 +3,9 @@ App.UserSettingsController = BaseController.extend
   user: null
   userBinding: 'controllers.user'
   contentBinding: 'user'
+  edit: ->
+    @_super
+    @transitionTo 'user.home'
 
 App.UsersNewController = NewController.extend
   editableRecordFields: ['first_name', 'last_name', 'email', 'screen_name', 'password']
