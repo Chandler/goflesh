@@ -19,51 +19,27 @@ App.PlayerRowView = Ember.ListItemView.extend
 
 
 App.PlayerListView = Ember.ListView.extend
-  height: 1400,
-  rowHeight: 50,
+  height: 400, # change to bigger on Players List Page
+  rowHeight: 80,
+  adjustLayout: (new_width, new_height) -> 
+    @set('width', new_width)
+    @set('height', new_height)
   itemViewClass: App.PlayerRowView
 
 
-#
-# Custom Mixins for each supported event type
-#
-
-
-# JoinGameEventMixin = Ember.Mixin.create
-#   setupTemplateData: ->
-#     @set 'player', App.Player.find(2)
-
-
-# TagEventMixin = Ember.Mixin.create
-#   setupTemplateData: ->
-#     debugger
-#     @set 'tagger', App.Player.find(2)
-#     @set 'taggee', App.Player.find(2)
-
-
-#
-# Event Feed
-#
 App.EventRowView = Ember.ListItemView.extend
   templateName: (->
-    # rowMixins = {
-    #   tag: TagEventMixin,
-    #   joingame: JoinGameEventMixin
-    # }
-
-    # rowMixins[@get('context.type')].apply(@)
-    
-    # @setupTemplateData()
     rowTemplate = @get('context.type')
     "eventList/" + rowTemplate
   ).property()
 
 
 App.EventListView = Ember.ListView.extend
-  height: 1400,
-  rowHeight: 50,
-  itemViewClass: (->
-    App.EventRowView
-  ).property()
+  height: 400,
+  rowHeight: 80,
+  adjustLayout: (new_width, new_height) -> 
+    @set('width', new_width)
+    @set('height', new_height)
+  itemViewClass: App.EventRowView
 
 

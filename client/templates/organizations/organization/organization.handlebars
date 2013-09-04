@@ -6,9 +6,11 @@
         <div class="page-heading">
           <h1>
             {{name}}
+            <div class="profile-sub-heading">
             <small>
-              <br>{{location}}
+              {{location}}
             </small>
+            </div>
           </h1>
           <div class="description">
             This welcome to our university, our facebook group is facebook.com/whatever
@@ -17,10 +19,14 @@
           <hr>
           <div class="grids">
             <div class="avatar-grid">
-              <h3>{{users.length}} Members</h3>
+              <h3 class="list-view">{{users.length}} Members</h3>
               {{#each users}}
                 <div class="grid-pic"> 
+<<<<<<< HEAD
                   {{#linkTo 'user.home' this}} {{avatar2 avatar size="tiny"}} {{/linkTo}}                  
+=======
+                  {{#linkTo 'user.home' this}} {{avatar2 this size="small"}} {{/linkTo}}
+>>>>>>> design
                 </div>
               {{/each}}
             </div>
@@ -40,7 +46,7 @@
         </div>
       </div> 
     --}}-->
-    <span class="span8 profile-content-column">
+    <span class="span8">
       {{outlet}}
     </span>
   </div>

@@ -2,28 +2,32 @@
   <div class="row-fluid">
     <span class="span4">
       <div class="side-profile">
+      <h1>{{currentUser.isHuman}}</h1>
+      {{#if currentUser.isHuman}}
+          {{avatar2 this size="large" class="profile_image human-border pull-center"}}
+      {{else}}
+        {{#if currentUser.player.isZombie}}
+           {{avatar2 this size="large" class="profile_image zombie-border pull-center"}}
+        {{else}}
           {{avatar2 this size="large" class="profile_image pull-center"}}
+        {{/if}}
+      {{/if}}
         <div class="page-heading">
           {{player}}
-          <h1>{{first_name}} {{last_name}}'s Profile</h1>
+          <h1>{{first_name}} {{last_name}}
+            <div class="profile-sub-heading">
+              <small>{{screen_name}}</small>
+              {{#if userIsCurrentUser}}
+                <div>{{#linkTo 'user.settings' this classNames="btn btn-large edit-profile-btn"}}Edit Profile
+                {{/linkTo}}</div>
+              {{/if}}
+            </div>
+          </h1>
           <hr>  
         </div>
-        hey
       </div>
     </span>
-    {{#if userIsCurrentUser}}
-    <div class="profile-options">
-      <div>
-        {{#linkTo 'user.home' this classNames="profile-option-tab profile-home"}} 
-        <i class="icon-home icon-2x"></i>{{/linkTo}}
-      </div>
-      <div>
-        {{#linkTo 'user.settings' this classNames="profile-option-tab profile-home"}}
-        <i class="icon-cog icon-2x"></i>{{/linkTo}}
-      </div>
-    </div>
-    {{/if}}
-    <span class="span5 profile-content-column">
+    <span class="span8">
       {{outlet}}
     </span>
   </div>

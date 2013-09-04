@@ -1,12 +1,7 @@
-<div class="span2 register-tag-module">
-  <div class = "register-tag-wrapper">
-    <span class="field">
-    {{view Ember.TextField
+    <button class="btn btn-tag btn-large pull-right" {{action "registerTag"}}>TAG</button>
+   {{view Ember.TextField
       type="text"
-      placeholder="code"
+      placeholder="Human Code"
       valueBinding="code"
-    }}
-    </span>
-    <span class="btn btn-large btn-block signup-btn" {{action "registerTag"}}> Register Tag </span>
-  </div>
-</div>
+      class="tag-input pull-right"
+    }} 
