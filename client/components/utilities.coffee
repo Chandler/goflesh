@@ -9,7 +9,7 @@ Utilities =
     #random for now
     random = Math.random().toString(16).slice(2)
     hash = random + random + random + random
-    "<img class=\" avatar " + options.hash.class +  "\" src=\"http://www.gravatar.com/avatar/" + hash + "?s=" + px + "&d=identicon\"/>"
+    "<img class=\" avatar " + options.hash.class +  "\" src=\"http://i.imgur.com/bITe0Cis.png\"/>"
 
   avatar2Tag: (key, size, klass) ->
     sizes =
