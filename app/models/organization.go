@@ -6,5 +6,6 @@ type Organization struct {
 	Slug             string `json:"slug"`
 	Location         string `json:"location"`
 	Default_timezone string `json:"default_timezone"`
+	Description      string `json:"description"`
 	TimeTrackedModel
 }
