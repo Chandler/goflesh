@@ -4,8 +4,8 @@ Handlebars.registerHelper 'avatar', (size, options) ->
   new Handlebars.SafeString(Utilities.avatarTag(key, size, options))
 
 
-Ember.Handlebars.registerBoundHelper 'avatar2', (context, options) ->
-  key = context.get('avatar')
+Ember.Handlebars.registerBoundHelper 'avatar2', (avatar, options) ->
+  key = avatar
   size = options.hash.size
   klass = options.hash.class
   new Handlebars.SafeString(Utilities.avatar2Tag(key, size, klass))
