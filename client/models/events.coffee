@@ -1,6 +1,22 @@
-App.PlayerEvent = DS.Model.extend
-  type: DS.attr 'string'
+#this isn't fantastic 
 
+
+#models for each specific type of event
+App.TagAttribute = DS.Model.extend
+  tagger: DS.belongsTo 'App.Player' 
+  taggee: DS.belongsTo 'App.Player'
+  event:  DS.belongsTo 'App.PlayerEvent'
+App.TagAttribute.toString = -> 
+  "TagAttribute"
+
+
+#mixin for attributes shared by each event feed
+EventMixin = Ember.Mixin.create
+  type: DS.attr 'string'
+  tag:  DS.belongsTo 'App.TagAttribute', embedded:'always'
+
+#models for each type of event feed (player/game/organization)
+App.PlayerEvent = DS.Model.extend(EventMixin)
 App.PlayerEvent.toString = -> 
   "PlayerEvent"
 

@@ -77,7 +77,7 @@ func GenerateTestData() {
 			ConfirmRandomOz()
 		}
 		revel.INFO.Print("Simulating tags by OZs")
-		for i := 0; i < 1; i++ {
+		for i := 0; i < 5; i++ {
 			TagByRandomOzs()
 		}
 	}

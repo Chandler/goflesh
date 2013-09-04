@@ -56,7 +56,7 @@ FleshRestAdapter = DS.RESTAdapter.extend
     ).then null, ->
       DS.rejectionHandler
     
-#
+#custom attribute type for the rest adapter
 FleshRestAdapter.registerTransform 'avatar', 
   serialize: (value) ->
     return {avatar: {hash: value}}
@@ -64,8 +64,12 @@ FleshRestAdapter.registerTransform 'avatar',
   deserialize: (value) ->
     return value["hash"]
   
+FleshRestAdapter.map 'App.PlayerEvent',
+  tag: { embedded: 'always' }
+
 App.Store = DS.Store.extend
   adapter: FleshRestAdapter
+
 
 #Extensions specific to our events models
 App.Store.registerAdapter 'App.PlayerEvent', FleshRestAdapter.extend
