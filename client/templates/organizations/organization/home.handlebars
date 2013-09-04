@@ -1,7 +1,7 @@
 <h3> Upcoming Games </h3>
 {{#each game in organization.games}}
 <!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
-<div class="row gamelistitem game-list-item">
+<div class="row gamelistitem game-list-item transparent-cover">
   <div class="span4">
     {{#linkTo 'game.home' game classNames="game-list-name"}} {{game.name}} {{/linkTo}}
     <div class="timeseries"></div>

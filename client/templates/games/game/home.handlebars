@@ -1,4 +1,22 @@
-<div class="game-home">
+<div class="row game-stats transparent-cover">
+	<div class="span4">
+	    <center>WHERE THE STATS GO</center>
+	    <div style="height:250px; background-color:#f2df5d; margin-top: 10px"></div>
+	    <div style="height:250px; background-color:#00afcc; margin-top: 10px"></div>
+	</div>
+	<div class="span3">
+		<center>WHERE STATS GO</center>
+		<div style="height:250px; background-color:#00ffcc; margin-top: 10px"></div>
+		<div style="height:250px; background-color:#00ddcc; margin-top: 10px"></div>
+	</div>
+	<div class="span5 player-list-module">
+  		{{ view App.GamePageListView contentBinding="content"}}
+  		<center> MORE STUFF UNDER HERE!</center>
+	</div>
+
+</div>
+
+{{!-- <div class="game-home">
 	<div class="row">
 	  	<div class="row oneone">
 	    	<div class="span4">
@@ -24,4 +42,4 @@
 			</div>
 	  	</div>
 	</div>
-</div>
+</div> --}}

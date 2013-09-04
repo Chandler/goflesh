@@ -10,11 +10,11 @@
   </head>
   
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid fall-background">
       <div class="container-fluid">
         <div>
           <div class="navbar">
-            <div class="navbar-inner">
+            <div class="navbar-inner transparent-cover-nav">
               {{#linkTo 'discovery' class="brand"}} flesh {{/linkTo}}
               {{#if App.Auth.signedIn}}
               <div class="btn btn-primary nav-button btn-large pull-right" {{action "signOut"}}><i class="icon icon-signout"></i></div>

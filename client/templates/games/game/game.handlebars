@@ -1,4 +1,4 @@
-  <div class="top">
+{{!--   <div class="top">
     {{myMethod}}
     {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-left"}} {{/linkTo}}
     <div class="banner-heading">
@@ -6,11 +6,48 @@
       <h2>{{name}}</h2>
       <div class="remaining"> 3 days remain...</div>
 
-    </div>
+    </div> --}}
 <!--{{!-- TODO: unhide settings when moderators are implemented
     <-div class="right-banner-nav">
       <div> {{!#linkTo 'game.home' }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
       <div> {{!#linkTo 'game.settings' }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
     </div> --}}-->
+{{!--   </div>
+  {{outlet}} --}}
+
+<div class="simple-page">
+  <div class="row-fluid">
+    <span class="span4">
+      <div class="side-profile">
+      {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-center"}} {{/linkTo}}
+        <div class="page-heading">
+          <h1>{{name}}</h1>
+            <div class="profile-sub-heading">
+              {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
+              {{!-- {{#if userIsModerator}} --}}
+                {{!-- <div>{{#linkTo 'game.settings' this classNames="btn btn-large edit-game-btn"}}Edit Settings --}}
+                {{!-- {{/linkTo}}</div> --}}
+              {{!-- {{/if}} --}}
+            </div>
+          <hr>  
+        </div>
+        <div class="register-tag">
+            {{view App.RegisterTagView}}
+        </div>
+        <div class="player-grid">
+            <div class="page-heading">
+              <h2>123 Players</h2>
+              <small>View all Players >></small>
+            </div>
+        </div>
+        <div class="grid-image">
+        </div>
+      </div>
+    </span>
+    <span class="span8">
+      {{outlet}}
+    </span>
   </div>
-  {{outlet}}
+</div>
+<!-- This is a hidden form needed by the avatar.io javascript library -->
+

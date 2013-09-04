@@ -15,7 +15,7 @@ body {
    height: 60px;
  }
  .container-fluid .container-fluid div .navbar .navbar-inner {
-   background: rgba(255, 255, 255, 0.960784);
+   /*background: rgba(255, 255, 255, 0.960784);*/
    border: none;
    border-radius: 0px;
    height: 60px;
@@ -98,6 +98,10 @@ body {
  }
  .profile-sub-heading {
    padding: 5px;
+   color: #999999;
+   font-weight: 200;
+   font-size: 28px;
+   font-style: italic
  }
 .form-fields {
    width: 200px;

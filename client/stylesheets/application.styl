@@ -27,8 +27,8 @@
 
 /* Lists */
 .game-page-list-container
-  border: 1px solid #dce7ee
-  background-color: #FCFCFC
+  // border: 1px solid #dce7ee
+  // background-color: #FCFCFC
   overflow-x: hidden
   overflow-y: hidden
   // width: 600px
@@ -41,16 +41,18 @@
   line-height: 20px
   font-family: proxima-nova,sans-serif
   font-size: 15px
-  color: #747d92
-  text-shadow: 0 1px #fff
-  background-color: #fff
+  color: #333333
+  font-weight: 200px
+  // text-shadow: 0 1px #fff
+  // background-color: #fff
   .list-title
     margin-right: 20px
     text-transform: uppercase
   .selected
     padding: 5px
-    border-radius: 4px;
-    box-shadow: 0 0 3px 0.1px #2b95ca;
+    // border-radius: 4px;
+    // box-shadow: 0 0 3px 0.1px #2b95ca;
+    background-color: #2fe2bf
   .not-selected
     padding: 6px
     cursor: pointer
@@ -63,8 +65,8 @@
   font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif
   font-size: 15px
   padding: 14px 18px
-  border-top: 1px solid #dce7ee
-  background-color: #fff
+  // border-top: 1px solid #dce7ee
+  // background-color: #fff
   float: left
   display: block
   .event-feed-cell
@@ -232,7 +234,7 @@ input.tag-input {
   margin-top: 0px;
 }
 .player-grid 
-  width: 370px
+  // width: 370px
   padding-top: 50px
 
 .game-players-heading 
@@ -249,6 +251,7 @@ input.tag-input {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 50px
 
 .edit-profile-btn
   font-weight: 100
@@ -264,11 +267,20 @@ input.tag-input {
   color: #ffffff
   background: #f4645f
 
-.right-side-background
+.fall-background
   background: rgba(0, 0, 0, 0) url(../img/mist-landscape.jpg) no-repeat 0px 0px;
   background-size: cover;
-  height: 654px;
+  // height: 654px;
+  // height: 100%
   margin-left: 0px
+  background-repeat:no-repeat;
+  background-attachment:fixed
+
+.transparent-cover-nav
+  border-right: none;
+  border-left: none;
+  background: rgba(218, 218, 218, 0.6);
+  background-size: cover
 
 .transparent-cover
   border-right: none;
@@ -276,4 +288,7 @@ input.tag-input {
   background: rgba(218, 218, 218, 0.4);
   padding: 20px 20px 20px 20px;
   background-size: cover
+
+.game-stats 
+  margin-top: 20px
 
