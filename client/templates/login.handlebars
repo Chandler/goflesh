@@ -3,8 +3,8 @@
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
   <div class="page-heading"><h1>Sign in</h1></div>
-  <div class="row-fluid">
-    <span class="span12">
+  <div class="row-fluid ">
+    <span class="span12 full-height">
       <div class="form-fields">
         <div class="email">
           {{view Ember.TextField
@@ -22,10 +22,11 @@
         </div>
         <div class="btn btn-large btn-block signup-btn" {{action "login"}}> Sign in! </div>
       </div>
+      <div class="page-heading"><small>Don't have an account?</small>
+        {{#linkTo 'users.new' }} Sign Up {{/linkTo}}
+      </div>
     </span>
-    <div class="page-heading"><small>Don't have an account?</small>
-  {{#linkTo 'users.new' }} Sign Up {{/linkTo}}
-  </div>
+    
   </div>
     <span class="clearfix"></span>
 </div>
