@@ -18,14 +18,23 @@
 <div class="simple-page">
   <div class="row-fluid">
     <span class="span4">
-      <div class="side-profile">
+      <div class="side-profile full-height">
       {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-center"}} {{/linkTo}}
         <div class="page-heading">
           <h1>{{name}}</h1>
             <div class="profile-sub-heading">
               {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
               <div>
-              <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
+                  {{#if App.Auth.signedIn}}
+                    {{#if this.isCurrentUserGame}}
+                      <button class="btn disabled btn-large gamepage-join-btn">Joined</button>
+                    {{else}}
+                      <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
+                    {{/if}}
+                  {{else}}
+                    {{!-- {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Signin to join game {{/linkTo}} --}}
+                  {{/if}}
+              
             </div>
             </div>
 
