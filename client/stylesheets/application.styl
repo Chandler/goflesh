@@ -271,14 +271,22 @@ input.tag-input {
   color: #ffffff
   background: #f4645f
 
-.fall-background
-  background: rgba(0, 0, 0, 0) url("http://i.imgur.com/2tdFixI.jpg") no-repeat 0px 0px;
+// .fall-background
+//   background: rgba(0, 0, 0, 0) url("http://i.imgur.com/2tdFixI.jpg") no-repeat 0px 0px;
+//   background-size: cover;
+//   // height: 654px;
+//   // height: 100%
+//   margin-left: 0px
+//   background-repeat:no-repeat;
+//   background-attachment:fixed
+
+.fall-background 
+  background: url("http://i.imgur.com/2tdFixI.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
-  // height: 654px;
   // height: 100%
-  margin-left: 0px
-  background-repeat:no-repeat;
-  background-attachment:fixed
 
 .transparent-cover-nav
   border-right: none;
