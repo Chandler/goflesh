@@ -4,8 +4,8 @@ App.UserSettingsController = BaseController.extend
   userBinding: 'controllers.user'
   contentBinding: 'user'
   edit: ->
-    @_super
-    @transitionTo 'user.home'
+    @get('store').get('defaultTransaction').commit()
+    @transitionToRoute('user.home')
 
 App.UsersNewController = NewController.extend
   #last minute hack for registration will fix

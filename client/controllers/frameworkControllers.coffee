@@ -51,6 +51,7 @@ BaseMixin = Ember.Mixin.create
   edit: ->
     @get('store').get('defaultTransaction').commit()
 
+
   save: ->
     @clearErrors()
     if @fieldsPopulated()
