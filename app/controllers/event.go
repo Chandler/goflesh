@@ -37,15 +37,28 @@ func (c ClientTagEvent) Date() *time.Time {
 	return c.SortDate
 }
 
+type ClientPlayerEvent struct {
+	Id       int           `json:"id"`
+	Type     string        `json:"type"`
+	SortDate *time.Time    `json:"-"`
+	Player   models.Player `json:"player"`
+}
+
+func (c ClientPlayerEvent) Date() *time.Time {
+	return c.SortDate
+}
+
 type IdWrapper struct {
 	Id int
 }
 
 func (c *Events) GetTagEvents(ids_string string) DatedSortable {
 	query := `
-		SELECT *
+		SELECT tag.*
 		FROM tag
-		WHERE id IN (` + ids_string + `)
+		INNER JOIN event_tag
+			ON event_tag.tag_id = tag.id
+		WHERE event_tag.id IN (` + ids_string + `)
     `
 	var list []*models.Tag
 	_, err := Dbm.Select(&list, query)
@@ -55,6 +68,28 @@ func (c *Events) GetTagEvents(ids_string string) DatedSortable {
 	clientObjects := make(DatedSortable, len(list))
 	for i, readObject := range list {
 		clientObject := ClientTagEvent{readObject.Id, "tag", readObject.Claimed, *readObject}
+		clientObjects[i] = clientObject
+	}
+
+	return clientObjects
+}
+
+func (c *Events) GetPlayerEvents(ids_string string) DatedSortable {
+	query := `
+		SELECT player.*
+		FROM player
+		INNER JOIN event_player
+			ON event_player.player_id = player.id
+		WHERE event_player.id IN (` + ids_string + `)
+    `
+	var list []*models.Player
+	_, err := Dbm.Select(&list, query)
+	if err != nil {
+		return DatedSortable{}
+	}
+	clientObjects := make(DatedSortable, len(list))
+	for i, readObject := range list {
+		clientObject := ClientPlayerEvent{readObject.Id, "joined", readObject.Created, *readObject}
 		clientObjects[i] = clientObject
 	}
 
@@ -102,6 +137,7 @@ func (c *Events) ReadEvents(player_ids []int, game_ids []int) DatedSortable {
 	event_ids = nil
 
 	events = append(events, c.GetTagEvents(event_ids_str)...)
+	events = append(events, c.GetPlayerEvents(event_ids_str)...)
 
 	sort.Sort(events)
 

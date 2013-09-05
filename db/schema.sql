@@ -279,6 +279,7 @@ CREATE TABLE game (
     running_end_time timestamp without time zone,
     created timestamp without time zone,
     updated timestamp without time zone,
+    description text DEFAULT ''::text NOT NULL,
     CONSTRAINT game_registration_start_before_end CHECK ((registration_start_time < registration_end_time)),
     CONSTRAINT game_registration_start_before_running_end CHECK ((registration_start_time <= running_end_time)),
     CONSTRAINT game_running_start_before_end CHECK ((running_start_time < running_end_time))
@@ -464,7 +465,8 @@ CREATE TABLE organization (
     location character varying(255),
     default_timezone character varying(64),
     created timestamp without time zone,
-    updated timestamp without time zone
+    updated timestamp without time zone,
+    description text DEFAULT ''::text NOT NULL
 );
 
 
