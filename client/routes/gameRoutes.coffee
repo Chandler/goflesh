@@ -3,6 +3,14 @@ App.GamesNewRoute = Ember.Route.extend
     App.Game
 
 App.GameRoute = Ember.Route.extend
+  events:
+    joinGame: (game) ->
+      players = game.get('players')
+      createdPlayer = App.Player.createRecord
+        game: game
+        user: App.Auth.get('user')
+      @get('store').get('defaultTransaction').commit()
+      players.addObject(createdPlayer)
   model: (params) ->
     App.Game.find(params.game_id)
 
