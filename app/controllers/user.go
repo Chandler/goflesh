@@ -230,6 +230,7 @@ func (c *Users) Authenticate() revel.Result {
 
 	user, err := authInfo.Model()
 	if err != nil {
+		c.Response.Status = 422
 		return c.RenderError(err)
 	}
 
