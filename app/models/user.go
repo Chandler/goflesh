@@ -17,6 +17,7 @@ type User struct {
 	First_name  string     `json:"first_name"`
 	Last_name   string     `json:"last_name"`
 	Screen_name string     `json:"screen_name"`
+	Phone       string     `json:"phone"`
 	Password    string     `json:"password,omitempty"`
 	Api_key     string     `json:"api_key,omitempty"`
 	Last_login  *time.Time `json:"last_login"`
@@ -42,6 +43,7 @@ func NewUser(
 	first_name string,
 	last_name string,
 	screen_name string,
+	phone string,
 	password string,
 ) (user *User, status_code int, err error) {
 	// Naive password checks
@@ -57,7 +59,7 @@ func NewUser(
 		return nil, 422, errors.New("Password cannot contain your name or screen name")
 	}
 	now := time.Now()
-	user = &User{0, email, first_name, last_name, screen_name, "", "", &now, TimeTrackedModel{}}
+	user = &User{0, email, first_name, last_name, screen_name, "208 555-5555", "", "", &now, TimeTrackedModel{}}
 	user.ChangePassword(password)
 	err = Dbm.Insert(user)
 	if err != nil {

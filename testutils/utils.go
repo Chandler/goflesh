@@ -175,7 +175,7 @@ func InsertTestUser() *models.User {
 	screen_name_long := first_name + sep + last_name
 	screen_name := screen_name_long[:int(math.Min(20, float64(len(screen_name_long))))]
 	email := screen_name + "@gmail.com"
-	user, statusCode, err := models.NewUser(email, first_name, last_name, screen_name, "password")
+	user, statusCode, err := models.NewUser(email, first_name, last_name, screen_name, "208 555-5555", "password")
 	if err != nil {
 		revel.WARN.Print(statusCode, err)
 	}

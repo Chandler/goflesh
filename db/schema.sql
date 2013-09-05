@@ -734,6 +734,7 @@ CREATE TABLE "user" (
     first_name character varying(255),
     last_name character varying(255),
     screen_name character varying(20),
+    phone character varying(64),
     password character varying(60),
     api_key character varying(36),
     last_login timestamp without time zone,
