@@ -6,6 +6,7 @@ App.LoginController = BaseController.extend
     response = App.Auth.signIn
       data:
         email: @email
+        screen_name: @email
         password: @password
 
     App.Auth.on 'signInSuccess', =>

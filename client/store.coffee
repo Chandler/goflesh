@@ -56,7 +56,7 @@ FleshRestAdapter = DS.RESTAdapter.extend
       DS.rejectionHandler
 
   didError: (store, type, record, xhr) ->
-    if xhr.status is 422
+    if xhr.status is (422 or 500)
       errors = xhr.responseText
       
       store.recordWasInvalid record, errors
