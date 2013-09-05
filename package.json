@@ -11,6 +11,7 @@
     "grunt-contrib-concat": "~0.2.0",
     "grunt-contrib-watch": "~0.3.1",
     "grunt-contrib-jasmine": "~0.5.1",
+    "grunt-lodash": "0.2.x",
     "grunt-template-jasmine-requirejs": "*",
     "grunt-contrib-connect": "*",
     "grunt-shell": "~0.2.2",
