@@ -24,7 +24,11 @@
           <h1>{{name}}</h1>
             <div class="profile-sub-heading">
               {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
+              <div>
+              <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
             </div>
+            </div>
+
           <hr> 
           <div class="grids">
             <div class="avatar-grid">
