@@ -19,7 +19,6 @@ deploy/supervisor.pid
 npm-debug.log
 public/css/application.css
 
-!public/js/lib
 .db/
 app/routes/
 app/tmp/
@@ -30,5 +29,6 @@ jam/
 node_modules/
 public/img/glyphicons/
 public/js/*
+!public/js/lib
 public/js/bower
 test-results/
