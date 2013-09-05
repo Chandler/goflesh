@@ -149,32 +149,39 @@ func (c *Users) Update(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func createUsers(data []byte) ([]interface{}, error) {
-	const keyName string = "users"
-	var typedJson map[string][]models.User
-
-	err := json.Unmarshal(data, &typedJson)
-	if err != nil {
-		return nil, err
-	}
-
-	modelObjects := typedJson[keyName]
-
-	// Prepare for bulk insert (only way to do it, promise)
-	interfaces := make([]interface{}, len(modelObjects))
-	for i := range modelObjects {
-		modelObject := modelObjects[i]
-		modelObject.ChangePassword(modelObject.Password)
-		human_code := models.HumanCode{modelObject.Id, "", models.TimeTrackedModel{}}
-		human_code.GenerateCode()
-		Dbm.Insert(human_code)
-		interfaces[i] = interface{}(&modelObject)
-	}
-	return interfaces, nil
-}
-
 func (c *Users) Create() revel.Result {
-	return CreateList(createUsers, c.Request.Body)
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	const keyName string = "users"
+	var typedJson map[string][]*models.User
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		c.Response.Status = 400
+		return c.RenderError(err)
+	}
+
+	users := typedJson[keyName]
+
+	for i, user := range users {
+		insertedUser, statusCode, err := models.NewUser(
+			user.Email,
+			user.First_name,
+			user.Last_name,
+			user.Screen_name,
+			user.Password,
+		)
+		if err != nil {
+			c.Response.Status = statusCode
+			return c.RenderError(err)
+		}
+		users[i] = insertedUser
+	}
+
+	return c.RenderJson(users)
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -196,11 +203,9 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 	query := `
 		SELECT *
 		FROM "user"
-		WHERE
-		email = $1
+		WHERE email = $1
 		OR screen_name = $2
-		OR api_key = $3 -- TODO: fix client-side auth so we don't have this hack
-		`
+		OR api_key = $3` // TODO: fix client-side auth so we don't have this hack
 
 	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
 		userInfo.Api_key) // TODO: fix client-side auth so we don't have this hack

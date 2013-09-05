@@ -89,6 +89,7 @@ func (t *GameTest) TestIsRunning() {
 		&oneDayHence,
 		&oneDayAgo,
 		&twoDaysHence,
+		"A test game",
 		models.TimeTrackedModel{},
 	}
 	err := controllers.Dbm.Insert(current)
@@ -104,6 +105,7 @@ func (t *GameTest) TestIsRunning() {
 		&oneDayHence,
 		&twoDaysAgo,
 		&oneDayAgo,
+		"A test game",
 		models.TimeTrackedModel{},
 	}
 	err = controllers.Dbm.Insert(past)
@@ -119,6 +121,7 @@ func (t *GameTest) TestIsRunning() {
 		&oneDayHence,
 		&oneDayHence,
 		&twoDaysHence,
+		"A test game",
 		models.TimeTrackedModel{},
 	}
 	err = controllers.Dbm.Insert(future)

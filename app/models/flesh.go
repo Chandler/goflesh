@@ -29,6 +29,7 @@ func AddTables(dbm *gorp.DbMap) {
 	dbm.AddTable(Event{}).SetKeys(true, "Id")
 	dbm.AddTableWithName(EventType{}, "event_type").SetKeys(true, "Id")
 	dbm.AddTableWithName(EventTag{}, "event_tag").SetKeys(true, "Id")
+	dbm.AddTableWithName(EventPlayer{}, "event_player").SetKeys(true, "Id")
 	dbm.AddTableWithName(EventRole{}, "event_role").SetKeys(true, "Id")
 	dbm.AddTableWithName(EventToPlayer{}, "event_to_player").SetKeys(true, "Id")
 	dbm.AddTableWithName(EventToGame{}, "event_to_game").SetKeys(true, "Id")
