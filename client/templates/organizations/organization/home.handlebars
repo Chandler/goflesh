@@ -10,10 +10,14 @@
     <h4>Begins 09/09</h4>
     <h4>Ends 09/14</h4>
     <h4>Players: {{game.players.length}}</h4>
-    {{#if game.isCurrentUserGame}}
-    You're in!
+    {{#if App.Auth.signedIn}}
+      {{#if game.isCurrentUserGame}}
+        You're in!
+      {{else}}
+        <div class="span1"><button class="btn signin btn-large" {{action "joinGame" game}}>Join</button></div>
+      {{/if}}
     {{else}}
-      <div class="span1"><button class="btn signin btn-large" {{action "joinGame" game}}>Join</button></div>
+      {{#linkTo 'signup' game classNames="btn signin btn-large"}} Signup to join game {{/linkTo}}
     {{/if}}
   </div>
 </div>

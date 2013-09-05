@@ -8,6 +8,7 @@ BaseMixin = Ember.Mixin.create
 
   signOut:  ->
     App.Auth.destroySession()
+    location.reload()
 
   errors: null
 
@@ -61,6 +62,8 @@ BaseMixin = Ember.Mixin.create
       @set 'errors', "Please fill in all fields"
 
 NewMixin = Ember.Mixin.create
+  successTransition: ->
+    @transitionToRoute('login');
   recordToSave: ->
     @get('model').createRecord(@getRecordProperties())
 
