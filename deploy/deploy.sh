@@ -11,7 +11,7 @@ cd $FLESHLOCATION
 cat goPackages.txt | xargs -t go get -u
 # rm $GOPATH/src/flesh
 npm install
-grunt compile
 bower install --allow-root
+grunt compile
 cd $FLESH_SYNC_REPO_DIR
 supervisorctl restart revel
