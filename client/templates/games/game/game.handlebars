@@ -25,7 +25,16 @@
             <div class="profile-sub-heading">
               {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
               <div>
-              <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
+                  {{#if App.Auth.signedIn}}
+                    {{#if this.isCurrentUserGame}}
+                      <button class="btn disabled btn-large gamepage-join-btn">Joined</button>
+                    {{else}}
+                      <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
+                    {{/if}}
+                  {{else}}
+                    {{!-- {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Signin to join game {{/linkTo}} --}}
+                  {{/if}}
+              
             </div>
             </div>
 
