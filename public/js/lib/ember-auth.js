@@ -319,6 +319,7 @@ set$(get$(get$(Em, 'Auth'), 'Response'), 'Json', Ember.Object.extend({
     case 'object':
       return input;
     case 'string':
+    return JSON.stringify(input)
       try {
         return JSON.parse(input);
       } catch (e$) {
