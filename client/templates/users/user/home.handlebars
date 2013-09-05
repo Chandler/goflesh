@@ -1,29 +1,31 @@
-
-
-
 <h2> Games </h2>
-{{#each user.players}}
-<!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
-<div class="row gamelistitem game-list-item transparent-cover">
-  <div class="span4">
-    <div class="game-list-name">
-      {{#linkTo 'game.home' this.game}} {{this.game.name}} {{/linkTo}}
-  </div>
-    
-
-
-  </div>
-  <div class="span4 game-list-item">
-    <div class="game-info-text">
-      September 9 - 13
+{{#if user.players}}
+  {{#each user.players}}
+  <!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
+  <div class="row gamelistitem game-list-item transparent-cover">
+    <div class="span4">
+      <div class="game-list-name">
+        {{#linkTo 'game.home' this.game}} {{this.game.name}} {{/linkTo}}
+      </div>
     </div>
-  {{!-- THIS IS WHERE THE PLAYER SPECIFIC EVENT FEED GOES --}}
-  {{!-- {{view App.PlayerListView contentBinding="content"}} --}}
-  </div>
-  <div class="span4 game-list-item">
-    <div class="game-info-text">
-      Players: {{this.game.players.length}}
+    <div class="span4 game-list-item">
+      <div class="game-info-text">
+        September 9 - 13
+      </div>
+    {{!-- THIS IS WHERE THE PLAYER SPECIFIC EVENT FEED GOES --}}
+    {{!-- {{view App.PlayerListView contentBinding="content"}} --}}
+    </div>
+    <div class="span4 game-list-item">
+      <div class="game-info-text">
+        Players: {{this.game.players.length}}
+      </div>
     </div>
   </div>
-</div>
-{{/each}}
+  {{/each}}
+
+{{else}}
+  <div class="row gamelistitem game-list-item transparent-cover">
+    <h3>Not in a game?</h3> Go to the {{#linkTo 'discovery' }} Discovery {{/linkTo}} page to find your organization and join a game!
+  </div>
+
+{{/if}}

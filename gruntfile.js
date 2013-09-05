@@ -23,7 +23,7 @@ module.exports = function(grunt) {
             'public/js/bower/handlebars.js',
             'public/js/lib/ember.js',
             'public/js/lib/ember-data.js',
-            'public/js/bower/ember-auth.js',
+            'public/js/lib/ember-auth.js',
             'public/js/lib/ember-list-view.js',
             'public/js/lib/avatar.io.js'
           ],
