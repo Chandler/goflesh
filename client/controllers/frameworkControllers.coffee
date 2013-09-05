@@ -22,14 +22,21 @@ BaseMixin = Ember.Mixin.create
   #list of fields on the record which you are going to expose in the 
   #template for editing/saving
   editableRecordFields: null,
+  requiredFields: null,
   
   fieldsPopulated: ->
-    for k,v of @getRecordProperties()
+    for k,v of @getRequiredRecordProperties()
       return false if !v
     true
 
   successTransition: ->
     @transitionToRoute('discovery');
+
+
+  getRequiredRecordProperties: ->
+    fields = @requiredFields || @editableRecordFields
+    @recordToSave().getProperties(fields)
+
 
   #returns an object with values from textFields on the page
   #useful for checking to see if the properties you care about (submitFields) 

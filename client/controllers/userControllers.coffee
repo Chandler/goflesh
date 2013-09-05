@@ -8,6 +8,8 @@ App.UserSettingsController = BaseController.extend
     @transitionTo 'user.home'
 
 App.UsersNewController = NewController.extend
+  #last minute hack for registration will fix
+  requiredFields: ['first_name', 'last_name', 'email', 'screen_name', 'password']
   editableRecordFields: ['first_name', 'last_name', 'email', 'screen_name', 'password', 'phone']
   first_name: '',
   last_name: '',
