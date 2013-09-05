@@ -14,6 +14,9 @@ public/js/*.js
 tests/client/js/*.js
 
 .DS_Store
+deploy/supervisor.log
+deploy/supervisor.pid
+npm-debug.log
 public/css/application.css
 
 !public/js/lib

@@ -172,6 +172,7 @@ func (c *Users) Create() revel.Result {
 			user.First_name,
 			user.Last_name,
 			user.Screen_name,
+			user.Phone,
 			user.Password,
 		)
 		if err != nil {
