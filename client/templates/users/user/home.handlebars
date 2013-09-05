@@ -6,17 +6,24 @@
 <!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
 <div class="row gamelistitem game-list-item transparent-cover">
   <div class="span4">
-    {{#linkTo 'game.home' this.game classNames="game-list-name"}} {{this.game.name}} {{/linkTo}}
-    <div class="timeseries"></div>
+    <div class="game-list-name">
+      {{#linkTo 'game.home' this.game}} {{this.game.name}} {{/linkTo}}
+  </div>
+    
+
+
   </div>
   <div class="span4 game-list-item">
-  THIS IS WHERE THE PLAYER SPECIFIC EVENT FEED GOES
-  {{view App.PlayerListView contentBinding="content"}}
+    <div class="game-info-text">
+      September 9 - 13
+    </div>
+  {{!-- THIS IS WHERE THE PLAYER SPECIFIC EVENT FEED GOES --}}
+  {{!-- {{view App.PlayerListView contentBinding="content"}} --}}
   </div>
   <div class="span4 game-list-item">
-    <h4>Begins 8/14</h4>
-    <h4>Ends 8/21</h4>
-    <h4>Players: {{this.game.players.length}}</h4>
+    <div class="game-info-text">
+      Players: {{this.game.players.length}}
+    </div>
   </div>
 </div>
 {{/each}}

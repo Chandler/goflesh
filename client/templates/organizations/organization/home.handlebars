@@ -1,10 +1,11 @@
-<h3> Upcoming Games </h3>
+<h2> Games </h2>
 {{#each game in organization.games}}
+<!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
 <!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
 <div class="row gamelistitem game-list-item transparent-cover">
   <div class="span4">
-    {{#linkTo 'game.home' game classNames="game-list-name"}} {{game.name}} {{/linkTo}}
-
+    <div class="game-list-name">
+      {{#linkTo 'game.home' game}} {{game.name}} {{/linkTo}}
   </div>
   <div class="span4">
     <h4>Begins 09/09</h4>
@@ -14,11 +15,27 @@
       {{#if game.isCurrentUserGame}}
         You're in!
       {{else}}
-        <div class="span1"><button class="btn signin btn-large" {{action "joinGame" game}}>Join</button></div>
+    <div class="span1"><button class="btn disabled signin btn-large joined-button" {{action "joinGame" game}}>Joined</button></div>
       {{/if}}
     {{else}}
       {{#linkTo 'signup' game classNames="btn signin btn-large"}} Signup to join game {{/linkTo}}
     {{/if}}
+
+
   </div>
+  <div class="span4 game-list-item">
+    <div class="game-info-text">
+      September 9 - 13
+    </div>
+  {{!-- THIS IS WHERE THE PLAYER SPECIFIC EVENT FEED GOES --}}
+  {{!-- {{view App.PlayerListView contentBinding="content"}} --}}
+  </div>
+  <div class="span4 game-list-item">
+    <div class="game-info-text">
+      Players: {{game.players.length}}
+    </div>
+  </div>
+
+
 </div>
 {{/each}}
