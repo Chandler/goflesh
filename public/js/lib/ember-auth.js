@@ -22,10 +22,10 @@ set$(Em, 'Auth', get$(Em, 'Object').extend(get$(Em, 'Evented'), {
   },
   ensurePromise: function (callback) {
     var cache$, ret;
-    if (null= (null != (cache$ = ret = callback()) ? get$(cache$, 'then') : void 0)) {
+    if (null != (null != (cache$ = ret = callback()) ? get$(cache$, 'then') : void 0)) {
       return ret;
     } else {
-      return new (gt$(get$(Em, 'RSVP'), 'Promise'))(function (resolve) {
+      return new (get$(get$(Em, 'RSVP'), 'Promise'))(function (resolve) {
         return resolve();
       });
     }
