@@ -2,16 +2,7 @@
   <div class="row-fluid">
     <span class="span4">
       <div class="side-profile full-height">
-      <h1>{{currentUser.isHuman}}</h1>
-      {{#if currentUser.isHuman}}
-          {{avatar2 this size="large" class="profile_image human-border pull-center"}}
-      {{else}}
-        {{#if currentUser.player.isZombie}}
-           {{avatar2 this size="large" class="profile_image zombie-border pull-center"}}
-        {{else}}
-          {{avatar2 this size="large" class="profile_image pull-center"}}
-        {{/if}}
-      {{/if}}
+          {{avatar2 avatar size="large" class="profile_image pull-center"}}
         <div class="page-heading">
           {{player}}
           <h1>{{first_name}} {{last_name}}
