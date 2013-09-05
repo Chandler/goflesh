@@ -14,4 +14,5 @@ npm install
 bower install --allow-root
 grunt compile
 cd $FLESH_SYNC_REPO_DIR
+killall flesh
 supervisorctl restart revel
