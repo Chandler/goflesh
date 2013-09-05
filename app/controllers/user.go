@@ -210,6 +210,7 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 
 	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
 		userInfo.Api_key) // TODO: fix client-side auth so we don't have this hack
+	revel.WARN.Print(userInfo)
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}
@@ -230,7 +231,7 @@ func (c *Users) Authenticate() revel.Result {
 
 	user, err := authInfo.Model()
 	if err != nil {
-		c.Response.Status = 422
+		c.Response.Status = 401
 		return c.RenderError(err)
 	}
 
