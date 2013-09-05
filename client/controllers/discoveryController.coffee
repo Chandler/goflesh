@@ -5,7 +5,7 @@ App.DiscoveryController = Ember.Controller.extend
       return []
     else
       @get('content').filter (org) ->
-        !!(org.get('name').indexOf(string) != -1)
+        !!(org.get('name').toLowerCase().indexOf(string) != -1)
   ).property 'filterString'
   updateFilter: (arg) ->
     @set 'filterString', arg

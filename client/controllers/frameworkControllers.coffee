@@ -48,12 +48,14 @@ BaseMixin = Ember.Mixin.create
     if @fieldsPopulated()
       console.log "Begining save record"
       record = @recordToSave()
-      @get('store').get('defaultTransaction').commit()
-      record.on 'becameError', =>
-        @set 'errors', 'SERVER ERROR'
-      record.on 'becameInvalid', =>
-        @set 'errors', 'SERVER ERROR'
-      record.on 'didCreate', =>        
+      record.save()
+      record.one 'didError', =>
+        @set 'errors', e.get('errors')
+      record.one 'becameError', =>
+        @set 'errors', e.get('errors')
+      record.one 'becameInvalid', (e) =>
+        @set 'errors', e.get('errors')
+      record.one 'didCreate', =>        
         @successTransition()
     else
       @set 'errors', "Please fill in all fields"

@@ -41,6 +41,13 @@
             valueBinding="password"
           }}
         </div>
+         <div>
+          {{view Ember.TextField
+            type="text"
+            placeholder="optional phone number"
+            valueBinding="phone"
+          }}
+        </div>
         <div class="btn btn-large btn-block signup-btn" {{action "save"}}> Sign Up! </div>
       </div>
     </span>

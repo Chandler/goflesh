@@ -45,7 +45,6 @@ FleshRestAdapter = DS.RESTAdapter.extend
 
     #old version: data[root] = this.serialize(record, { includeId: true });
     data[this.pluralize(root)] = [this.serialize(record, { includeId: true })];
-
     @ajax(@buildURL(root), "POST",
       data: data
     ).then((json) ->
@@ -55,7 +54,15 @@ FleshRestAdapter = DS.RESTAdapter.extend
       throw xhr
     ).then null, ->
       DS.rejectionHandler
-    
+
+  didError: (store, type, record, xhr) ->
+    if xhr.status is 422
+      errors = xhr.responseText
+      
+      store.recordWasInvalid record, errors
+    else
+      @_super.apply this, arguments_
+
 #custom attribute type for the rest adapter
 FleshRestAdapter.registerTransform 'avatar', 
   serialize: (value) ->
