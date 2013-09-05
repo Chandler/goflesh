@@ -27,10 +27,6 @@ apt-get install -yf postgresql-$PG_VERSION postgresql-client-$PG_VERSION pgpool2
 # Node.js dependencies
 npm -g install grunt-cli bower
 
-# Perl dependencies
-curl -L http://cpanmin.us | perl - --self-upgrade
-cpanm Git::Deploy
-
 # Python dependencies
 pip install supervisor
 
@@ -78,38 +74,12 @@ createdb -p 5454 -U postgres flesh
 psql -p 5454 -U postgres -d flesh < $FLESH_DB_SCHEMA
 psql -p 5454 -U postgres -d flesh < $FLESH_DB_BASEDATA
 
-# Setup git-deploy
-cat - >> /etc/gitconfig <<EOF
-    [deploy]
-            config-file = /etc/git-deploy.conf
-
 EOF
 ln -s $FLESH_DEPLOY_DIR/apps/flesh/git-deploy.conf /etc/git-deploy.conf
 
 # Set up go
 mkdir -p $GOPATH
 
-
-# startup
-su postgres -c "$PG/postgres -D /etc/postgresql/$PG_VERSION/flesh"
-
-
-# Deploy
-cd $FLESH_SYNC_REPO_DIR
-git pull origin master:master
-export FLESH_COMMIT=`git rev-parse HEAD`
-ln -s $FLESH_ROOT_DIR/$FLESH_COMMIT $FLESH_ROOT_DIR/flesh
-git archive --format=tar $FLESH_COMMIT | (mkdir -p $FLESHLOCATION && cd $FLESHLOCATION && tar xf -)
-cd $FLESHLOCATION
-cat goPackages.txt | xargs -t go get -u
-# rm $GOPATH/src/flesh
-grunt compile
-bower install --allow-root
-cd $FLESH_ROOT_DIR
-
-
-
-ln -s $FLESHLOCATION $GOPATH/src/flesh
-
-
-
+# set up environment
+echo "# Environment generated at environment setup time:" | tee -a ~/.bashrc ~/.zshrc
+env -u PWD env | xargs -L 1 echo "export" | sed 's/=\(.*\)/="\1"/g' | tee -a ~/.bashrc ~/.zshrc
