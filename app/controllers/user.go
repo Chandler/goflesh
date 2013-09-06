@@ -56,8 +56,8 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 	for i, result := range results {
 		readObject := result.(*models.UserRead)
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
-		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
 		readObject.AddAvatars()
+		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
 		if current_user == nil || current_user.Id != readObject.Id {
 		}
 		if err != nil {
