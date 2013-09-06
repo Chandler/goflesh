@@ -17,7 +17,7 @@ type User struct {
 	First_name  string     `json:"first_name"`
 	Last_name   string     `json:"last_name"`
 	Screen_name string     `json:"screen_name"`
-	Phone       string     `json:"phone"`
+	Phone       string     `json:"phone,omitempty"`
 	Password    string     `json:"password,omitempty"`
 	Api_key     string     `json:"api_key,omitempty"`
 	Last_login  *time.Time `json:"last_login"`
@@ -64,7 +64,7 @@ func NewUser(
 	err = Dbm.Insert(user)
 	if err != nil {
 		// insert failed. Perform some diagnostic queries to find out why
-		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email=?`, email)
+		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email = $1`, email)
 		if diagnostic_err != nil {
 			return nil, 500, diagnostic_err
 		}
@@ -72,7 +72,7 @@ func NewUser(
 			return nil, 409, errors.New("An account with this email already exists")
 		}
 
-		count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name=?`, email)
+		count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name = $1`, email)
 		if diagnostic_err != nil {
 			return nil, 500, diagnostic_err
 		}
@@ -97,10 +97,9 @@ func UserFromId(id int) (*User, error) {
 }
 
 func (u *User) CleanSensitiveFields(clearEmail bool) {
-	// omit passsword and api key
 	u.Password = ""
 	u.Api_key = ""
-	// blank out email
+	u.Phone = ""
 	if clearEmail {
 		u.Email = ""
 	}

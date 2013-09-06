@@ -50,21 +50,24 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 
 	results, err := Dbm.Select(&models.UserRead{}, query, args...)
 	if err != nil {
+		revel.ERROR.Print(err)
 		return nil, err
 	}
 	readObjects := make([]*models.UserRead, len(results))
 	for i, result := range results {
 		readObject := result.(*models.UserRead)
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
-		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
 		readObject.AddAvatars()
+		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
 		if current_user == nil || current_user.Id != readObject.Id {
 		}
 		if err != nil {
+			revel.ERROR.Print(err)
 			return nil, err
 		}
 		readObject.Organization_ids, err = PostgresArrayStringToIntArray(readObject.Organizations)
 		if err != nil {
+			revel.ERROR.Print(err)
 			return nil, err
 		}
 		readObjects[i] = readObject
@@ -204,8 +207,8 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 	query := `
 		SELECT DISTINCT *
 		FROM "user"
-		WHERE email = $1
-		OR screen_name = $2
+		WHERE (email = $1 AND email != '')
+		OR (screen_name = $2 AND screen_name != '')
 		OR api_key = $3` // TODO: fix client-side auth so we don't have this hack
 
 	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
