@@ -17,7 +17,7 @@ type User struct {
 	First_name  string     `json:"first_name"`
 	Last_name   string     `json:"last_name"`
 	Screen_name string     `json:"screen_name"`
-	Phone       string     `json:"phone"`
+	Phone       string     `json:"phone,omitempty"`
 	Password    string     `json:"password,omitempty"`
 	Api_key     string     `json:"api_key,omitempty"`
 	Last_login  *time.Time `json:"last_login"`
@@ -97,10 +97,9 @@ func UserFromId(id int) (*User, error) {
 }
 
 func (u *User) CleanSensitiveFields(clearEmail bool) {
-	// omit passsword and api key
 	u.Password = ""
 	u.Api_key = ""
-	// blank out email
+	u.Phone = ""
 	if clearEmail {
 		u.Email = ""
 	}

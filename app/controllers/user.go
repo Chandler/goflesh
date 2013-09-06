@@ -50,6 +50,7 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 
 	results, err := Dbm.Select(&models.UserRead{}, query, args...)
 	if err != nil {
+		revel.ERROR.Print(err)
 		return nil, err
 	}
 	readObjects := make([]*models.UserRead, len(results))
@@ -61,10 +62,12 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 		if current_user == nil || current_user.Id != readObject.Id {
 		}
 		if err != nil {
+			revel.ERROR.Print(err)
 			return nil, err
 		}
 		readObject.Organization_ids, err = PostgresArrayStringToIntArray(readObject.Organizations)
 		if err != nil {
+			revel.ERROR.Print(err)
 			return nil, err
 		}
 		readObjects[i] = readObject
