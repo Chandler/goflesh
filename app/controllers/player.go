@@ -81,9 +81,6 @@ func (c *Players) Read(id int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Create() revel.Result {
-	if result := c.DevOnly(); result != nil {
-		return *result
-	}
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		return c.RenderError(err)
