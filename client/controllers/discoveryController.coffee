@@ -2,7 +2,7 @@ App.DiscoveryController = Ember.Controller.extend
   orgs: (->
     string = @get 'filterString'
     if string == ""
-      return []
+      return @get('content')
     else
       @get('content').filter (org) ->
         !!(org.get('name').toLowerCase().indexOf(string) != -1)
