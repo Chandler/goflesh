@@ -204,8 +204,8 @@ func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 	query := `
 		SELECT DISTINCT *
 		FROM "user"
-		WHERE email = $1
-		OR screen_name = $2
+		WHERE (email = $1 AND email != '')
+		OR (screen_name = $2 AND screen_name != '')
 		OR api_key = $3` // TODO: fix client-side auth so we don't have this hack
 
 	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
