@@ -202,7 +202,7 @@ type UserAuthenticateOutput struct {
 
 func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 	query := `
-		SELECT *
+		SELECT DISTINCT *
 		FROM "user"
 		WHERE email = $1
 		OR screen_name = $2
