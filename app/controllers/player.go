@@ -109,16 +109,14 @@ func (c *Players) Create() revel.Result {
 			return c.RenderError(err)
 		}
 		// if this user is not a member of an org, add them
-		if result == nil {
-			game, err := models.GameFromId(game_id)
-			if err != nil {
-				return c.RenderError(err)
-			}
-			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
-			err = Dbm.Insert(&member)
-			if err != nil {
-				return c.RenderError(err)
-			}
+		game, err := models.GameFromId(game_id)
+		if err != nil {
+			return c.RenderError(err)
+		}
+		member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
+		err = Dbm.Insert(&member)
+		if err != nil {
+			return c.RenderError(err)
 		}
 	}
 
