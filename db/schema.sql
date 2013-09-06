@@ -730,13 +730,13 @@ ALTER SEQUENCE tag_tagger_id_seq OWNED BY tag.tagger_id;
 
 CREATE TABLE "user" (
     id integer NOT NULL,
-    email character varying(254),
-    first_name character varying(255),
-    last_name character varying(255),
-    screen_name character varying(20),
-    phone character varying(64),
-    password character varying(60),
-    api_key character varying(36),
+    email character varying(254) NOT NULL,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL,
+    screen_name character varying(20) NOT NULL,
+    phone character varying(64) NOT NULL,
+    password character varying(60) NOT NULL,
+    api_key character varying(36) NOT NULL,
     last_login timestamp without time zone,
     created timestamp without time zone DEFAULT now(),
     updated timestamp without time zone DEFAULT now()
