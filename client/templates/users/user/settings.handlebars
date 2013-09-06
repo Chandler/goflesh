@@ -27,6 +27,13 @@
      <div class="row field">
       {{view Ember.TextField
         type="text"
+        placeholder=phone
+        valueBinding="user.phone"
+      }}
+    </div>
+     <div class="row field">
+      {{view Ember.TextField
+        type="text"
         placeholder=screen_name
         valueBinding="user.screen_name"
       }}
