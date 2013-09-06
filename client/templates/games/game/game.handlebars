@@ -44,7 +44,7 @@
               <h3 class="list-view">{{players.length}} Players</h3>
               {{#each players}}
                 <div class="grid-pic"> 
-                  {{#linkTo 'user.home' this}} {{avatar2 user.avatar size="small"}} {{/linkTo}}                  
+                  {{#linkTo 'user.home' user}} {{avatar2 user.avatar size="small"}} {{/linkTo}}                  
                 </div>
               {{/each}}
             </div>
