@@ -17,7 +17,7 @@ type User struct {
 	First_name  string     `json:"first_name"`
 	Last_name   string     `json:"last_name"`
 	Screen_name string     `json:"screen_name"`
-	Phone       string     `json:"phone,omitempty"`
+	Phone       string     `json:"phone"`
 	Password    string     `json:"password,omitempty"`
 	Api_key     string     `json:"api_key,omitempty"`
 	Last_login  *time.Time `json:"last_login"`
