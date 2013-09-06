@@ -64,7 +64,7 @@ func NewUser(
 	err = Dbm.Insert(user)
 	if err != nil {
 		// insert failed. Perform some diagnostic queries to find out why
-		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email=?`, email)
+		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email = $1` email)
 		if diagnostic_err != nil {
 			return nil, 500, diagnostic_err
 		}
@@ -72,7 +72,7 @@ func NewUser(
 			return nil, 409, errors.New("An account with this email already exists")
 		}
 
-		count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name=?`, email)
+		count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name = $1`, email)
 		if diagnostic_err != nil {
 			return nil, 500, diagnostic_err
 		}
