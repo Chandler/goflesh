@@ -64,7 +64,7 @@ func NewUser(
 	err = Dbm.Insert(user)
 	if err != nil {
 		// insert failed. Perform some diagnostic queries to find out why
-		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email = $1` email)
+		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email = $1`, email)
 		if diagnostic_err != nil {
 			return nil, 500, diagnostic_err
 		}
