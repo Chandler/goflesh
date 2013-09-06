@@ -108,6 +108,7 @@ func (c *Players) Create() revel.Result {
 		if err != nil {
 			return c.RenderError(err)
 		}
+		revel.WARN.Print("Member exists: ", result)
 		// if this user is not a member of an org, add them
 		game, err := models.GameFromId(game_id)
 		if err != nil {
