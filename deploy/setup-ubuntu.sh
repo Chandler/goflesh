@@ -8,6 +8,7 @@ export PG_VERSION=9.2
 export PG=/usr/lib/postgresql/$PG_VERSION/bin/
 export GOPATH=$FLESH_ROOT_DIR/gocode
 export PATH="$PATH:$GOPATH/bin"
+export SUPERVISOR_PASSWORD=`openssl rand -base64 8 | fold -w8 | head -n1`
 
 cd $FLESH_ROOT_DIR
 
@@ -74,12 +75,21 @@ createdb -p 5454 -U postgres flesh
 psql -p 5454 -U postgres -d flesh < $FLESH_DB_SCHEMA
 psql -p 5454 -U postgres -d flesh < $FLESH_DB_BASEDATA
 
-EOF
 ln -s $FLESH_DEPLOY_DIR/apps/flesh/git-deploy.conf /etc/git-deploy.conf
 
+## Setup application dependencies
 # Set up go
 mkdir -p $GOPATH
+
+# Set up supervisord
+(SALT="$(openssl rand -base64 3)";SHA1=$(printf "$SUPERVISOR_PASSWORD$SALT" | openssl dgst -binary -sha1 | \
+sed 's#$#'"$SALT"'#' | base64);printf "admin:{SSHA}$SHA1\n" > $FLESH_DEPLOY_DIR/htpasswd) # SSHA encryption
+echo "Supervisor set up with username 'admin' and password '$SUPERVISOR_PASSWORD'"
 
 # set up environment
 echo "# Environment generated at environment setup time:" | tee -a ~/.bashrc ~/.zshrc
 env -u PWD env | xargs -L 1 echo "export" | sed 's/=\(.*\)/="\1"/g' | tee -a ~/.bashrc ~/.zshrc
+
+# start the server
+cd $FLESH_DEPLOY_DIR
+supervisord
