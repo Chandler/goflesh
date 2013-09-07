@@ -2,6 +2,7 @@ App.Player = DS.Model.extend
   status: DS.attr 'string'
   game: DS.belongsTo 'App.Game'
   user: DS.belongsTo 'App.User'
+  human_code: DS.attr 'string'
 
   isHuman: (->
     @get('status') == 'human'

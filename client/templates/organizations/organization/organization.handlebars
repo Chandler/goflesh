@@ -18,7 +18,12 @@
           <hr>
           <div class="grids">
             <div class="avatar-grid">
-
+              <h3>{{users.length}} Members</h3>
+              {{#each users}}
+                <div class="grid-pic"> 
+                  {{#linkTo 'user.home' this}} {{avatar2 avatar size="small"}} {{/linkTo}}
+                </div>
+              {{/each}}
             </div>
           </div> 
         </div>

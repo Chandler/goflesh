@@ -5,8 +5,20 @@
   <div class="row gamelistitem game-list-item transparent-cover">
     <div class="span4">
       <div class="game-list-name">
-        {{#linkTo 'game.home' this.game}} {{this.game.name}} {{/linkTo}}
+        {{#linkTo 'game.home' game}} {{game.name}} {{/linkTo}}
       </div>
+      {{#if App.Auth.signedIn}}
+        {{#if game.isCurrentUserGame}}
+          <div class="span3"><button class="btn disabled signin btn-large joined-button">You are in this game</button></div>
+        {{else}}
+          <div class="span3"><button class="btn signin btn-large joined-button" {{action "joinGame" game}}>Join this game</button></div>
+        {{/if}}
+      {{else}}
+        {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Sign in to join game {{/linkTo}}
+      {{/if}}
+      {{#if human_code}}
+        code: {{human_code}}
+      {{/if}}     
     </div>
     <div class="span4 game-list-item">
       <div class="game-info-text">
