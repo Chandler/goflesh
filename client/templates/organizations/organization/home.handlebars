@@ -9,7 +9,7 @@
   </div>
   {{#if App.Auth.signedIn}}
     {{#if game.isCurrentUserGame}}
-      <div class="span1"><button class="btn disabled signin btn-large joined-button" {{action "joinGame" game}}>Joined</button></div>
+      <div class="span1"><button class="btn disabled signin btn-large joined-button">Joined</button></div>
     {{else}}
       <div class="span1"><button class="btn signin btn-large joined-button" {{action "joinGame" game}}>Join</button></div>
     {{/if}}
