@@ -7,6 +7,7 @@ import (
 	"flesh/app/utils"
 	"fmt"
 	uuid "github.com/nu7hatch/gouuid"
+	"net/mail"
 	"strings"
 	"time"
 )
@@ -46,6 +47,10 @@ func NewUser(
 	phone string,
 	password string,
 ) (user *User, status_code int, err error) {
+	// Validate email
+	if _, err = mail.ParseAddress(email); err != nil {
+		return nil, 422, errors.New("Email was not properly formatted")
+	}
 	// Naive password checks
 	if len(password) < 8 {
 		return nil, 422, errors.New("Password must be at least 8 characters")
