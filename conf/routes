@@ -5,7 +5,7 @@ module:testrunner
 
 GET		/												Application.Index
 
-POST	/api/tag/:code									Players.Tag
+POST	/api/tag/:code									Tags.Tag
 
 GET		/api/organizations								Organizations.ReadList
 GET		/api/organizations/:id/							Organizations.Read
