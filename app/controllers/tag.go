@@ -13,6 +13,7 @@ type Tags struct {
 }
 
 func (c *Tags) Tag(player_id int, code string) revel.Result {
+	errJson := make(map[string]string)
 	err := c.Auth()
 	if err != nil {
 		return c.RenderError(err)
@@ -66,6 +67,7 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 }
 
 func (c *Tags) TagByPhone(code string, phone string) revel.Result {
+	errJson := make(map[string]string)
 	phone, err := utils.NormalizePhoneToE164(phone)
 	if err != nil {
 		c.Response.Status = 400

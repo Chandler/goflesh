@@ -7,10 +7,6 @@ import (
 	"io/ioutil"
 )
 
-var (
-	errJson map[string]string
-)
-
 type Players struct {
 	AuthController
 }
