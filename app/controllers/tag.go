@@ -77,8 +77,9 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 	game := gameObj.(*models.Game)
 
 	now := time.Now()
-	_, err = models.NewTag(game, tagger, human, &now)
+	_, status, err := models.NewTag(game, tagger, human, &now)
 	if err != nil {
+		c.Response.Status = status
 		return c.RenderError(err)
 	}
 	return c.Redirect(routes.Players.Read(human.Id))
