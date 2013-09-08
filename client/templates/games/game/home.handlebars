@@ -1,4 +1,14 @@
-<div class="row game-stats transparent-cover">
- No Game Activity yet, check back when the game starts
+{{#if errorMessages}}
+  <div class="alert alert-error">{{errorMessages}}</div>
+{{/if}}
+<div class="register-tag">
+  {{#if game.showRegisterTag}}
+    {{view App.RegisterTagView}}
+  {{/if}}
 </div>
-
+<br>
+<div class="row game-stats transparent-cover">
+  <div class="span8 player-list-module">
+      {{ view App.GamePageListView contentBinding="content"}}
+  </div>
+</div>

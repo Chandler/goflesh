@@ -19,6 +19,7 @@ FleshRestAdapter = DS.RESTAdapter.extend
     #support overriding a model's type
     modelTypeOverrides:
       PlayerEvent: 'Event'
+      GameEvent: 'Event'
 
     rootForType: (type) ->
       newType = @modelTypeOverrides[type] || type
@@ -66,26 +67,43 @@ FleshRestAdapter = DS.RESTAdapter.extend
 #custom attribute type for the rest adapter
 FleshRestAdapter.registerTransform 'avatar', 
   serialize: (value) ->
-    return {avatar: {hash: value}}
+    {avatar: {hash: value}}
   
   deserialize: (value) ->
-    return value["hash"]
+    value["hash"]
+
+FleshRestAdapter.registerTransform 'isodate', 
+  serialize: (value) ->
+    null
+  
+  deserialize: (value) ->
+    moment(value).format('MMM Do ha')
+  
   
 FleshRestAdapter.map 'App.PlayerEvent',
   tag: { embedded: 'always' }
+
+FleshRestAdapter.map 'App.GameEvent',
+  player: { embedded: 'always' }
 
 App.Store = DS.Store.extend
   adapter: FleshRestAdapter
 
 
 #Extensions specific to our events models
-App.Store.registerAdapter 'App.PlayerEvent', FleshRestAdapter.extend
-  customUrl: 'events/players'
+EventAdapterMixin = Ember.Mixin.create
   buildURL: (root, suffix, record) ->
     url = [@url]
     url.push @namespace  unless Ember.isNone(@namespace)
     url.push @customUrl
     return url.join("/");
 
+App.Store.registerAdapter 'App.PlayerEvent', FleshRestAdapter.extend(EventAdapterMixin,
+  customUrl: 'events/players'
+)
+
+App.Store.registerAdapter 'App.GameEvent', FleshRestAdapter.extend(EventAdapterMixin,
+  customUrl: 'events/games'
+)
 
 

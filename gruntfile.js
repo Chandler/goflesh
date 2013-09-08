@@ -21,6 +21,7 @@ module.exports = function(grunt) {
             'public/js/bower/d3.js',
             'public/js/bower/underscore.js',
             'public/js/bower/handlebars.js',
+            'public/js/bower/moment.js',
             'public/js/lib/ember.js',
             'public/js/lib/ember-data.js',
             'public/js/lib/ember-auth.js',
