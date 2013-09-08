@@ -45,7 +45,10 @@
         valueBinding="user.password"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "edit"}}>Save Changes</div>
+    <div class="btn btn-large btn-block row signup-btn" {{action "edit"}}>Save Changes</div>
+    <div class="row cancel">
+      {{#linkTo 'user.home' this}} Cancel {{/linkTo}}
+    </div>
   </div>
     <span class="clearfix"></span>
 </div>
