@@ -1,11 +1,12 @@
-<div class="simple-page">
+<div class="simple-page full-height">
   <div class="row-fluid">
-    <span class="span4">
-      <div class="side-profile full-height">
+    <span class="span4 pad-span">
+      <div class="side-profile">
         {{avatar profile class="profile_image pull-center"}}
         <div class="page-heading">
-          <h1>
+          <h1><div class="profile-heading">
             {{name}}
+          </div>
             <div class="profile-sub-heading">
             <small>
               {{location}}
@@ -18,7 +19,12 @@
           <hr>
           <div class="grids">
             <div class="avatar-grid">
-
+              <h3>{{users.length}} Members</h3>
+              {{#each users}}
+                <div class="grid-pic"> 
+                  {{#linkTo 'user.home' this}} {{avatar2 avatar size="small"}} {{/linkTo}}
+                </div>
+              {{/each}}
             </div>
           </div> 
         </div>

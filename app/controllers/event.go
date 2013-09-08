@@ -116,6 +116,12 @@ func (c *Events) ReadEvents(player_ids []int, game_ids []int) DatedSortable {
 		inner_join += "INNER JOIN event_to_game ON event.id = event_to_game.event_id "
 		where = addWhereClause(where, "event_to_game.game_id = ANY('{"+IntArrayToString(game_ids)+"}') ")
 	}
+
+	// don't allow unfiltered events access
+	if where == "" {
+		return DatedSortable{}
+	}
+
 	query := `
 		SELECT event.id
 		FROM event
@@ -144,21 +150,8 @@ func (c *Events) ReadEvents(player_ids []int, game_ids []int) DatedSortable {
 	return events
 }
 
-func (c *Events) ReadPlayers(ids []int) revel.Result {
-	if len(ids) == 0 {
-		return c.RenderText("")
-	}
-	events := c.ReadEvents(ids, make([]int, 0))
-	out := make(map[string]interface{})
-	out["events"] = events
-	return c.RenderJson(out)
-}
-
-func (c *Events) ReadGames(ids []int) revel.Result {
-	if len(ids) == 0 {
-		return c.RenderText("")
-	}
-	events := c.ReadEvents(make([]int, 0), ids)
+func (c *Events) ReadAllEvents(player_ids []int, game_ids []int) revel.Result {
+	events := c.ReadEvents(player_ids, game_ids)
 	out := make(map[string]interface{})
 	out["events"] = events
 	return c.RenderJson(out)

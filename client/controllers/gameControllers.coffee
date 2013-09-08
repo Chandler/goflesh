@@ -3,7 +3,7 @@ App.GamesNewController = NewController.extend
   name: '',
   slug: '',
 
-App.GameHomeController =  Ember.Controller.extend
+App.GameHomeController =  BaseController.extend
   code: ''
   needs: 'game'
   game: null
@@ -18,17 +18,18 @@ App.GameHomeController =  Ember.Controller.extend
 
   eventListSelected:  Ember.computed.equal('selectedList', 'eventList')
   playerListSelected: Ember.computed.equal('selectedList', 'playerList')
-
-
-  showRegisterTag: (->
-    currentUser.belongsToGame(@get('game.id')) && currentUser.isZombie() 
-  ).property()
-
+  
   registerTag: ->
-    code = "VPCQG"
-    currentPlayer = currentUser.playerForGame(@get('game.id'))
-    $.post("/api/tag/" + code + "?player_id=" + currentPlayer.get('id')).done(e) ->
-      console.log(e)
+    if @code != ''
+      @clearErrors()
+      currentPlayer = @get('game.currentPlayer')
+      $.post("/api/tag/" + @code + "?player_id=" + currentPlayer.get('id'))
+      .done (xhr, status, error) =>
+        @set 'errors', "success!" 
+      .fail (xhr, status, error) =>
+        @set 'errors', JSON.stringify(xhr.responseText) 
+    else
+        @set 'errors', "human code empty"
 
 
 App.GameSettingsController = BaseController.extend

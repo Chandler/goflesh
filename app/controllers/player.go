@@ -2,11 +2,14 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
 	"time"
+)
+
+var (
+	errJson map[string]string
 )
 
 type Players struct {
@@ -173,12 +176,14 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 
 	if !c.SentAuth() {
 		c.Response.Status = 401
-		return c.RenderText("")
+		errJson["error"] = "No authentication information was sent"
+		return c.RenderJson(errJson)
 	}
 
 	if c.User == nil {
 		c.Response.Status = 403
-		return c.RenderText("User credentials bad")
+		errJson["error"] = "User credentials bad"
+		return c.RenderJson(errJson)
 	}
 
 	tagger, err := models.PlayerFromId(player_id)
@@ -189,12 +194,14 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 
 	if !tagger.IsZombie() {
 		c.Response.Status = 403
-		return c.RenderText("You cannot tag because you are not a zombie")
+		errJson["error"] = "You cannot tag because you are not a zombie"
+		return c.RenderJson(errJson)
 	}
 
 	if tagger.User_id != c.User.Id {
 		c.Response.Status = 403
-		return c.RenderText("Tags cannot be registered for other users")
+		errJson["error"] = "Tags cannot be registered for other users"
+		return c.RenderJson(errJson)
 	}
 
 	var list []*models.HumanCode
@@ -203,7 +210,9 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 		return c.RenderError(err)
 	}
 	if len(list) != 1 {
-		return c.RenderError(errors.New("Invalid human code"))
+		c.Response.Status = 403
+		errJson["error"] = "Invalid human code"
+		return c.RenderJson(errJson)
 	}
 	human_code := list[0]
 	player, err := Dbm.Get(models.Player{}, human_code.Id)
