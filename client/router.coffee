@@ -17,6 +17,7 @@ App.Router.map ->
       #TODO: unhide settings when moderators are implemented
       # @route 'settings'
       @route 'home'
+      @route 'players'
     @route 'new'
   @resource 'users', ->
     @resource 'user', path: ":user_id", ->
