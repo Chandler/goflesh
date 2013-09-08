@@ -26,9 +26,8 @@ App.UserController = BaseObjectController.extend
 
   currentPlayer: (->
     player = @get('players').get('lastObject')
-    console.log player
     player
-  ).property()
+  ).property('players.@each')
 
 App.UsersController = Ember.ObjectController.extend
   selectedUser: null
