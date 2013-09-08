@@ -41,6 +41,30 @@ func PlayerFromId(id int) (*Player, error) {
 	return player.(*Player), err
 }
 
+func PlayerFromHumanCode(code string) (*Player, int, error) {
+	query := `
+        SELECT *
+        FROM human_code
+        WHERE code = $1
+    `
+	var list []*HumanCode
+	_, err := Dbm.Select(&list, query, code)
+	if err != nil {
+		return nil, 500, err
+	}
+	if len(list) != 1 {
+		return nil, 422, errors.New("Invalid human code")
+	}
+	human_code := list[0]
+	player, err := Dbm.Get(Player{}, human_code.Id)
+	if err != nil {
+		return nil, 500, err
+	}
+
+	human := player.(*Player)
+	return human, 200, nil
+}
+
 func (m *Player) Save() error {
 	_, err := Dbm.Update(m)
 	return err
