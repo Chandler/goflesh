@@ -39,10 +39,10 @@ func (c ClientTagEvent) Date() *time.Time {
 }
 
 type ClientPlayerEvent struct {
-	Id       string     `json:"id"`
-	Type     string     `json:"type"`
-	SortDate *time.Time `json:"-"`
-	Player   int `json:"player_id"`
+	Id        string     `json:"id"`
+	Type      string     `json:"type"`
+	SortDate  *time.Time `json:"-"`
+	Player_id int        `json:"player_id"`
 }
 
 func (c ClientPlayerEvent) Date() *time.Time {
@@ -90,9 +90,8 @@ func (c *Events) GetPlayerEvents(ids_string string) DatedSortable {
 		return DatedSortable{}
 	}
 	clientObjects := make(DatedSortable, len(list))
-	for i, readObject := range list {
-		playerRead := PlayerRead{*readObject, readObject.Status(), ""}
-		clientObject := ClientPlayerEvent{fmt.Sprintf("joined-%d", readObject.Id), "joined", readObject.Created, playerRead.Id}
+	for i, player := range list {
+		clientObject := ClientPlayerEvent{fmt.Sprintf("joined-%d", player.Id), "joined", player.Created, player.Id}
 		clientObjects[i] = clientObject
 	}
 
