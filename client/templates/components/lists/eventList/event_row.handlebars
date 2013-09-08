@@ -1,0 +1,43 @@
+{{#if tag}}
+<div class="event-feed-row">
+  <span class="event-time event-feed-cell" title=""{{tag.claimed}}</span>
+  <div  {{bindAttr class=":event-color :event-feed-cell type"}}> </div>
+  
+  <div class="event-feed-cell">
+    {{#linkTo "user.home" tag.tagger.user}}
+    <span {{avatar2 tag.tagger.user.avatar size="small"}}</span>
+    {{/linkTo}}
+    <span> {{tag.tagger.user.first_name}} </span>
+    <span> {{tag.tagger.user.last_name}} </span>
+  </div>
+  
+  <span class="event-description event-feed-cell"> tagged </span>
+  
+  <div class="event-feed-cell">
+    {{#linkTo "user.home" tag.tagger.user}}
+      <span> {{avatar2 tag.taggee.user.avatar size="small"}}</span>
+    {{/linkTo}}      
+    <span> {{tag.taggee.user.first_name}} </span>
+    <span> {{tag.taggee.user.last_name}} </span>
+  </div>
+</div>
+{{/if}}
+
+{{#if player}}
+<div class="event-feed-row">
+  <span class="event-time event-feed-cell" title="">{{player.created}}</span>
+  <!--   http://emberjs.com/guides/templates/binding-element-class-names/-->
+  <div  {{bindAttr class=":event-color :event-feed-cell type"}}> </div>
+  
+  <div class="event-feed-cell">
+    {{#linkTo "user.home" player.user}}
+      <span> {{avatar2 player.user.avatar size="small"}}</span>
+    {{/linkTo}}
+    <span> {{player.user.first_name}} </span>
+    <span> {{player.user.last_name}} </span>
+  </div>
+  
+  <span class="event-description event-feed-cell"> Joined the game</span>
+
+</div>
+{{/if}}
