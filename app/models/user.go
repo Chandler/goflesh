@@ -46,7 +46,7 @@ func (user *User) ValidateAndNormalizeUserFields() (statusCode int, err error) {
 	}
 
 	// Validate phone
-	if len(*user.Phone) == 0 { // phone number is optional, but must be well-formed if provided
+	if user.Phone == nil || len(*user.Phone) == 0 { // phone number is optional, but must be well-formed if provided
 		user.Phone = nil
 	} else {
 		normalized, err := utils.NormalizePhoneToE164(*user.Phone)
