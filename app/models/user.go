@@ -18,7 +18,7 @@ type User struct {
 	First_name  string     `json:"first_name"`
 	Last_name   string     `json:"last_name"`
 	Screen_name string     `json:"screen_name"`
-	Phone       string     `json:"phone"`
+	Phone       *string    `json:"phone"`
 	Password    string     `json:"password,omitempty"`
 	Api_key     string     `json:"api_key,omitempty"`
 	Last_login  *time.Time `json:"last_login"`
@@ -46,11 +46,14 @@ func (user *User) ValidateAndNormalizeUserFields() (statusCode int, err error) {
 	}
 
 	// Validate phone
-	if len(user.Phone) != 0 { // phone number is optional, but must be well-formed if provided
-		user.Phone, err = utils.NormalizePhoneToE164(user.Phone)
+	if len(*user.Phone) == 0 { // phone number is optional, but must be well-formed if provided
+		user.Phone = nil
+	} else {
+		normalized, err := utils.NormalizePhoneToE164(*user.Phone)
 		if err != nil {
 			return 422, err
 		}
+		user.Phone = &normalized
 	}
 
 	// Naive password checks
@@ -85,7 +88,7 @@ func (user *User) DiagnoseUserCreationOrUpdateFailure() (statusCode int, err err
 		return 409, errors.New("An account with this screen name already exists")
 	}
 	// couldn't determine the source of the error. let's just return it
-	return 500, err
+	return 500, nil
 }
 
 func NewUser(
@@ -97,7 +100,7 @@ func NewUser(
 	password string,
 ) (user *User, status_code int, err error) {
 	now := time.Now()
-	user = &User{0, email, first_name, last_name, screen_name, phone, password, "", &now, TimeTrackedModel{}}
+	user = &User{0, email, first_name, last_name, screen_name, &phone, password, "", &now, TimeTrackedModel{}}
 	if statusCode, err := user.ValidateAndNormalizeUserFields(); err != nil {
 		return nil, statusCode, err
 	}
@@ -106,7 +109,7 @@ func NewUser(
 	if err != nil {
 		// insert failed. Perform some diagnostic queries to find out why
 		statusCode, err2 := user.DiagnoseUserCreationOrUpdateFailure()
-		if err2 != nil { // if we couldn't diagnose the error, use the original error
+		if err2 == nil { // if we couldn't diagnose the error, use the original error
 			err2 = err
 		}
 		return nil, statusCode, err2
@@ -128,7 +131,7 @@ func UserFromId(id int) (*User, error) {
 func (u *User) CleanSensitiveFields(clearEmail bool) {
 	u.Password = ""
 	u.Api_key = ""
-	u.Phone = ""
+	u.Phone = nil
 	if clearEmail {
 		u.Email = ""
 	}
