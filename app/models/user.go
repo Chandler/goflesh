@@ -128,6 +128,24 @@ func UserFromId(id int) (*User, error) {
 	return user.(*User), err
 }
 
+// assumes phone number already normalized in E.164 format
+func UserFromPhone(phone string) (*User, error) {
+	query := `
+        SELECT *
+        FROM "user"
+        WHERE phone = $1
+    `
+	var list []*User
+	_, err := Dbm.Select(&list, query)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) != 1 {
+		return nil, errors.New("User not found with this phone number")
+	}
+	return list[0], nil
+}
+
 func (u *User) CleanSensitiveFields(clearEmail bool) {
 	u.Password = ""
 	u.Api_key = ""
