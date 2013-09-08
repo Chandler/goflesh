@@ -64,7 +64,7 @@ func NewUser(
 		return nil, 422, errors.New("Password cannot contain your name or screen name")
 	}
 	now := time.Now()
-	user = &User{0, email, first_name, last_name, screen_name, "208 555-5555", "", "", &now, TimeTrackedModel{}}
+	user = &User{0, email, first_name, last_name, screen_name, phone, "", "", &now, TimeTrackedModel{}}
 	user.ChangePassword(password)
 	err = Dbm.Insert(user)
 	if err != nil {
