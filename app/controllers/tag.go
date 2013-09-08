@@ -3,6 +3,7 @@ package controllers
 import (
 	"flesh/app/models"
 	"flesh/app/routes"
+	"flesh/app/utils"
 	"github.com/robfig/revel"
 	"time"
 )
@@ -83,4 +84,14 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 		return c.RenderError(err)
 	}
 	return c.Redirect(routes.Players.Read(human.Id))
+}
+
+func (c *Tags) TagByPhone(code int, phone string) revel.Result {
+	phone, err := utils.NormalizePhoneToE164(phone)
+	if err != nil {
+		c.Response.Status = 403
+		errJson["error"] = "Invalid phone number. Phone number must be passed as a string in E.164 format"
+		return c.RenderJson(errJson)
+	}
+	return c.RenderText("")
 }

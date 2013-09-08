@@ -118,8 +118,10 @@ func (c *Users) Update(id int) revel.Result {
 			email = $1,
 			first_name = $2,
 			last_name = $3,
-			screen_name = $4
-		WHERE id = $5
+			screen_name = $4,
+			phone = $5,
+			updated = now()
+		WHERE id = $6
 	`
 
 	data, err := ioutil.ReadAll(c.Request.Body)
@@ -135,7 +137,21 @@ func (c *Users) Update(id int) revel.Result {
 	model := typedJson[keyname]
 	model.Id = id
 
-	result, err := Dbm.Exec(query, model.Email, model.First_name, model.Last_name, model.Screen_name, id)
+	// changing passwords has to be handled specially
+	changingPassword := true
+	if model.Password == "" {
+		// TODO: redesign so I don't need to validate an arbitrary password
+		model.Password = "^?8`8468`86`L^866229~"
+		changingPassword = false
+	}
+
+	statusCode, err := model.ValidateAndNormalizeUserFields()
+	if err != nil {
+		c.Response.Status = statusCode
+		return c.RenderError(err)
+	}
+
+	result, err := Dbm.Exec(query, model.Email, model.First_name, model.Last_name, model.Screen_name, model.Phone, id)
 	if err != nil {
 		return c.RenderError(err)
 	}
@@ -146,6 +162,28 @@ func (c *Users) Update(id int) revel.Result {
 	if val != 1 {
 		c.Response.Status = 500
 		return c.RenderError(errors.New("Did not update exactly one record"))
+	}
+	if changingPassword {
+		err = model.ChangePassword(model.Password)
+		if err != nil {
+			return c.RenderError(err)
+		}
+		query = `
+		UPDATE "user"
+		SET
+			password = $1,
+			api_key = $2,
+			updated = now()
+		WHERE id = $3
+		`
+		result, err = Dbm.Exec(query, model.Password, model.Api_key, id)
+		if err != nil {
+			return c.RenderError(err)
+		}
+		val, err = result.RowsAffected()
+		if val != 1 {
+			return c.RenderError(errors.New("Did not update exactly one record when changing password"))
+		}
 	}
 	return c.RenderJson(val)
 }

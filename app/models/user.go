@@ -39,6 +39,55 @@ type UserRead struct {
 	Organization_ids []int             `json:"organization_ids"`
 }
 
+func (user *User) ValidateAndNormalizeUserFields() (statusCode int, err error) {
+	// Validate email
+	if _, err = mail.ParseAddress(user.Email); err != nil {
+		return 422, errors.New("Email was not properly formatted")
+	}
+
+	// Validate phone
+	if len(user.Phone) != 0 { // phone number is optional, but must be well-formed if provided
+		user.Phone, err = utils.NormalizePhoneToE164(user.Phone)
+		if err != nil {
+			return 422, err
+		}
+	}
+
+	// Naive password checks
+	if len(user.Password) < 8 {
+		return 422, errors.New("Password must be at least 8 characters")
+	}
+	if strings.Contains(user.Email, user.Password) {
+		return 422, errors.New("Password cannot be part of email")
+	}
+	if strings.Contains(user.Password, user.First_name) ||
+		strings.Contains(user.Password, user.Last_name) ||
+		strings.Contains(user.Password, user.Screen_name) {
+		return 422, errors.New("Password cannot contain your name or screen name")
+	}
+	return 0, nil
+}
+
+func (user *User) DiagnoseUserCreationOrUpdateFailure() (statusCode int, err error) {
+	count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email = $1`, user.Email)
+	if diagnostic_err != nil {
+		return 500, diagnostic_err
+	}
+	if count > 0 {
+		return 409, errors.New("An account with this email already exists")
+	}
+
+	count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name = $1`, user.Screen_name)
+	if diagnostic_err != nil {
+		return 500, diagnostic_err
+	}
+	if count > 0 {
+		return 409, errors.New("An account with this screen name already exists")
+	}
+	// couldn't determine the source of the error. let's just return it
+	return 500, err
+}
+
 func NewUser(
 	email string,
 	first_name string,
@@ -47,45 +96,20 @@ func NewUser(
 	phone string,
 	password string,
 ) (user *User, status_code int, err error) {
-	// Validate email
-	if _, err = mail.ParseAddress(email); err != nil {
-		return nil, 422, errors.New("Email was not properly formatted")
-	}
-	// Naive password checks
-	if len(password) < 8 {
-		return nil, 422, errors.New("Password must be at least 8 characters")
-	}
-	if strings.Contains(email, password) {
-		return nil, 422, errors.New("Password cannot be part of email")
-	}
-	if strings.Contains(password, first_name) ||
-		strings.Contains(password, last_name) ||
-		strings.Contains(password, screen_name) {
-		return nil, 422, errors.New("Password cannot contain your name or screen name")
-	}
 	now := time.Now()
-	user = &User{0, email, first_name, last_name, screen_name, phone, "", "", &now, TimeTrackedModel{}}
+	user = &User{0, email, first_name, last_name, screen_name, phone, password, "", &now, TimeTrackedModel{}}
+	if statusCode, err := user.ValidateAndNormalizeUserFields(); err != nil {
+		return nil, statusCode, err
+	}
 	user.ChangePassword(password)
 	err = Dbm.Insert(user)
 	if err != nil {
 		// insert failed. Perform some diagnostic queries to find out why
-		count, diagnostic_err := Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE email = $1`, email)
-		if diagnostic_err != nil {
-			return nil, 500, diagnostic_err
+		statusCode, err2 := user.DiagnoseUserCreationOrUpdateFailure()
+		if err2 != nil { // if we couldn't diagnose the error, use the original error
+			err2 = err
 		}
-		if count > 1 {
-			return nil, 409, errors.New("An account with this email already exists")
-		}
-
-		count, diagnostic_err = Dbm.SelectInt(`SELECT count(*) FROM "user" WHERE screen_name = $1`, email)
-		if diagnostic_err != nil {
-			return nil, 500, diagnostic_err
-		}
-		if count > 1 {
-			return nil, 409, errors.New("An account with this screen name already exists")
-		}
-		// couldn't determine the source of the error. let's just return it
-		return nil, 500, err
+		return nil, statusCode, err2
 	}
 	return user, 209, nil
 }
