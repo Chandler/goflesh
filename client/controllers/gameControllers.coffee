@@ -10,7 +10,7 @@ App.GameHomeController =  BaseController.extend
   gameBinding: 'controllers.game'
   playersBinding: 'game.players'
   eventsBinding: 'events'
-  
+
   selectedList: 'eventList'
   
   selectList: (list) ->
@@ -37,3 +37,12 @@ App.GameSettingsController = BaseController.extend
   game: null
   gameBinding: 'controllers.game'
   contentBinding: 'controllers.game.content'
+
+
+
+App.GamePlayersController = BaseController.extend
+  needs: 'game'
+  game: null
+  gameBinding: 'controllers.game'
+  contentBinding: 'controllers.game.content'
+  playersBinding: 'game.players'

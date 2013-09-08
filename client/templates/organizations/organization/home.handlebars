@@ -10,7 +10,7 @@
       {{#if game.currentPlayer}}
         <div class="span1"><button class="btn disabled signin btn-large joined-button">Joined</button></div>
       {{else}}
-        <div class="span1"><button class="btn signin btn-large joined-button" {{action "joinGame" game}}>Join this game</button></div>
+        <div class="span1"><button class="btn signin btn-large joined-button" {{action "joinGame" game}}>Join</button></div>
       {{/if}}
     {{else}}
       {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Sign in to join game {{/linkTo}}

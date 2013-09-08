@@ -4,7 +4,7 @@ App.Player = DS.Model.extend
   user: DS.belongsTo 'App.User'
   human_code: DS.attr 'string'
   created: DS.attr 'isodate'
-  GameEvent: DS.belongsTo 'App.GameEvent'
+  event: DS.belongsTo 'App.Event'
   isHuman: (->
     @get('status') == 'human'
   ).property('status')

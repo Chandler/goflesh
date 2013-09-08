@@ -16,7 +16,8 @@ App.GameRoute = Ember.Route.extend
     App.Game.find(params.game_id)
 
   setupController: (controller, model) ->
-    events = App.GameEvent.find({ids: [model.get('id'),1]})
+    players = model.get('players')
+    events = App.Event.find({game_ids: [model.get('id')]})
     @controllerFor('gameHome').set 'events', events
     @_super arguments...
 
