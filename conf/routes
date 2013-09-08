@@ -7,6 +7,9 @@ GET		/												Application.Index
 
 POST	/api/tag/:code									Tags.Tag
 
+POST  /api/sms                          Sms.Index
+
+
 GET		/api/organizations								Organizations.ReadList
 GET		/api/organizations/:id/							Organizations.Read
 PUT		/api/organizations/:id/							Organizations.Update

@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -29,7 +30,7 @@ func (t *Tag) Taggee() *Player {
 	return player
 }
 
-func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Tag, error) {
+func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Tag, int, error) {
 	/*
 		Conditions for tagging:
 			1. Tagger is a zombie (OZ or regular)
@@ -39,35 +40,35 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 
 	*/
 	if tagger.Game_id != taggee.Game_id {
-		return nil, errors.New("Tagger and taggee must be in same game")
+		return nil, 400, errors.New("Tagger and taggee must be in same game")
 	}
 
 	if game == nil {
 		gameObj, err := Dbm.Get(Game{}, tagger.Game_id)
 		if err != nil {
-			return nil, errors.New("Could not get game")
+			return nil, 400, errors.New(fmt.Sprintf("Could not get game with id %d ", tagger.Game_id))
 		}
 		game = gameObj.(*Game)
 	}
 
 	if !game.IsRunning() {
-		return nil, errors.New("Game must be running")
+		return nil, 400, errors.New("Game must be running")
 	}
 
 	if can := tagger.IsZombie(); !can {
 		// it should be ok to print tagger.Status() here because we wouldn't be here if we weren't a zombie or OZ
-		return nil, errors.New("Tagger is not zombie, tagger is " + tagger.Status())
+		return nil, 400, errors.New("Tagger is not zombie, tagger is " + tagger.Status())
 	}
 
 	if can := taggee.IsHuman(); !can {
 		// it should be ok to print taggee.Status() here because we wouldn't be here if we weren't a zombie or OZ
-		return nil, errors.New("Taggee is not human, taggee is " + taggee.Status())
+		return nil, 400, errors.New("Taggee is not human, taggee is " + taggee.Status())
 	}
 
 	tag := Tag{0, tagger.Id, taggee.Id, claimed, TimeTrackedModel{}}
 
 	if err := Dbm.Insert(&tag); err != nil {
-		return nil, err
+		return nil, 500, err
 	}
 
 	tagger.Feed(claimed)
@@ -77,8 +78,8 @@ func NewTag(game *Game, tagger *Player, taggee *Player, claimed *time.Time) (*Ta
 	taggee.Save()
 
 	if err := CreateTagEvent(&tag); err != nil {
-		return &tag, err
+		return &tag, 500, err
 	}
 
-	return &tag, nil
+	return &tag, 201, nil
 }

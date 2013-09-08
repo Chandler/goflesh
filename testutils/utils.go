@@ -402,7 +402,7 @@ func TagByRandomOzs() {
 	}
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	_, err := models.NewTag(game, oz_player, human, &now)
+	_, _, err := models.NewTag(game, oz_player, human, &now)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
