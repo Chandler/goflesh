@@ -203,6 +203,7 @@ func (c *Players) Tag(player_id int, code string) revel.Result {
 		return c.RenderError(err)
 	}
 	if len(list) != 1 {
+		c.Response.Status = 403
 		return c.RenderError(errors.New("Invalid human code"))
 	}
 	human_code := list[0]
