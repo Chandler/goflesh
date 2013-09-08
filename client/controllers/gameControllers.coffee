@@ -8,8 +8,9 @@ App.GameHomeController =  BaseController.extend
   needs: 'game'
   game: null
   gameBinding: 'controllers.game'
+  playersBinding: 'game.players'
   eventsBinding: 'events'
-  
+
   selectedList: 'eventList'
   
   selectList: (list) ->

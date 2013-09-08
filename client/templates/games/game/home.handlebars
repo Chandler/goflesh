@@ -7,9 +7,11 @@
 	<div class="row transparent-cover">
 	  <div class="span4 player-list-module">
 	  	<div class="register-tag">
-		  {{#if game.showRegisterTag}}
-		    {{view App.RegisterTagView}}
-		  {{/if}}
+      {{#if App.Auth.signedIn}}
+			  {{#if game.showRegisterTag}}
+			    {{view App.RegisterTagView}}
+			  {{/if}}
+			{{/if}}
 		</div>
 	  </div>
 	  <div class="span4">
