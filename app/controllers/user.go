@@ -182,6 +182,7 @@ func (c *Users) Create() revel.Result {
 			c.Response.Status = statusCode
 			return c.RenderError(err)
 		}
+		insertedUser.CleanSensitiveFields(false)
 		users[i] = insertedUser
 	}
 
