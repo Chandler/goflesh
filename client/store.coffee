@@ -15,16 +15,6 @@ $.ajaxSetup
 FleshRestAdapter = DS.RESTAdapter.extend
   namespace: 'api' 
   serializer: DS.RESTSerializer.createWithMixins
-    
-    #support overriding a model's type
-    modelTypeOverrides:
-      PlayerEvent: 'Event'
-      GameEvent: 'Event'
-
-    rootForType: (type) ->
-      newType = @modelTypeOverrides[type] || type
-      @_super(newType)
-
     extract: (loader, json, type, record) ->
       # Conforms ember-data to JSONAPI spec
       # by *accepting* singular resources in an array
@@ -79,31 +69,10 @@ FleshRestAdapter.registerTransform 'isodate',
   deserialize: (value) ->
     moment(value).format('MMM Do ha')
   
-  
-FleshRestAdapter.map 'App.PlayerEvent',
+FleshRestAdapter.map 'App.Event',
   tag: { embedded: 'always' }
-
-FleshRestAdapter.map 'App.GameEvent',
   player: { embedded: 'always' }
 
 App.Store = DS.Store.extend
   adapter: FleshRestAdapter
-
-
-#Extensions specific to our events models
-EventAdapterMixin = Ember.Mixin.create
-  buildURL: (root, suffix, record) ->
-    url = [@url]
-    url.push @namespace  unless Ember.isNone(@namespace)
-    url.push @customUrl
-    return url.join("/");
-
-App.Store.registerAdapter 'App.PlayerEvent', FleshRestAdapter.extend(EventAdapterMixin,
-  customUrl: 'events/players'
-)
-
-App.Store.registerAdapter 'App.GameEvent', FleshRestAdapter.extend(EventAdapterMixin,
-  customUrl: 'events/games'
-)
-
 
