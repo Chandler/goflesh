@@ -10,3 +10,5 @@ Ember.Handlebars.registerBoundHelper 'avatar2', (avatar, options) ->
   klass = options.hash.class
   new Handlebars.SafeString(Utilities.avatar2Tag(key, size, klass))
 
+Handlebars.registerHelper 'last', (array) ->
+  array[array.length-1]
