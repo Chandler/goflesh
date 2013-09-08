@@ -30,6 +30,7 @@ App.PlayerListView = Ember.ListView.extend
 App.EventRowView = Ember.ListItemView.extend
   templateName: (->
     rowTemplate = @get('context.type')
+    console.log rowTemplate
     "eventList/" + rowTemplate
   ).property()
 

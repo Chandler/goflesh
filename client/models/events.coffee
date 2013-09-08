@@ -3,6 +3,7 @@
 
 #models for each specific type of event
 App.TagAttribute = DS.Model.extend
+  claimed: DS.attr 'isodate'
   tagger: DS.belongsTo 'App.Player' 
   taggee: DS.belongsTo 'App.Player'
   event:  DS.belongsTo 'App.Event'
