@@ -734,7 +734,7 @@ CREATE TABLE "user" (
     first_name character varying(255) NOT NULL,
     last_name character varying(255) NOT NULL,
     screen_name character varying(20) NOT NULL,
-    phone character varying(64) NOT NULL,
+    phone character varying(16),
     password character varying(60) NOT NULL,
     api_key character varying(36) NOT NULL,
     last_login timestamp without time zone,
@@ -1146,6 +1146,13 @@ CREATE UNIQUE INDEX tag_taggee ON tag USING btree (taggee_id);
 --
 
 CREATE UNIQUE INDEX user_email_idx ON "user" USING btree (email);
+
+
+--
+-- Name: user_phone_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX user_phone_idx ON "user" USING btree (phone);
 
 
 --
