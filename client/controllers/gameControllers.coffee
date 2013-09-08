@@ -3,31 +3,34 @@ App.GamesNewController = NewController.extend
   name: '',
   slug: '',
 
-App.GameHomeController =  Ember.Controller.extend
-    needs: 'game'
-    game: null
-    gameBinding: 'controllers.game'
-    contentBinding: 'game.players'
-    
-    #TODO change these
-    eventFeedSelected: false
-    playerListSelected: true
-    showPlayerList: ->
-      @set 'eventFeedSelected', false
-      @set 'playerListSelected', true
-    showEventFeed: ->
-      @set 'eventFeedSelected', true
-      @set 'playerListSelected', false
+App.GameHomeController =  BaseController.extend
+  code: ''
+  needs: 'game'
+  game: null
+  gameBinding: 'controllers.game'
+  playersBinding: 'game.players'
+  eventsBinding: 'events'
+  
+  selectedList: 'eventList'
+  
+  selectList: (list) ->
+    @set 'selectedList', list
 
-    registerTag: ->
-      code = "M2F5F"
-      $.post("/api/tag/" + code).done (e) ->
-        user = App.User.find({user_id: 2})
-        console.log user.get('status')
-    
+  eventListSelected:  Ember.computed.equal('selectedList', 'eventList')
+  playerListSelected: Ember.computed.equal('selectedList', 'playerList')
+  
+  registerTag: ->
+    if @code != ''
+      @clearErrors()
+      currentPlayer = @get('game.currentPlayer')
+      $.post("/api/tag/" + @code + "?player_id=" + currentPlayer.get('id'))
+      .done (xhr, status, error) =>
+        @set 'errors', "success!" 
+      .fail (xhr, status, error) =>
+        @set 'errors', JSON.stringify(xhr.responseText) 
+    else
+        @set 'errors', "human code empty"
 
-App.GamesController = Ember.ObjectController.extend
-  selectedGame: null
 
 App.GameSettingsController = BaseController.extend
   needs: 'game'

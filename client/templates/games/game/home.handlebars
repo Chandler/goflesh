@@ -1,10 +1,14 @@
-<div class="game-home">
-  <div class="row">
-    <div class="span6 quadrant activity-feed-module">
-      {{view App.GamePageListView contentBinding="content"}}
-    </div>
-    <div class="span6 quadrant activity-feed-module">
-      {{view App.RegisterTagView}}
-    </div>
+{{#if errorMessages}}
+  <div class="alert alert-error">{{errorMessages}}</div>
+{{/if}}
+<div class="register-tag">
+  {{#if game.showRegisterTag}}
+    {{view App.RegisterTagView}}
+  {{/if}}
+</div>
+<br>
+<div class="row game-stats transparent-cover">
+  <div class="span8 player-list-module">
+      {{ view App.GamePageListView contentBinding="content"}}
   </div>
 </div>

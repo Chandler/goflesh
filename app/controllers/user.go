@@ -3,7 +3,6 @@ package controllers
 import (
 	"bytes"
 	"code.google.com/p/go.crypto/bcrypt"
-	"crypto/md5"
 	"encoding/json"
 	"errors"
 	"flesh/app/models"
@@ -13,18 +12,10 @@ import (
 	"github.com/robfig/revel"
 	"html/template"
 	"io/ioutil"
-	"strings"
 )
 
 type Users struct {
 	AuthController
-}
-
-type UserRead struct {
-	models.User
-	Avatar     map[string]string `json:"avatar"`
-	Players    string            `json:"-"`
-	Player_ids []int             `json:"player_ids"`
 }
 
 var reset_password_email_template *template.Template
@@ -41,49 +32,58 @@ func init() {
 
 /////////////////////////////////////////////////////////////////////
 
-func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
+func FetchUsers(current_user *models.User, where string, args ...interface{}) ([]*models.UserRead, error) {
 	query := `
 	    SELECT *, array(
 			SELECT DISTINCT p.id
 			FROM player p
 			INNER JOIN "user"
 				ON u.id = p.user_id
-			) players
+			) players, array(
+			SELECT DISTINCT m.organization_id
+			FROM member m
+			INNER JOIN "user"
+				ON u.id = m.user_id
+			) organizations
 	    FROM "user" u
     ` + where
-	name := "users"
-	type readObjectType UserRead
 
-	c.Auth()
-
-	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	results, err := Dbm.Select(&models.UserRead{}, query, args...)
 	if err != nil {
-		return c.RenderError(err)
+		revel.ERROR.Print(err)
+		return nil, err
 	}
-	readObjects := make([]*readObjectType, len(results))
+	readObjects := make([]*models.UserRead, len(results))
 	for i, result := range results {
-		readObject := result.(*readObjectType)
-		// make a Gravatar-compatible email hash
-		emailHash := md5.New()
-		emailHash.Write([]byte(strings.ToLower(strings.TrimSpace(readObject.Email))))
-		readObject.Avatar = make(map[string]string)
-		readObject.Avatar["hash"] = fmt.Sprintf("%x", emailHash.Sum(nil))
-		// omit passsword and api key
-		readObject.Password = ""
-		readObject.Api_key = ""
-		// blank out email
-		if c.User == nil || c.User.Id != readObject.Id {
-			readObject.Email = ""
-		}
+		readObject := result.(*models.UserRead)
 		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
+		readObject.AddAvatars()
+		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
+		if current_user == nil || current_user.Id != readObject.Id {
+		}
 		if err != nil {
-			return c.RenderJson(err)
+			revel.ERROR.Print(err)
+			return nil, err
+		}
+		readObject.Organization_ids, err = PostgresArrayStringToIntArray(readObject.Organizations)
+		if err != nil {
+			revel.ERROR.Print(err)
+			return nil, err
 		}
 		readObjects[i] = readObject
 	}
+	return readObjects, nil
+}
+
+func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
+	c.Auth()
+	readObjects, err := FetchUsers(c.User, where, args...)
+	if err != nil {
+		return c.RenderError(err)
+	}
 
 	out := make(map[string]interface{})
-	out[name] = readObjects
+	out["users"] = readObjects
 
 	return c.RenderJson(out)
 }
@@ -152,32 +152,41 @@ func (c *Users) Update(id int) revel.Result {
 
 /////////////////////////////////////////////////////////////////////
 
-func createUsers(data []byte) ([]interface{}, error) {
-	const keyName string = "users"
-	var typedJson map[string][]models.User
-
-	err := json.Unmarshal(data, &typedJson)
-	if err != nil {
-		return nil, err
-	}
-
-	modelObjects := typedJson[keyName]
-
-	// Prepare for bulk insert (only way to do it, promise)
-	interfaces := make([]interface{}, len(modelObjects))
-	for i := range modelObjects {
-		modelObject := modelObjects[i]
-		modelObject.ChangePassword(modelObject.Password)
-		human_code := models.HumanCode{modelObject.Id, "", models.TimeTrackedModel{}}
-		human_code.GenerateCode()
-		Dbm.Insert(human_code)
-		interfaces[i] = interface{}(&modelObject)
-	}
-	return interfaces, nil
-}
-
 func (c *Users) Create() revel.Result {
-	return CreateList(createUsers, c.Request.Body)
+	data, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	const keyName string = "users"
+	var typedJson map[string][]*models.User
+
+	err = json.Unmarshal(data, &typedJson)
+	if err != nil {
+		c.Response.Status = 400
+		return c.RenderError(err)
+	}
+
+	users := typedJson[keyName]
+
+	for i, user := range users {
+		insertedUser, statusCode, err := models.NewUser(
+			user.Email,
+			user.First_name,
+			user.Last_name,
+			user.Screen_name,
+			user.Phone,
+			user.Password,
+		)
+		if err != nil {
+			c.Response.Status = statusCode
+			return c.RenderError(err)
+		}
+		insertedUser.CleanSensitiveFields(false)
+		users[i] = insertedUser
+	}
+
+	return c.RenderJson(users)
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -187,6 +196,7 @@ type UserAuthenticateInput struct {
 	Email       string `json:"email"`
 	Screen_name string `json:"screen_name"`
 	Password    string `json:"password"`
+	Api_key     string `json:"api_key"` // TODO: fix client-side auth so we don't have this hack
 }
 
 type UserAuthenticateOutput struct {
@@ -196,14 +206,14 @@ type UserAuthenticateOutput struct {
 
 func (userInfo *UserAuthenticateInput) Model() (*models.User, error) {
 	query := `
-		SELECT *
+		SELECT DISTINCT *
 		FROM "user"
-		WHERE
-		email = $1
-		OR screen_name = $2
-		`
+		WHERE (email = $1 AND email != '')
+		OR (screen_name = $2 AND screen_name != '')
+		OR api_key = $3` // TODO: fix client-side auth so we don't have this hack
 
-	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name)
+	list, err := Dbm.Select(&models.User{}, query, userInfo.Email, userInfo.Screen_name,
+		userInfo.Api_key) // TODO: fix client-side auth so we don't have this hack
 	if llen := len(list); llen != 1 {
 		return nil, &types.DatabaseError{fmt.Sprintf("Got %d users instead of 1", llen)}
 	}
@@ -224,7 +234,14 @@ func (c *Users) Authenticate() revel.Result {
 
 	user, err := authInfo.Model()
 	if err != nil {
+		c.Response.Status = 401
 		return c.RenderError(err)
+	}
+
+	out := UserAuthenticateOutput{user.Id, user.Api_key}
+
+	if authInfo.Api_key == user.Api_key { // TODO: fix client-side auth so we don't have this hack
+		return c.RenderJson(out)
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(authInfo.Password))
@@ -233,8 +250,6 @@ func (c *Users) Authenticate() revel.Result {
 		c.Response.Status = 401
 		return c.RenderText("")
 	}
-
-	out := UserAuthenticateOutput{user.Id, user.Api_key}
 
 	return c.RenderJson(out)
 }

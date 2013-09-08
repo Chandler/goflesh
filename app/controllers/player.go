@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
-	"time"
+)
+
+var (
+	errJson map[string]string
 )
 
 type Players struct {
@@ -16,6 +18,7 @@ type Players struct {
 type PlayerRead struct {
 	models.Player
 	StatusString string `json:"status"`
+	HumanCode    string `json:"human_code,omitempty"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
@@ -23,34 +26,47 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	    SELECT p.*
 	    FROM player p
     ` + where
-	name := "players"
 	type readObjectType PlayerRead
+
+	c.Auth()
 
 	results, err := Dbm.Select(&readObjectType{}, query, args...)
 	if err != nil {
 		return c.RenderError(err)
 	}
-	readObjects := make([]*readObjectType, len(results))
+	user_ids := make([]int, len(results))
+	players := make([]*readObjectType, len(results))
 	for i, result := range results {
 		readObject := result.(*readObjectType)
 		readObject.StatusString = readObject.Status()
+		if c.User != nil && c.User.Id == readObject.Player.User_id {
+			human_code := readObject.Player.HumanCode()
+			readObject.HumanCode = human_code.Code
+		}
+		user_ids[i] = readObject.Player.User_id
 		if err != nil {
 			return c.RenderJson(err)
 		}
-		readObjects[i] = readObject
+		players[i] = readObject
+	}
+
+	templateStr := IntArrayToString(user_ids)
+	users, err := FetchUsers(c.User, "WHERE u.id = ANY('{"+templateStr+"}')")
+	if err != nil {
+		return c.RenderJson(err)
 	}
 
 	out := make(map[string]interface{})
-	out[name] = readObjects
+	out["players"] = players
+	out["users"] = users
 
 	return c.RenderJson(out)
 }
 
-func (c *Players) ReadList(ids []int) revel.Result {
-	// TODO: when revel is fixed, support getting by game id (game_id *int)
-	// if game_id != nil {
-	// 	return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", *game_id)
-	// }
+func (c *Players) ReadList(game_id int, ids []int) revel.Result {
+	if game_id != 0 {
+		return c.ReadPlayer("INNER JOIN game g ON p.game_id = g.id WHERE g.id = $1", game_id)
+	}
 	if len(ids) == 0 {
 		return c.ReadPlayer("")
 	}
@@ -61,15 +77,12 @@ func (c *Players) ReadList(ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	return c.ReadPlayer("WHERE u.id = $1", id)
+	return c.ReadPlayer("WHERE p.id = $1", id)
 }
 
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Create() revel.Result {
-	if result := c.DevOnly(); result != nil {
-		return *result
-	}
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		return c.RenderError(err)
@@ -97,17 +110,16 @@ func (c *Players) Create() revel.Result {
 		if err != nil {
 			return c.RenderError(err)
 		}
+		revel.WARN.Print("Member exists: ", result)
 		// if this user is not a member of an org, add them
-		if result == nil {
-			game, err := models.GameFromId(game_id)
-			if err != nil {
-				return c.RenderError(err)
-			}
-			member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
-			err = Dbm.Insert(&member)
-			if err != nil {
-				return c.RenderError(err)
-			}
+		game, err := models.GameFromId(game_id)
+		if err != nil {
+			return c.RenderError(err)
+		}
+		member := models.Member{0, user_id, game.Organization_id, models.TimeTrackedModel{}}
+		err = Dbm.Insert(&member)
+		if err != nil {
+			return c.RenderError(err)
 		}
 	}
 
@@ -125,11 +137,17 @@ func (c *Players) Create() revel.Result {
 		human_code.GenerateCode()
 		err = Dbm.Insert(&human_code)
 		if err != nil {
-			revel.WARN.Print(err, human_code)
+			return c.RenderError(err)
+		}
+		err = models.CreateJoinedGameEvent(playerInterface.(*models.Player))
+		if err != nil {
 			return c.RenderError(err)
 		}
 	}
-	return c.RenderJson(interfaces)
+
+	out := make(map[string]interface{})
+	out[keyName] = interfaces
+	return c.RenderJson(out)
 }
 func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	query := `
@@ -142,53 +160,4 @@ func MemberExists(user_id int, game_id int) (*models.Member, error) {
 	_, err := Dbm.Select(member, query, user_id, game_id)
 
 	return &member, err
-}
-
-func (c *Players) Tag(code string) revel.Result {
-	query := `
-		SELECT *
-		FROM human_code
-		WHERE code = $1
-	`
-	err := c.Auth()
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	var list []*models.HumanCode
-	_, err = Dbm.Select(&list, query, code)
-	if err != nil {
-		return c.RenderError(err)
-	}
-	if len(list) != 1 {
-		return c.RenderError(errors.New("Invalid human code"))
-	}
-	human_code := list[0]
-	player, err := Dbm.Get(models.Player{}, human_code.Id)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	revel.WARN.Print(human_code)
-	human := player.(*models.Player)
-	revel.WARN.Print(human)
-
-	gameObj, err := Dbm.Get(models.Game{}, human.Game_id)
-	if err != nil {
-		return c.RenderError(err)
-	}
-	game := gameObj.(*models.Game)
-
-	tagger, err := models.PlayerFromUserIdGameId(c.User.Id, human.Game_id)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	now := time.Now()
-	_, err = models.NewTag(game, tagger, human, &now)
-	if err != nil {
-		return c.RenderError(err)
-	}
-
-	return c.Read(human.Id)
 }

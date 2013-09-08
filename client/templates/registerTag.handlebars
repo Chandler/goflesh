@@ -1,11 +1,7 @@
-<div class="span2 register-kill-module">
-  Register Kill!
-  <div class="field">
-  {{view Ember.TextField
-    type="text"
-    placeholder="code"
-    valueBinding="code"
-  }}
-  </div>
-  <div class="btn btn-large btn-block signup-btn" {{action "registerTag"}}> Register Kill </div>
-</div>
+    <button class="btn btn-tag btn-large pull-right" {{action "registerTag"}}>TAG</button>
+   {{view Ember.TextField
+      type="text"
+      placeholder="Human Code"
+      valueBinding="code"
+      class="tag-input pull-right"
+    }} 

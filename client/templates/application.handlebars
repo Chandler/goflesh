@@ -6,32 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Sansita One:400,700&text=fleshRegisterNow" media="screen" rel="stylesheet" type="text/css" />
 
-    <title>orgs</title>
+    <title>Flesh</title>
   </head>
   
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid fall-background">
       <div class="container-fluid">
         <div>
           <div class="navbar">
-            <div class="navbar-inner">
+            <div class="navbar-inner transparent-cover-nav">
               {{#linkTo 'discovery' class="brand"}} flesh {{/linkTo}}
               {{#if App.Auth.signedIn}}
               <div class="btn btn-primary nav-button btn-large pull-right" {{action "signOut"}}><i class="icon icon-signout"></i></div>
               <ul class="nav pull-right nav-link">
+                {{#if currentUser.game}}
+                  <li>
+                    {{#linkTo 'game.home' }} Game <i class="icon icon-globe"></i>{{/linkTo}}
+                  </li>
+                {{/if}}
+                {{#if currentUser.organization}}
+                  <li>
+                    {{#linkTo 'organization.home' currentUser.organization}} Organization <i class="icon icon-sitemap"></i>{{/linkTo}}
+                  </li>
+                {{/if}}
                 <li>
                   {{#linkTo 'user.home' currentUser }} Profile <i class="icon icon-user"></i>{{/linkTo}}
-                </li>
-                <li>
-                  {{#linkTo 'discovery' }} Game <i class="icon icon-globe"></i>{{/linkTo}}
-                </li>
-                <li>
-                  {{#linkTo 'discovery' }} Organization <i class="icon icon-sitemap"></i>{{/linkTo}}
                 </li>
               </ul>                 
               {{else}}
                 {{#linkTo 'login' class="btn nav-button btn-large pull-right sign-in"}} Sign in  {{/linkTo}}
-                {{#linkTo 'users.new' class="btn nav-button btn-large pull-right sign-up"}} Sign up  {{/linkTo}}
               {{/if}}
             </div>
           </div>

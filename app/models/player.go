@@ -22,8 +22,22 @@ func (p *Player) HumanCode() *HumanCode {
 	return human.(*HumanCode)
 }
 
+func (p *Player) User() *User {
+	user, err := UserFromId(p.User_id)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
 func PlayerFromId(id int) (*Player, error) {
 	player, err := Dbm.Get(Player{}, id)
+	if err != nil {
+		return nil, err
+	}
+	if player == nil {
+		return nil, errors.New("Player could not be found")
+	}
 	return player.(*Player), err
 }
 
@@ -74,7 +88,9 @@ func (p *Player) Status() string {
 		return "human"
 	}
 
-	mustHaveFedBy := time.Now().Add(-p.Game().TimeToStarve())
+	// TODO: support custom TimeToStarve without looking up game objects in DB
+	// mustHaveFedBy := time.Now().Add(-p.Game().TimeToStarve())
+	mustHaveFedBy := time.Now().Add(-new(Game).TimeToStarve())
 
 	if p.Last_fed.Before(mustHaveFedBy) {
 		return "starved"

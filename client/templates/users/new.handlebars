@@ -1,10 +1,10 @@
-<div  id="new-org" class="simple-page">
+<div class="simple-page">
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
   <div class="page-heading"><h1>Create an account!</h1></div>
   <div class="row-fluid">
-    <span class="span12">
+    <span class="span12 full-height">
       <div class="form-fields">
         <div class="first_name">
           {{view Ember.TextField
@@ -39,6 +39,13 @@
             type="password"
             placeholder="password"
             valueBinding="password"
+          }}
+        </div>
+         <div>
+          {{view Ember.TextField
+            type="text"
+            placeholder="optional phone number"
+            valueBinding="phone"
           }}
         </div>
         <div class="btn btn-large btn-block signup-btn" {{action "save"}}> Sign Up! </div>
