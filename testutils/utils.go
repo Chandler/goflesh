@@ -45,39 +45,39 @@ func GenerateTestData() {
 	isDev := revel.Config.BoolDefault("mode.dev", false)
 	if isDev {
 		revel.INFO.Print("Inserting random Organizations")
-		for i := 0; i < 20; i++ {
+		for i := 0; i < 2; i++ {
 			InsertTestOrganization()
 		}
 		revel.INFO.Print("Inserting random Users")
-		for i := 0; i < 400; i++ {
+		for i := 0; i < 200; i++ {
 			InsertTestUser()
 		}
 		revel.INFO.Print("Inserting random Members")
-		for i := 0; i < 40; i++ {
+		for i := 0; i < 100; i++ {
 			InsertTestMember()
 		}
 		revel.INFO.Print("Inserting random Games")
-		for i := 0; i < 40; i++ {
+		for i := 0; i < 2; i++ {
 			InsertTestGame()
 		}
 		revel.INFO.Print("Inserting random Players")
-		for i := 0; i < 800; i++ {
+		for i := 0; i < 50; i++ {
 			InsertTestPlayer()
 		}
 		revel.INFO.Print("Inserting random OZ Candidates")
-		for i := 0; i < 160; i++ {
+		for i := 0; i < 5; i++ {
 			InsertTestOzPool()
 		}
 		revel.INFO.Print("Inserting random OZs")
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 5; i++ {
 			InsertTestOz()
 		}
 		revel.INFO.Print("Confirming random OZs")
-		for i := 0; i < 80; i++ {
+		for i := 0; i < 1; i++ {
 			ConfirmRandomOz()
 		}
 		revel.INFO.Print("Simulating tags by OZs")
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 5; i++ {
 			TagByRandomOzs()
 		}
 	}
@@ -175,12 +175,9 @@ func InsertTestUser() *models.User {
 	screen_name_long := first_name + sep + last_name
 	screen_name := screen_name_long[:int(math.Min(20, float64(len(screen_name_long))))]
 	email := screen_name + "@gmail.com"
-	now := time.Now()
-	user := &models.User{0, email, first_name, last_name, screen_name, "", "", nil, models.TimeTrackedModel{&now, &now}}
-	user.ChangePassword("password")
-	err := controllers.Dbm.Insert(user)
+	user, statusCode, err := models.NewUser(email, first_name, last_name, screen_name, "", "password")
 	if err != nil {
-		revel.WARN.Print(err)
+		revel.WARN.Print(statusCode, err)
 	}
 	return user
 }
@@ -188,7 +185,7 @@ func InsertTestUser() *models.User {
 func InsertTestOrganization() *models.Organization {
 	name := GenerateName().(string)
 	slug := strings.Replace(name, " ", "_", -1)
-	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", models.TimeTrackedModel{}}
+	org := &models.Organization{0, name + " university", slug, GenerateWord().(string), "US/Pacific", "A testing organization", models.TimeTrackedModel{}}
 	err := controllers.Dbm.Insert(org)
 	if err != nil {
 		revel.WARN.Print(err)
@@ -214,6 +211,7 @@ func InsertTestGame() *models.Game {
 		&oneDayHence,
 		&oneDayAgo,
 		&twoDaysHence,
+		"A testing game",
 		models.TimeTrackedModel{},
 	}
 	err := controllers.Dbm.Insert(game)
@@ -234,6 +232,10 @@ func InsertTestPlayer() *models.Player {
 	human_code := models.HumanCode{player.Id, "", models.TimeTrackedModel{}}
 	human_code.GenerateCode()
 	err = controllers.Dbm.Insert(&human_code)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+	err = models.CreateJoinedGameEvent(player)
 	if err != nil {
 		revel.WARN.Print(err)
 	}
@@ -400,7 +402,7 @@ func TagByRandomOzs() {
 	}
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	_, err := models.NewTag(game, oz_player, human, &now)
+	_, _, err := models.NewTag(game, oz_player, human, &now)
 	if err != nil {
 		revel.WARN.Print(err)
 	}

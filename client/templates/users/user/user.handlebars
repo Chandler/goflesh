@@ -1,36 +1,30 @@
-<form id="test_form">
-  <input type="file" id="avatar">
-  <button>Upload</button>
-</form>
-
-
-<div class="simple-page">
+<div class="simple-page full-height">
   <div class="row-fluid">
-    <span class="span4">
+    <span class="span4 pad-span">
       <div class="side-profile">
-        <div class="btn btn-large btn-block  row signup-btn" {{action "upload" target="view"}}>upload</div>
-
-        {{avatar2 this size="profile" class="profile_image pull-center"}}
+          {{avatar2 avatar size="large" class="profile_image pull-center"}}
         <div class="page-heading">
-        {{player}}
-            <h1>{{first_name}} {{last_name}}'s Profile</h1>
-            <hr>
+          {{player}}
+          <h1><div class="profile-heading">{{first_name}}  {{last_name}}</div>
+            <div class="profile-sub-heading">
+              <small>{{screen_name}}</small>
+              {{#if userIsCurrentUser}}
+                <div>{{#linkTo 'user.settings' this classNames="btn btn-large edit-profile-btn"}}Edit Profile
+                {{/linkTo}}</div>
+              {{/if}}
+            </div>
+          </h1>
+          <hr>  
         </div>
       </div>
     </span>
-
-    <div class="profile-options">
-      <div>
-        {{#linkTo 'user.home' this classNames="profile-option-tab profile-home"}} 
-        <i class="icon-home icon-2x"></i>{{/linkTo}}
-      </div>
-      <div>
-        {{#linkTo 'user.settings' this classNames="profile-option-tab profile-home"}}
-        <i class="icon-cog icon-2x"></i>{{/linkTo}}
-      </div>
-    </div>
-    <span class="span5 profile-content-column">
+    <span class="span8">
       {{outlet}}
     </span>
   </div>
 </div>
+<!-- This is a hidden form needed by the avatar.io javascript library -->
+<form class="hidden_form hover">
+  <input type="file" id="avatar">
+</form>
+

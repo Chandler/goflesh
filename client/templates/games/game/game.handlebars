@@ -1,14 +1,59 @@
-<div>
-  <div class="top">
+{{!--   <div class="top">
+    {{myMethod}}
     {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-left"}} {{/linkTo}}
-    <div class="wrap">
+    <div class="banner-heading">
       <h1>{{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}</h1>
-      <h2>{{name}} Game</h2>
-    </div>
-    <div class="right-banner-nav">
-      <div> {{#linkTo 'game.home' }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
-      <div> {{#linkTo 'game.settings' }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
-    </div>
+      <h2>{{name}}</h2>
+      <div class="remaining"> 3 days remain...</div>
+
+    </div> --}}
+<!--{{!-- TODO: unhide settings when moderators are implemented
+    <-div class="right-banner-nav">
+      <div> {{!#linkTo 'game.home' }} <i class="icon-home icon-2x"></i>{{/linkTo}} </div>
+      <div> {{!#linkTo 'game.settings' }} <i class="icon-cog icon-2x"></i>{{/linkTo}} </div>
+    </div> --}}-->
+{{!--   </div>
+  {{outlet}} --}}
+
+<div class="simple-page full-height">
+  <div class="row-fluid">
+    <span class="span4 pad-span">
+      <div class="side-profile">
+      {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-center"}} {{/linkTo}}
+        <div class="page-heading">
+          <h1><div class="profile-heading">{{name}}<div></h1>
+            <div class="profile-sub-heading">
+              {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
+              <div>
+                {{#if App.Auth.signedIn}}
+                  {{#if currentPlayer}}
+                    <button class="btn disabled btn-large gamepage-join-btn">Joined</button>
+                  {{else}}
+                    <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
+                  {{/if}}
+                {{else}}
+                  {{!-- {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Signin to join game {{/linkTo}} --}}
+                {{/if}}
+              </div>
+            </div>
+          <hr>
+          <div class="grids">
+            <div class="avatar-grid">
+            {{#linkTo "game.players"}} See All {{/linkTo}}
+              <h3 class="list-view">{{players.length}} Players</h3> 
+              {{#each players}}
+                <div class="grid-pic"> 
+                  {{#linkTo 'user.home' user}} {{avatar2 user.avatar size="small"}} {{/linkTo}}                  
+                </div>
+              {{/each}}
+            </div>
+          </div>  
+        </div> 
+      </div>
+    </span>
+    <span class="span8">
+      {{outlet}}
+    </span>
   </div>
-  {{outlet}}
 </div>
+

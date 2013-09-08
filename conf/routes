@@ -5,7 +5,10 @@ module:testrunner
 
 GET		/												Application.Index
 
-POST	/api/tag/:code									Players.Tag
+POST	/api/tag/:code									Tags.Tag
+
+POST  /api/sms                          Sms.Index
+
 
 GET		/api/organizations								Organizations.ReadList
 GET		/api/organizations/:id/							Organizations.Read
@@ -32,12 +35,15 @@ POST	/api/users/authenticate							Users.Authenticate
 POST	/api/password_reset						Users.SendPasswordReset
 GET		/api/password_resets					Users.PasswordReset
 
+GET		/api/ozs/create_test_oz/:player_id				Oz.CreateTestOz
 GET		/api/players/oz_pool							OzPools.ReadList
 GET		/api/players/:id/oz_pool						OzPools.Read
 DELETE	/api/players/:id/oz_pool						OzPools.Delete
 GET		/api/players									Players.ReadList
 GET		/api/players/:id								Players.Read
 POST	/api/players									Players.Create
+
+GET		/api/events										Events.ReadAllEvents
 
 GET		/favicon.ico									Static.Serve("public/img/favicon.png")
 

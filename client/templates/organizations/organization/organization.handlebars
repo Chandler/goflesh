@@ -1,39 +1,48 @@
-<div class="simple-page">
+<div class="simple-page full-height">
   <div class="row-fluid">
-    <span class="span4">
+    <span class="span4 pad-span">
       <div class="side-profile">
         {{avatar profile class="profile_image pull-center"}}
         <div class="page-heading">
-          <h1>
+          <h1><div class="profile-heading">
             {{name}}
+          </div>
+            <div class="profile-sub-heading">
             <small>
-              <br>{{location}}
+              {{location}}
             </small>
-          </h1> 
-          <hr>
-          <h3>{{users.length}} Members</h3>
-            <div class="avatar-grid">
-            {{#each users}}
-              <div class="grid-pic"> 
-                {{avatar tiny}}
-              </div>
-            {{/each}}
-  
             </div>
+          </h1>
+          <div class="description">
+            {{{description}}}
+          </div> 
+          <hr>
+          <div class="grids">
+            <div class="avatar-grid">
+              <h3>{{users.length}} Members</h3>
+              {{#each users}}
+                <div class="grid-pic"> 
+                  {{#linkTo 'user.home' this}} {{avatar2 avatar size="small"}} {{/linkTo}}
+                </div>
+              {{/each}}
+            </div>
+          </div> 
         </div>
       </div>
     </span>
-    <div class="profile-options">
-      <div>
-        {{#linkTo 'organization.home' this classNames="profile-option-tab profile-home"}} 
-        <i class="icon-home icon-2x"></i>{{/linkTo}}
-      </div>
-      <div>
-        {{#linkTo 'organization.settings' this classNames="profile-option-tab profile-home"}}
-        <i class="icon-cog icon-2x"></i>{{/linkTo}}
-      </div>
-    </div>
-    <span class="span8 profile-content-column">
+    <!-- {{!-- TODO: unhide settings when moderators are implemented
+      <div class="profile-options">
+        <div>
+          {{#linkTo 'organization.home' this classNames="profile-option-tab profile-home"}} 
+          <i class="icon-home icon-2x"></i>{{/linkTo}}
+        </div>
+        <div>
+          {{#linkTo 'organization.settings' this classNames="profile-option-tab profile-home"}}
+          <i class="icon-cog icon-2x"></i>{{/linkTo}}
+        </div>
+      </div> 
+    --}}-->
+    <span class="span8">
       {{outlet}}
     </span>
   </div>

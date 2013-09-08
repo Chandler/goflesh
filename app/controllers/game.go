@@ -54,10 +54,10 @@ func (c *Games) ReadGame(where string, args ...interface{}) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Games) ReadList(ids []int) revel.Result {
-	if result := c.DevOnly(); result != nil {
-		return *result
-	}
 	if len(ids) == 0 {
+		if result := c.DevOnly(); result != nil {
+			return *result
+		}
 		return c.ReadGame("")
 	}
 	templateStr := IntArrayToString(ids)

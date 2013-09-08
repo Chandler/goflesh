@@ -1,163 +1,370 @@
-primary_theme = rgb(20, 146, 245)
-secondary_theme = rgb(72, 66, 73)
-navy_blue = rgb(29, 74, 131)
-sea_green = rgb(53, 175, 112)
-small_signup_field_width = 225px
-large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
+body
+  padding-left: 0
+  padding-right: 0
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+  font-size: 21px
+  font-weight: 300
 
-#application
-  height: 100%
-  background-color: secondary_theme
-  // background-image: url('images/blur.jpg')
-  background-repeat: repeat
-  background-position: top
-  background-size: 100%
-  display: block
-  .navbar
-    margin-bottom: 0
-  .navbar-inner
-    height: 75px
-    background-color: primary_theme
-    border-radius: 0px 0px 0px 0px
-    margin-bottom: -75px
-    padding-left: 100px
-    .nav-button
-      margin-top: 30px
-      margin-right: 10px
-    .right-nav
-      float: right
+ .container-fluid 
+   padding: 0px
+ 
+ .container-fluid .container-fluid div .navbar 
+   margin: 0px
+   height: 60px
+ 
+ .container-fluid .container-fluid div .navbar .navbar-inner 
+   /*background: rgba(255, 255, 255, 0.960784)*/
+   border: none
+   border-radius: 0px
+   height: 60px
+   padding-left: 20px
+   padding-right: 20px
+ 
+ .navbar .brand 
+   margin: 0px 0px 0px -15px
+   text-shadow: none
+   font-family:"sansita one"
+   font-weight: bold
+   font-size: 30px
+   /*color: #333333*/
+   line-height: 40px
+ 
+ .nav-button 
+   margin-left: 5px
+   -moz-box-shadow: none
+   -webkit-box-shadow: none
+   -o-box-shadow: none
+   box-shadow: none
+   text-shadow: none
+   border-radius: 0px
+   border: none
+   color: #ffffff
+   background: #f4645f
+/*   border-radius: 7px
+   box-shadow: 0px 2px 1px 0px rgba(34,34,34,0.15),inset 0px -2px 0px 0px #7E4920*/
+ 
+.navbar .nav.pull-right 
+   margin-right: 300px
+   margin-top: 8px
 
-.main
-  margin: 200px
+.nav-button .icon.icon-signin 
+   margin: 5px 0px 4px
+ 
+.container-fluid .container-fluid.inner-discovery 
+   background: rgba(0, 0, 0, 0) url(../img/UIadmin_vignette.jpg) no-repeat 0px 0px
+   background-position: center top
+   background-size: cover
+   -moz-background-size: cover
+   -webkit-background-size: cover
+   -o-background-size: cover
+   width: 100%
+   height: 100%
+   display: table
+ 
+.page-heading
+   margin-top: 20px
+   text-align: center
+   padding-bottom: 5px
+
+.profile-heading
+  line-height: 45px 
+  font-size: 45px
+  font-weight: 100
+
+.profile-side-heading h2
+  font-size: 40px
+  font-weight: 100
+ 
+.side-profile 
+  border-right: 2px solid rgba(243, 243, 243, 0.5)
+  padding-top: 20px
+ 
+.profile_image 
+   border-radius: 100px
+   height: 100px
+   width: 100px
+   display: block
+   margin-left: auto
+   margin-right: auto
+
+ .human-border 
+   border: 5px
+   border-color: #6666ff
+   border-style: solid
+ 
+
+ .zombie-border 
+   border: 5px
+   border-color: #f5cc5f
+   border-style: solid
+ 
+
+ .avatar 
+   border-radius: 100px
+ 
+
+ .list-view 
+   text-align: center
+ 
+ .profile-sub-heading 
+   padding: 5px
+   color: #999999
+   font-weight: 100
+   font-size: 28px
+   font-style: italic
+
+.profile-sub-heading small
+  font-weight: 100
+  font-style: italic
+  color: #666
+ 
+.form-fields 
+   width: 200px
+   display: block
+   margin: 25px auto
+
+.discovery-page-header h1
+   color: #ffffff
+   font-weight: 100
+   font-size: 50px
+   line-height: 50px
+
+.discovery-page-header 
+h1 small,
+h2 small,
+h3 small,
+h4 small 
+   color: #ffffff
+   // font-style: italic
+
+.discovery-search
+   float: none 
+   margin: 20 auto 0 auto
+   // margin-top: 20px
+   // margin-left: auto
+   // margin-right: auto
+   // margin-bottom: 0px
+   width: 400px
+
+.discovery-search input 
+   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+   font-size: 20px
+   line-height: 30px
+   border-radius: 0px
+   border: none
+   background: #6c6c6c
+   padding: 15px 20px 15px 20px
+   width: 400px
+   height: 50px
+   display: block
+   float: left
+   margin-bottom: 0px
+ 
+ .discovery-search .btn-success 
+   background: #29a6be
+   -moz-box-shadow: none
+   -webkit-box-shadow: none
+   -o-box-shadow: none
+   box-shadow: none
+   text-shadow: none
+   border-radius: 0px
+   border: none
+   font-family:"helvetica"
+   font-weight: bold
+   font-size: 20px
+   line-height: 30px
+   padding: 10px 20px 10px 20px
+   display: inline-block
+   width: 50px
+   margin: 0px
+ 
+.textinput-button 
+   display: inline
+   float: left
+
+.textinput
+   display: inline
+   float: left
+
+.btn-success
+   /*margin: 0px 0px 0px 0px*/
+   padding: 10px 20px 10px 20px
+   -moz-box-shadow: none
+   -webkit-box-shadow: none
+   -o-box-shadow: none
+   box-shadow: none
+   text-shadow: none
+   border-radius: 0px
+   border: none
+   background: #29a6be
+
+@media (max-width: 635px)
+   .discovery-page-header
+      margin: 20px 0px 0px 0px
+      font-size: 20px
+   
+   
+
+@media (max-width: 768px)
+   .discovery-search
+      float: none 
+   
+   .discovery-search input.textinput 
+      font-size: 20px
+      line-height: 30px
+      border-radius: 0px
+      border: none
+      background: #6c6c6c
+      padding: 15px 20px 15px 20px
+      width: 210px
+   
+
+ @media (max-width: 568px )
+   .navbar .brand
+      font-size: 20px
+   
+ 
+ @media (max-width: 340px)
+    .discovery-search
+      float: none 
+      width: 240px
+   
+   .discovery-search input.textinput 
+      font-size: 20px
+      line-height: 30px
+      border-radius: 0px
+      border: none
+      background: #6c6c6c
+      padding: 15px 20px 15px 20px
+      width: 125px
+   
+ 
+
+ #discovery .org-search-item 
+   color: #6c6c6c
+   padding: 2 0 2 0
+   width: 400px
+   margin-right: auto
+   margin-left: auto
+   display: block
+   clear: both
+   text-decoration: none
+
+ #discovery .org-search-item:hover
+    background-color: rgba(80, 70, 70, 0.7)
+ 
+
+ .org-image 
+   display: inline-block
+   padding: 5px
+
+ .org-data 
+   display: inline-block
+   vertical-align: middle
+
+ .org-search-item a:hover
+   color: #6c6c6c
+   text-decoration: none
+
+ .org-text
+  color: #cccccc
+
+ .org-properties
+  color: #fff
+  font-size: 15px
+ 
+
+
+.profile-option-tab 
+   float: right
+   padding-top: 7px
+
+
+/*.profile-option-tab.profile-settings 
+   background: url(../img/glyphicons/glyphicons_137_cogwheels@2x.png) no-repeat
+   background-position: top left
+
+
+.profile-option-tab.profile-game 
+   background: url(../img/glyphicons/glyphicons_278_birthday_cake@2x.png) no-repeat
+   background-position: top left
+
+.profile-option-tab.profile-activity 
+   background: url(../img/glyphicons/glyphicons_157_show_thumbnails_with_lines@2x.png) no-repeat
+   background-position: top left
+
+.profile-option-tab.profile-home 
+   background: url(../img/glyphicons/glyphicons_278_birthday_cake@2x.png) no-repeat
+   background-position: top left
+*/
+
+.games 
+   clear: both
+
+
+.span5.profile-content-column 
+   margin-left: 0
+
+
+.gameitem 
+   margin-top: 25px
+/*   background-color:  rgb(52, 43, 70)
+*/   width: 600px
+   height: 150px
+   -webkit-filter: drop-shadow(0 2px 2px hsla(0,0%,100%,.75))
+                  drop-shadow(0 -2px 2px hsla(0,0%,0%,.5))
+
+
+.closed 
+   background: rgba(0, 0, 0, 0) url(../img/closed.jpg) no-repeat 0px 0px
+
+
+.gameitem .major-title 
+   font-size: 25
+   color: #fff
+
+
+.gameitem .register-button 
+   padding-top: 15px
+   vertical-align: middle 
+   text-align: center 
+   font-family:"sansita one"
+   font-weight: 300
+   font-size: 20px
+   height: 30px
+   margin-top: 70px
+   margin-left: 30px
+   width: 200px
+   background-color: rgb(138, 121, 170)
+   border-radius: 10px
+
+
+
+
+ 
 
 .simple-page
-  color: white;
-  margin-top: 85px
-  margin-left: 200px
-  min-height: 300px
-  .alert
-    top: 85px
-    left: 180px
-    width: 450px
-    position: absolute
-    height: 25px
-    text-align: center
-#org
+  padding-bottom: 20px
 
-#new-org
-  margin-top: 150px
-  .row
-    clear: both
-  .fields
-    float: left
-    // margin-top: 200px
-    // margin-left: 200px
-  .field
-    float: left
-  input
-    width: large_signup_field_width
-    height: 50px
-    font-size: 22px
-    line-height: 25px
-  textarea
-    width: large_signup_field_width
-    height: 100px
-  .signup-btn
-    width: large_signup_field_width
+.pad-span
+  padding-bottom: 20px
 
-#signup  
-  .row
-    clear: both
-  .fields
-    float: left
-    // margin-top: 200px
-    // margin-left: 200px
-  input
-    width: large_signup_field_width
-    height: 50px
-    font-size: 22px
-    line-height: 25px
-  textarea
-    width: large_signup_field_width
-    height: 100px
-  .fname, .lname
-    input
-      width: small_signup_field_width
-      margin-left: auto
-      margin-right: auto
-      display: block
-      margin-right: 15px
-  .email, .password, .screenname
-    input
-      width: large_signup_field_width
-  .signup-btn
-    width: large_signup_field_width
+hr 
+  display: block 
+  height: 2px
+  border: 0 
+  border-top: 2px solid rgba(243, 243, 243, 0.5)
+  margin: 1em 0 
+  padding: 0 
 
+.nav-button
+  margin-left: 5px
 
-
-#discovery
-  padding-top: 150px
-  .content-well
-    border-radius: 8px 8px 6px 6px
-    padding-top: 30px
-    background-color: primary_theme
-  .top-orgs
-    height: 500px
-  .org-search
-    min-height: 200px
-    .search-box
-      input
-        height: 50px
-        width: 400px
-        margin-left: auto
-        margin-right: auto
-        display: block
-      .org-search-icon
-        float: right
-        position: relative
-        right: 60px
-        top: -42px
-  .org-search-item
-    color: #fff
-    padding: 2px
-    background-color: sea_green
-    width: 450px
-    margin-bottom: 5px
-    margin-right: auto
-    margin-left: auto
-    display: block
-    clear: both
-    .org-name
-      color: rgb(13, 4, 116)
-    .btn
-     float: right
-    img
-      border-radius: 8px 8px 6px 6px
-      float: left
-      height: 50px
-      width: 50px
-      margin-right: 10px
-    .clearfix
-      clear: both
-
-
-#footer
-  float: left
-  bottom:0
-  width:100%
-  background-color: primary_theme
-  height: 150px
-  margin-top: -150px
-  .footer-item
-    margin-left: 30px
-    margin-top: 20px
-    a
-      color: #fff
-      font-size: 25px
-
-
-/* Chandler land */
-
+/* file upload */
+.file_upload
+  cursor: pointer
+.hidden_form
+  visibility: hidden
 /* misc */
 
 .avatar-grid
@@ -165,10 +372,11 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
   width: auto
   margin-left: 30px
   margin-right: 30px
-  float: left
+  // float: left
+
 .avatar
-  border-radius: 4px;
-  box-shadow: 0 0 3px 1px #2b95ca;
+  // border-radius: 4px
+  // box-shadow: 0 0 3px 0.1px #2b95ca
 
 .grid-pic
   margin: 5px
@@ -177,30 +385,32 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
 
 /* Lists */
 .game-page-list-container
-  border: 1px solid #dce7ee
-  background-color: #FCFCFC
+  // border: 1px solid #dce7ee
+  // background-color: #FCFCFC
   overflow-x: hidden
   overflow-y: hidden
-  width: 600px
-  height: (1400-15)px /*hack to remove scroll bar */
+  // width: 600px
+  // height: (1400-15)px /*hack to remove scroll bar */
+  // height: 400px
 .list-header
   box-sizing: border-box
   width: 100%
   padding: 10px 18px
   line-height: 20px
-  border-bottom: 1px solid #bfcdd7
   font-family: proxima-nova,sans-serif
   font-size: 15px
-  color: #747d92
-  text-shadow: 0 1px #fff
-  background-color: #f3f4f6
+  color: #333333
+  font-weight: 200px
+  // text-shadow: 0 1px #fff
+  // background-color: #fff
   .list-title
     margin-right: 20px
     text-transform: uppercase
   .selected
     padding: 5px
-    border-radius: 4px;
-    box-shadow: 0 0 3px 1px #2b95ca;
+    // border-radius: 4px
+    // box-shadow: 0 0 3px 0.1px #2b95ca
+    background-color: #2fe2bf
   .not-selected
     padding: 6px
     cursor: pointer
@@ -208,13 +418,13 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
   margin-right: -15px
 .event-feed-row
   height: 50px
-  width: 600px
+  // width: 600px
   line-height: 25px
   font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif
-  font-size: 13px
+  font-size: 15px
   padding: 14px 18px
-  border-top: 1px solid #dce7ee
-  background-color: #fff
+  // border-top: 1px solid #dce7ee
+  // background-color: #fff
   float: left
   display: block
   .event-feed-cell
@@ -226,20 +436,47 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
   .event-color
     width: 18px
     height: 10px
-    background-color: #3E90D1
     margin-right: 15px
     border-radius: 4px;
+
+  .tag
+    background-color: #3E90D1 
+
+  .joined
+
+    background-color: #D13E85
   .event-description
-    font-weight:bold;
+    font-weight:bold
 
 /* user/org home */
+.description 
+  font-size: 17px
+  padding: 5px
 .profile-home
   margin-left: 2px
+
+.game-badge
+  position: relative
+  height: 50px
+  background-color: #F7F7F7
+  padding-top: 17px
+  border-radius: 5px
+  span
+   margin-left: 6px
+   bottom: 0
+   left: 0
+   padding-left: 10px
+   padding-bottom: 10px
+
+
 
 
 /*game page */
 
 .game-home
+  margin-top: 20px
+  margin-left: 20px
+  margin-right: 20px
   .info-module
     height: 250px
     float: left
@@ -250,40 +487,18 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
     height: 500px
 
   .player-list-module 
+    display: block
+    margin-right: auto
+    margin-left: auto
     height: 500px
 
-  .register-kill-module
-    padding: 5px
-    height: 200px
-    float: right
-    background-color: #f4645f
-    margin: 5px
-    border: solid
-    border-size: 1px
-
-
-/* Game profile banner, obviously stolen */
-.top 
-  background:#bfcdd7;
-  color:#fff
-  a
-   color: #fff
-
-.top {height:40px;line-height:40px;padding:16px 0 90px;width:auto;white-space:nowrap;}
-.top h1,
-.top h2{display:inline-block;text-transform:uppercase;font-size:30px}
-.top h1{font-weight:200;}
-.top h1:after{content:"/";padding:0 10px}
-.top h2{font-weight:900;overflow:hidden;max-width:650px;-o-text-overflow:ellipsis;text-overflow:ellipsis}
-.top .profile_image
-  margin-top: -9;
-  margin-left: 10px
-  margin-right: 10px
-  border-radius: 130px;
-  height: 130px;
-  width: 130px;
-  display: block;
-
+  .register-tag-module
+    height: 143px
+    float: left
+    background-color: #E26B67
+    width: 100%
+    btn 
+     width: 200px
 
 .right-banner-nav
   float: right
@@ -295,4 +510,213 @@ large_signup_field_width = (small_signup_field_width * 2) + 15 //15 padding
   float: right
   margin-right: 20px
 
+.register-tag 
+  // margin-left: -30px
+  // margin: 30 auto auto 10
+  margin-top: 30px
+  display: block
+  margin-left: auto
+  margin-right: auto
+  width: 290px
+  // margin-left: 20px
 
+
+input.tag-input 
+  padding: 10px 6px 10px 6px
+  background: #bebebe
+  // font-family:"proxima-nova"
+  font-size: 25px
+  color: #ffffff
+  border-radius: 0px
+  line-height: 30px
+  border: 1px solid #bebebe
+  // width: 160px
+
+
+.btn-tag 
+  background: #f5cc5f
+  -moz-box-shadow: none
+  -webkit-box-shadow: none
+  -o-box-shadow: none
+  box-shadow: none
+  text-shadow: none
+  font-size: 20px
+  color: #424040
+  border-radius: 0px
+  border: none
+  // font-family:"proxima-nova"
+  font-weight: bold
+  height: 52px
+  width: 76px
+  margin-top: 0px
+
+.btn-tag:hover
+  background: #E5BE55
+  color: #424040
+
+.player-grid 
+  // width: 370px
+  padding-top: 50px
+
+.game-players-heading 
+  // margin-top: 100px
+  text-align: center
+  padding-bottom: 5px
+
+.game-list-name
+  font-weight: 200px
+  font-size: 35px
+  margin-bottom: 30px
+
+.game-info-text
+  font-size: 30
+  font-weight: bold
+  padding-bottom: 10px
+
+.game-list-row
+  display: block
+  margin-left: auto
+  margin-right: auto
+
+.game-list-item
+  display: block
+  margin-left: auto
+  margin-right: auto
+  margin-bottom: 50px
+
+
+.edit-profile-btn
+  font-style: italic
+  font-weight: 100
+  clear: left
+  display: inline-block
+  -moz-box-shadow: none
+  -webkit-box-shadow: none
+  -o-box-shadow: none
+  box-shadow: none
+  text-shadow: none
+  border-radius: 0px
+  border: none
+  color: #ffffff
+  background: #f4645f
+
+.gamepage-join-btn
+  font-style: italic
+  font-weight: 100
+  clear: left
+  display: inline-block
+  -moz-box-shadow: none
+  -webkit-box-shadow: none
+  -o-box-shadow: none
+  box-shadow: none
+  text-shadow: none
+  border-radius: 0px
+  border: none
+  color: #ffffff
+  background: #f4645f
+  margin-top: 20px
+
+.fall-background 
+  background: url("http://i.imgur.com/2tdFixI.jpg") no-repeat center center fixed 
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
+  // height: 100%
+
+.transparent-cover-nav
+  border-right: none
+  border-left: none
+  background: rgba(218, 218, 218, 0.6)
+  background-size: cover
+
+.transparent-cover
+  border-right: none
+  border-left: none
+  background: rgba(218, 218, 218, 0.4)
+  padding: 20px 20px 20px 20px
+  background-size: cover
+
+.discovery-transparent-cover
+  border-right: none
+  border-left: none
+  background: rgba(80, 66, 66, 0.6)
+  padding: 20px 20px 20px 20px
+  background-size: cover
+
+.game-stats 
+  margin-top: 20px
+  .transparent-cover
+    padding: 20px 10px 20px 10px
+
+.joined-button
+  margin-top: 20px
+
+.full-height
+  height: 100%
+
+.blur-cover
+  -webkit-filter: blur(8px)
+  -moz-filter: blur(8px)
+  -o-filter: blur(8px)
+  -ms-filter: blur(8px)
+  filter: blur(8px)
+  opacity: 0.4
+
+  .background 
+  background: url("http://i.imgur.com/2tdFixI.jpg") no-repeat center center fixed 
+    -webkit-background-size: cover
+    -moz-background-size: cover
+    -o-background-size: cover
+    background-size: cover
+    -webkit-filter: blur(10px)  
+    filter: blur(10px) 
+
+.centered-cell
+  display: table-cell
+  vertical-align: middle
+  text-align: center
+
+.human-code-text
+  display: inline
+  padding-top: 10px
+  padding-bottom: 10px
+  font-weight: 200
+  font-size: 25px
+  line-height: 35px
+
+.human-code
+  display: inline
+  font-size: 30px
+  font-weight: 400
+  color: #6666ff
+  line-height: 35px
+
+.status-text
+  display: inline
+  padding-top: 10px
+  padding-bottom: 10px
+  font-weight: 200
+  font-size: 25px
+  line-height: 35px
+
+.status-human
+  display: inline
+  font-size: 30px
+  font-weight: 400
+  color: #6666ff
+  line-height: 35px
+
+.status-zombie
+  display: inline
+  font-size: 30px
+  font-weight: 400
+  color: #f5cc5f
+  line-height: 35px
+
+.status-starved
+  display: inline
+  font-size: 30px
+  font-weight: 400
+  color: #FD3826
+  line-height: 35px

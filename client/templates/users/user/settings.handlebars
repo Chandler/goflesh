@@ -2,7 +2,7 @@
   {{#if errorMessages}}
     <div class="alert alert-error">{{errorMessages}}</div>
   {{/if}}
-  <div class="form-fields">
+  <div class="form-fields full-height">
     <div class="row first_name field">
       {{view Ember.TextField
         type="text"
@@ -20,8 +20,15 @@
      <div class="row field">
       {{view Ember.TextField
         type="text"
-        placeholder=email
+        placeholder="email (used for gravatar)"
         valueBinding="user.email"
+      }}
+    </div>
+     <div class="row field">
+      {{view Ember.TextField
+        type="text"
+        placeholder=phone
+        valueBinding="user.phone"
       }}
     </div>
      <div class="row field">
@@ -33,12 +40,12 @@
     </div>
      <div class="row field">
       {{view Ember.TextField
-        type="text"
+        type="password"
         placeholder="password"
         valueBinding="user.password"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "save"}}>Save Changes</div>
+    <div class="btn btn-large btn-block  row signup-btn" {{action "edit"}}>Save Changes</div>
   </div>
     <span class="clearfix"></span>
 </div>

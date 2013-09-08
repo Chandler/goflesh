@@ -45,10 +45,14 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
       echo "synchronous_commit = off" >> .db/postgresql.conf
       # Start postgres and create DB
       sudo sysctl -w kern.sysv.shmall=1073741824
-      sudo sysctl -w kern.sysv.shmmax=16777216
+      sudo sysctl -w kern.sysv.shmmax=67108864
       pg_ctl start -D .db -l /tmp/flesh-postgres.log -o "-p 5454"
       createdb -p 5454 -O postgres -U postgres flesh_local
       psql -p 5454 -U postgres -d flesh_local < $FLESHLOCATION/db/schema.sql
+
+    # database connection pooling
+      brew install pgpool-ii
+      pgpool -f conf/pgpool.conf
 
     # revel
       mkdir ~/gocode
@@ -95,6 +99,7 @@ start/stop/restart
     pg_ctl start -D .db -o "-p 5454"
     pg_ctl stop -D .db -o "-p 5454"
     pg_ctl restart -D .db -o "-p 5454"
+    pgpool -f conf/pgpool.conf
 
 connect with psql
 

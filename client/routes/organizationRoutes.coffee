@@ -3,5 +3,13 @@ App.OrganizationsNewRoute = Ember.Route.extend
     App.Organization
 
 App.OrganizationRoute = Ember.Route.extend
+  events:
+    joinGame: (game) ->
+      players = game.get('players')
+      createdPlayer = App.Player.createRecord
+        game: game
+        user: App.Auth.get('user')
+      @get('store').get('defaultTransaction').commit()
+      players.addObject(createdPlayer)
   model: (params) ->
     App.Organization.find(params.organization_id)

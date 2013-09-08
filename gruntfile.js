@@ -21,9 +21,10 @@ module.exports = function(grunt) {
             'public/js/bower/d3.js',
             'public/js/bower/underscore.js',
             'public/js/bower/handlebars.js',
-            'public/js/lib/new-ember.js',
-            'public/js/lib/new-ember-data.js',
-            'public/js/bower/ember-auth.js',
+            'public/js/bower/moment.js',
+            'public/js/lib/ember.js',
+            'public/js/lib/ember-data.js',
+            'public/js/lib/ember-auth.js',
             'public/js/lib/ember-list-view.js',
             'public/js/lib/avatar.io.js'
           ],
@@ -53,10 +54,8 @@ module.exports = function(grunt) {
         files: {
           'public/js/main.js': [
             'client/app.coffee',
-            'client/controllers/baseController.coffee',
-            'client/controllers/newController.coffee',
-            'client/**/*.coffee',
-            'client/bad.coffee'
+            'client/controllers/frameworkControllers.coffee',
+            'client/**/*.coffee'
           ] 
         }
       },
@@ -140,10 +139,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-madge');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-bower');
 

@@ -1,6 +1,68 @@
-{{#each user.players}}
-  {{#linkTo game.home this.game}} {{this.game.name}} {{/linkTo}}
-{{/each}}
-<div class="profile-home">
-  {{view App.PlayerListView contentBinding="content"}}
-</div>
+<div class="profile-side-heading"><h2> Games </h2></div>
+{{#if user.players}}
+  {{#each user.players}}
+  <!-- if the game's registration is open or currently running, list the game, otherwise, list the game under Past Games -->  
+  <div class="row game-list-item transparent-cover">
+    <div class="row game-list-row">
+      <div class="span4">
+        <div class="game-list-name">
+          {{#linkTo 'game.home' game}} {{game.name}} {{/linkTo}}
+        </div>
+      </div>
+      <div class="span4">
+        <div class="game-info-text">
+          September 9 - 13
+        </div>
+      {{!-- THIS IS WHERE THE PLAYER SPECIFIC EVENT FEED GOES --}}
+      {{!-- {{view App.PlayerListView contentBinding="content"}} --}}
+      </div>
+      <div class="span4">
+        <div class="game-info-text">
+          Players: {{this.game.players.length}}
+        </div>
+      </div>
+    </div>
+    <div class="row game-list-row">
+      <div class="span4">
+
+        {{#if human_code}}
+          <div class="human-code-text">Human Code: <div class="human-code">{{human_code}}</div></div>
+        {{/if}}  
+        <div>
+          {{#if App.Auth.signedIn}}
+            {{#if game.currentPlayer}}
+              <button class="btn disabled signin btn-large joined-button">Joined</button>
+            {{else}}
+              <button class="btn signin btn-large joined-button" {{action "joinGame" game}}>Join</button>
+            {{/if}}
+          {{else}}
+            {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Sign in to join game {{/linkTo}}
+          {{/if}}
+        </div>
+      </div>
+      <div class="span4">
+        <div class="status-text">Status: 
+          {{#if this.isHuman}}
+            <div class="status-human">
+          {{/if}}
+          {{#if this.isZombie}}
+            <div class="status-zombie">
+          {{/if}}
+          {{#if this.isStarved}}
+            <div class="status-starved">
+          {{/if}}
+          {{status}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  {{/each}}
+
+{{else}}
+  <div class="row gamelistitem game-list-item transparent-cover">
+    <h3>Not in a game?</h3> Go to the {{#linkTo 'discovery' }} Discovery {{/linkTo}} page to find your organization and join a game!
+  </div>
+
+{{/if}}

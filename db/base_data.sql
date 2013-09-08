@@ -16,6 +16,7 @@ SET search_path = public, pg_catalog;
 
 COPY event_type (id, name, description, table_name) FROM stdin;
 1	tag	A zombie tagged a human	event_tag
+2	player_create	A human joined a game	event_player
 \.
 
 
@@ -26,6 +27,7 @@ COPY event_type (id, name, description, table_name) FROM stdin;
 COPY event_role (id, event_type_id, name, description) FROM stdin;
 1	1	tagger	the zombie who tagged a human
 2	1	taggee	the human tagged by a zombie
+3	2	joiner	the player who joined the game
 \.
 
 

@@ -3,39 +3,46 @@ App.GamesNewController = NewController.extend
   name: '',
   slug: '',
 
-App.GameHomeController =  Ember.Controller.extend
+App.GameHomeController =  BaseController.extend
   code: ''
   needs: 'game'
   game: null
   gameBinding: 'controllers.game'
-  contentBinding: 'game.players'
+  playersBinding: 'game.players'
+  eventsBinding: 'events'
+
+  selectedList: 'eventList'
   
-  #TODO change these
-  eventFeedSelected: false
-  playerListSelected: true
-  showPlayerList: ->
-    @set 'eventFeedSelected', false
-    @set 'playerListSelected', true
-  showEventFeed: ->
-    @set 'eventFeedSelected', true
-    @set 'playerListSelected', false
+  selectList: (list) ->
+    @set 'selectedList', list
 
+  eventListSelected:  Ember.computed.equal('selectedList', 'eventList')
+  playerListSelected: Ember.computed.equal('selectedList', 'playerList')
+  
   registerTag: ->
-    code = "VPCQG"
-    game_id = @get('game.id')
-    current_player = App.Auth.get('user.players').filter (p) =>
-      p.get('game.id') == game_id
-    current_player = App.Auth.get('user.players').filter (p) =>
-      p.get('game.id') == game_id
-    player_id = current_player[0].get('id')
-    $.post("/api/tag/" + code + "?player_id=" + player_id).done(e) ->
-      console.log(e)
+    if @code != ''
+      @clearErrors()
+      currentPlayer = @get('game.currentPlayer')
+      $.post("/api/tag/" + @code + "?player_id=" + currentPlayer.get('id'))
+      .done (xhr, status, error) =>
+        @set 'errors', "success!" 
+      .fail (xhr, status, error) =>
+        @set 'errors', JSON.stringify(xhr.responseText) 
+    else
+        @set 'errors', "human code empty"
 
-App.GamesController = Ember.ObjectController.extend
-  selectedGame: null
 
 App.GameSettingsController = BaseController.extend
   needs: 'game'
   game: null
   gameBinding: 'controllers.game'
   contentBinding: 'controllers.game.content'
+
+
+
+App.GamePlayersController = BaseController.extend
+  needs: 'game'
+  game: null
+  gameBinding: 'controllers.game'
+  contentBinding: 'controllers.game.content'
+  playersBinding: 'game.players'

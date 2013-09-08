@@ -689,8 +689,8 @@ Ember.ListViewMixin = Ember.Mixin.create({
     @method _addItemView
   */
   _addItemView: function(contentIndex){
-    var itemViewClass, childView;
 
+    var itemViewClass, childView;
     itemViewClass = get(this, 'itemViewClass');
     childView = this.createChildView(itemViewClass);
 

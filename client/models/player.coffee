@@ -2,19 +2,20 @@ App.Player = DS.Model.extend
   status: DS.attr 'string'
   game: DS.belongsTo 'App.Game'
   user: DS.belongsTo 'App.User'
-
-
+  human_code: DS.attr 'string'
+  created: DS.attr 'isodate'
+  event: DS.belongsTo 'App.Event'
   isHuman: (->
     @get('status') == 'human'
-  ).property()
+  ).property('status')
 
   isZombie: (->
     @get('status') == 'zombie'
-  ).property()
+  ).property('status')
 
-  isStaved: (->
+  isStarved: (->
     @get('status') == 'starved'    
-  ).property()
+  ).property('status')
 
 App.Player.toString = -> 
   "Player"

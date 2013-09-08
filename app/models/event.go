@@ -1,25 +1,20 @@
 package models
 
-const (
-	// TODO: fetch these values from the database at startup instead of hard-coding them
-	// EventType IDs
-	EVENT_TYPE_TAG = 1
-)
-
 var (
 	// TODO: fetch these values from the database at startup instead of hard-coding them
 	// EventRole ID values
 	EVENT_ROLE_TAGGER_VALUE = 1
 	EVENT_ROLE_TAGGEE_VALUE = 2
+	EVENT_ROLE_JOINER_VALUE = 3
 	// EventRole IDs
 	EVENT_ROLE_TAGGER = &EVENT_ROLE_TAGGER_VALUE
 	EVENT_ROLE_TAGGEE = &EVENT_ROLE_TAGGEE_VALUE
+	EVENT_ROLE_JOINER = &EVENT_ROLE_JOINER_VALUE
 )
 
 // An Event is an occurrence that can be displayed in an event feed
 type Event struct {
-	Id            int `json:"id"`
-	Event_type_id int `json:"event_type"`
+	Id int `json:"id"`
 	TimeTrackedModel
 }
 
@@ -60,9 +55,15 @@ type EventTag struct {
 	Tag_id int `json:"tag"`
 }
 
+// An Event representing a Player creation (joining a game)
+type EventPlayer struct {
+	Id        int `json:"id"` // FK to Event
+	Player_id int `json:"player"`
+}
+
 func CreateTagEvent(tag *Tag) error {
 	// create the base event
-	event := Event{0, 1, TimeTrackedModel{}} // TODO: remove hardcoded id
+	event := Event{0, TimeTrackedModel{}}
 	err := Dbm.Insert(&event)
 	if err != nil {
 		return err
@@ -89,6 +90,38 @@ func CreateTagEvent(tag *Tag) error {
 
 	// record game associated with this event
 	game_m2m := EventToGame{0, event.Id, tag.Tagger().Game_id}
+	err = Dbm.Insert(&game_m2m)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateJoinedGameEvent(player *Player) error {
+	// create the base event
+	event := Event{0, TimeTrackedModel{}}
+	err := Dbm.Insert(&event)
+	if err != nil {
+		return err
+	}
+
+	// create the Tag event
+	playerEvent := EventPlayer{event.Id, player.Id}
+	err = Dbm.Insert(&playerEvent)
+	if err != nil {
+		return err
+	}
+
+	// record players involved in this event
+	player_m2m := EventToPlayer{0, event.Id, player.Id, EVENT_ROLE_JOINER}
+	err = Dbm.Insert(&player_m2m)
+	if err != nil {
+		return err
+	}
+
+	// record game associated with this event
+	game_m2m := EventToGame{0, event.Id, player.Game_id}
 	err = Dbm.Insert(&game_m2m)
 	if err != nil {
 		return err
