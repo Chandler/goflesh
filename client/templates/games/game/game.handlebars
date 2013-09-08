@@ -15,13 +15,13 @@
 {{!--   </div>
   {{outlet}} --}}
 
-<div class="simple-page">
+<div class="simple-page full-height">
   <div class="row-fluid">
-    <span class="span4">
-      <div class="side-profile full-height">
+    <span class="span4 pad-span">
+      <div class="side-profile">
       {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-center"}} {{/linkTo}}
         <div class="page-heading">
-          <h1>{{name}}</h1>
+          <h1><div class="profile-heading">{{name}}<div></h1>
             <div class="profile-sub-heading">
               {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
               <div>
@@ -34,22 +34,22 @@
                   {{else}}
                     {{!-- {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Signin to join game {{/linkTo}} --}}
                   {{/if}}
-              
+              </div>
             </div>
-            </div>
-
-          <hr> 
-          <div class="grids">
-            <div class="avatar-grid">
-              <h3 class="list-view">{{players.length}} Players</h3>
-              {{#each players}}
-                <div class="grid-pic"> 
-                  {{#linkTo 'user.home' user}} {{avatar2 user.avatar size="small"}} {{/linkTo}}                  
-                </div>
-              {{/each}}
-            </div>
-          </div>  
         </div>
+
+        <hr> 
+        
+        <div class="grids">
+          <div class="avatar-grid">
+            <h3 class="list-view">{{players.length}} Players</h3>
+            {{#each players}}
+              <div class="grid-pic"> 
+                {{#linkTo 'user.home' user}} {{avatar2 user.avatar size="small"}} {{/linkTo}}                  
+              </div>
+            {{/each}}
+          </div>
+        </div>  
       </div>
     </span>
     <span class="span8">
