@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"flesh/app/models"
+	"fmt"
 	"github.com/robfig/revel"
 	"sort"
 	"time"
@@ -27,7 +28,7 @@ func (s DatedSortable) Swap(i, j int) {
 }
 
 type ClientTagEvent struct {
-	Id       int        `json:"id"`
+	Id       string     `json:"id"`
 	Type     string     `json:"type"`
 	SortDate *time.Time `json:"-"`
 	Tag      models.Tag `json:"tag"`
@@ -38,7 +39,7 @@ func (c ClientTagEvent) Date() *time.Time {
 }
 
 type ClientPlayerEvent struct {
-	Id       int           `json:"id"`
+	Id       string        `json:"id"`
 	Type     string        `json:"type"`
 	SortDate *time.Time    `json:"-"`
 	Player   models.Player `json:"player"`
@@ -67,7 +68,7 @@ func (c *Events) GetTagEvents(ids_string string) DatedSortable {
 	}
 	clientObjects := make(DatedSortable, len(list))
 	for i, readObject := range list {
-		clientObject := ClientTagEvent{readObject.Id, "tag", readObject.Claimed, *readObject}
+		clientObject := ClientTagEvent{fmt.Sprintf("tag-%d", readObject.Id), "tag", readObject.Claimed, *readObject}
 		clientObjects[i] = clientObject
 	}
 
@@ -89,7 +90,7 @@ func (c *Events) GetPlayerEvents(ids_string string) DatedSortable {
 	}
 	clientObjects := make(DatedSortable, len(list))
 	for i, readObject := range list {
-		clientObject := ClientPlayerEvent{readObject.Id, "joined", readObject.Created, *readObject}
+		clientObject := ClientPlayerEvent{fmt.Sprintf("joined-%d", readObject.Id), "joined", readObject.Created, *readObject}
 		clientObjects[i] = clientObject
 	}
 
