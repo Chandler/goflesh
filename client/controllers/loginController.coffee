@@ -11,7 +11,8 @@ App.LoginController = BaseController.extend
 
     App.Auth.on 'signInSuccess', =>
       @transitionToRoute('user.home', App.User.find(App.Auth.get('userId')))
-    
+      location.reload
+      
     App.Auth.on 'signInError',(e) =>
       App.Auth.destroySession()
       @set 'errors', 'password and username do not match'

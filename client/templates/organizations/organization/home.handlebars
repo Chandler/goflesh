@@ -7,7 +7,7 @@
       {{#linkTo 'game.home' game}} {{game.name}} {{/linkTo}}
     </div>
     {{#if App.Auth.signedIn}}
-      {{#if game.isCurrentUserGame}}
+      {{#if game.currentPlayer}}
         <div class="span1"><button class="btn disabled signin btn-large joined-button">Joined</button></div>
       {{else}}
         <div class="span1"><button class="btn signin btn-large joined-button" {{action "joinGame" game}}>Join this game</button></div>

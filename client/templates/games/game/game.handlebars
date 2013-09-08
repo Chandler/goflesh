@@ -25,20 +25,20 @@
             <div class="profile-sub-heading">
               {{#linkTo 'organization.home' organization}} {{organization.name}} {{/linkTo}}
               <div>
-                  {{#if App.Auth.signedIn}}
-                    {{#if this.isCurrentUserGame}}
-                      <button class="btn disabled btn-large gamepage-join-btn">Joined</button>
-                    {{else}}
-                      <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
-                    {{/if}}
+                {{#if App.Auth.signedIn}}
+                  {{#if currentPlayer}}
+                    <button class="btn disabled btn-large gamepage-join-btn">Joined</button>
                   {{else}}
-                    {{!-- {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Signin to join game {{/linkTo}} --}}
+                    <button class="btn btn-large gamepage-join-btn" {{action "joinGame" this}}>Join</button>
                   {{/if}}
-              
+                {{else}}
+                  {{!-- {{#linkTo 'login' classNames="btn signin btn-large joined-button"}} Signin to join game {{/linkTo}} --}}
+                {{/if}}
+              </div>
             </div>
-            </div>
+          <hr>
+              {{view App.RegisterTagView}}
 
-          <hr> 
           <div class="grids">
             <div class="avatar-grid">
               <h3 class="list-view">{{players.length}} Players</h3>
