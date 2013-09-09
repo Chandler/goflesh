@@ -15,12 +15,15 @@ type PlayerRead struct {
 	models.Player
 	StatusString string `json:"status"`
 	HumanCode    string `json:"human_code,omitempty"`
+	Is_oz        bool   `json:"-"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	query := `
-	    SELECT p.*
+	    SELECT p.*, coalesce(oz.confirmed, false) is_oz
 	    FROM player p
+	    LEFT JOIN oz
+	    	ON p.id = oz.id
     ` + where
 
 	c.Auth()
@@ -37,6 +40,13 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 		if c.User != nil && c.User.Id == readObject.Player.User_id {
 			human_code := readObject.Player.HumanCode()
 			readObject.HumanCode = human_code.Code
+		}
+		// hide OZs if they should be hidden
+		if readObject.Is_oz &&
+			!(c.User != nil && c.User.Id == readObject.Player.User_id) &&
+			!readObject.Player.Game().OzsAreRevealed() {
+			readObject.Last_fed = nil
+			readObject.StatusString = "human"
 		}
 		user_ids[i] = readObject.Player.User_id
 		if err != nil {
@@ -90,7 +100,7 @@ func (c *Players) Read(id int) revel.Result {
 }
 
 func GetOzPlayerRead(game_id int) *PlayerRead {
-	return &PlayerRead{models.Player{models.OZ_PLAYER_ID, models.OZ_USER_ID, game_id, nil, models.TimeTrackedModel{}}, "zombie", ""}
+	return &PlayerRead{models.Player{models.OZ_PLAYER_ID, models.OZ_USER_ID, game_id, nil, models.TimeTrackedModel{}}, "zombie", "", true}
 }
 
 /////////////////////////////////////////////////////////////////////

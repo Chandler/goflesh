@@ -73,15 +73,15 @@ func GenerateTestData() {
 			InsertTestOz()
 		}
 		revel.INFO.Print("Confirming random OZs")
-		for i := 0; i < 1; i++ {
+		for i := 0; i < 3; i++ {
 			ConfirmRandomOz()
 		}
 		revel.INFO.Print("Simulating tags by OZs")
-		for i := 0; i < 5; i++ {
+		for i := 0; i < 6; i++ {
 			TagByRandomOzs()
 		}
 		revel.INFO.Print("Simulating tags by non-OZ zombies")
-		for i := 0; i < 20; i++ {
+		for i := 0; i < 19; i++ {
 			TagByRandomTaggedZombie()
 		}
 	}
