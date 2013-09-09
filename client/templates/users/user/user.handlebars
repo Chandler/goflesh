@@ -2,7 +2,15 @@
   <div class="row-fluid">
     <span class="span4 pad-span">
       <div class="side-profile">
-          {{avatar2 avatar size="large" class="profile_image pull-center"}}
+          {{#if this.currentPlayer.isHuman}}
+            {{avatar2 avatar size="large" class="profile_image pull-center human-border"}}
+          {{/if}}
+          {{#if this.currentPlayer.isZombie}}
+            {{avatar2 avatar size="large" class="profile_image pull-center zombie-border"}}
+          {{/if}}
+          {{#if this.currentPlayer.isStarved}}
+            {{avatar2 avatar size="large" class="profile_image pull-center starved-border"}}
+          {{/if}}
         <div class="page-heading">
           <h1><div class="profile-heading">{{first_name}}  {{last_name}}</div>
             <div class="profile-sub-heading">
