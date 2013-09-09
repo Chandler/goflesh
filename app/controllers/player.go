@@ -22,18 +22,17 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	    SELECT p.*
 	    FROM player p
     ` + where
-	type readObjectType PlayerRead
 
 	c.Auth()
 
-	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	results, err := Dbm.Select(&PlayerRead{}, query, args...)
 	if err != nil {
 		return c.RenderError(err)
 	}
 	user_ids := make([]int, len(results))
-	players := make([]*readObjectType, len(results))
+	players := make([]*PlayerRead, len(results)+1)
 	for i, result := range results {
-		readObject := result.(*readObjectType)
+		readObject := result.(*PlayerRead)
 		readObject.StatusString = readObject.Status()
 		if c.User != nil && c.User.Id == readObject.Player.User_id {
 			human_code := readObject.Player.HumanCode()
@@ -44,6 +43,14 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 			return c.RenderJson(err)
 		}
 		players[i] = readObject
+	}
+	// TODO: think this through better. currently doesn't sideload OZ "user" either
+	if len(results) > 0 { // only bother if other results were returned
+		for i := 0; i < len(user_ids); i++ {
+			if user_ids[i] == 0 {
+				players[len(results)] = GetOzPlayerRead(players[0].Game_id)
+			}
+		}
 	}
 
 	templateStr := IntArrayToString(user_ids)
@@ -73,7 +80,17 @@ func (c *Players) ReadList(game_id int, ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
+	if id == 0 {
+		out := make(map[string]interface{})
+		out["players"] = []*PlayerRead{GetOzPlayerRead(0)}
+		out["users"] = []*models.UserRead{GetOzUserRead()}
+		return c.RenderJson(out)
+	}
 	return c.ReadPlayer("WHERE p.id = $1", id)
+}
+
+func GetOzPlayerRead(game_id int) *PlayerRead {
+	return &PlayerRead{models.Player{0, 0, game_id, nil, models.TimeTrackedModel{}}, "zombie", ""}
 }
 
 /////////////////////////////////////////////////////////////////////
