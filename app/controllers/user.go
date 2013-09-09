@@ -54,7 +54,7 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 		revel.ERROR.Print(err)
 		return nil, err
 	}
-	users := make([]*models.UserRead, len(results)+1)
+	users := make([]*models.UserRead, len(results))
 	for i, result := range results {
 		user := result.(*models.UserRead)
 		user.Player_ids, err = PostgresArrayStringToIntArray(user.Players)
@@ -376,5 +376,5 @@ func (c *Users) PasswordReset(code string) revel.Result {
 }
 
 func GetOzUserRead() *models.UserRead {
-	return &models.UserRead{models.User{models.OZ_USER_ID, "", "Original", "Zombie", "original zombie", nil, "", "", nil, models.TimeTrackedModel{}}, map[string]string{"gravatar": ""}, "", []int{models.OZ_PLAYER_ID}, "", []int{}}
+	return &models.UserRead{models.User{models.OZ_USER_ID, "", "Original", "Zombie", "original zombie", nil, "", "", nil, models.TimeTrackedModel{}}, map[string]string{"hash": "fe4568abcf47619251dce5119dd820f4"}, "", []int{models.OZ_PLAYER_ID}, "", []int{}}
 }

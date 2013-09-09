@@ -80,6 +80,10 @@ func GenerateTestData() {
 		for i := 0; i < 5; i++ {
 			TagByRandomOzs()
 		}
+		revel.INFO.Print("Simulating tags by non-OZ zombies")
+		for i := 0; i < 20; i++ {
+			TagByRandomTaggedZombie()
+		}
 	}
 }
 
@@ -365,7 +369,7 @@ func SelectTestHuman(and string, args ...interface{}) *models.Player {
     LEFT OUTER JOIN tag
     	ON player.id = taggee_id
     LEFT OUTER JOIN oz
-    	on player.id = oz.id
+    	ON player.id = oz.id
     WHERE taggee_id IS NULL
     AND (oz.id IS NULL
     	 OR oz.confirmed = FALSE)
@@ -374,6 +378,20 @@ func SelectTestHuman(and string, args ...interface{}) *models.Player {
     LIMIT 1
     `
 	players, _ := controllers.Dbm.Select(models.Player{}, query, args...)
+	player := players[0].(*models.Player)
+	return player
+}
+
+func SelectRandomTaggedZombie() *models.Player {
+	query := `
+    SELECT player.*
+    FROM "player"
+    INNER JOIN tag
+    	ON player.id = taggee_id
+    ORDER BY random()
+    LIMIT 1
+    `
+	players, _ := controllers.Dbm.Select(models.Player{}, query)
 	player := players[0].(*models.Player)
 	return player
 }
@@ -395,6 +413,21 @@ func ConfirmRandomOz() {
 
 func TagByRandomOzs() {
 	oz := SelectTestConfirmedOz()
+	oz_player, _ := models.PlayerFromId(oz.Id)
+	human := SelectTestHuman("AND player.game_id = $1", oz_player.Game_id)
+	if human == nil {
+		return
+	}
+	now := time.Now()
+	game, _ := models.GameFromId(human.Game_id)
+	_, _, err := models.NewTag(game, oz_player, human, &now)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+}
+
+func TagByRandomTaggedZombie() {
+	oz := SelectRandomTaggedZombie()
 	oz_player, _ := models.PlayerFromId(oz.Id)
 	human := SelectTestHuman("AND player.game_id = $1", oz_player.Game_id)
 	if human == nil {

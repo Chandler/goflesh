@@ -80,7 +80,7 @@ func (c *Players) ReadList(game_id int, ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
-	if id == 0 {
+	if id == models.OZ_PLAYER_ID {
 		out := make(map[string]interface{})
 		out["players"] = []*PlayerRead{GetOzPlayerRead(0)}
 		out["users"] = []*models.UserRead{GetOzUserRead()}
