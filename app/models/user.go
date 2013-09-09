@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+const (
+	OZ_USER_ID = -1
+)
+
 type User struct {
 	Id          int        `json:"id"`
 	Email       string     `json:"email,omitempty"`
@@ -44,9 +48,10 @@ func (user *User) ValidateAndNormalizeUserFields() (statusCode int, err error) {
 	if _, err = mail.ParseAddress(user.Email); err != nil {
 		return 422, errors.New("Email was not properly formatted")
 	}
+	user.Email = strings.ToLower(user.Email)
 
 	// Validate phone
-	if len(*user.Phone) == 0 { // phone number is optional, but must be well-formed if provided
+	if user.Phone == nil || len(*user.Phone) == 0 { // phone number is optional, but must be well-formed if provided
 		user.Phone = nil
 	} else {
 		normalized, err := utils.NormalizePhoneToE164(*user.Phone)

@@ -12,6 +12,7 @@ import (
 	"github.com/robfig/revel"
 	"html/template"
 	"io/ioutil"
+	"strings"
 )
 
 type Users struct {
@@ -53,26 +54,34 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 		revel.ERROR.Print(err)
 		return nil, err
 	}
-	readObjects := make([]*models.UserRead, len(results))
+	users := make([]*models.UserRead, len(results))
 	for i, result := range results {
-		readObject := result.(*models.UserRead)
-		readObject.Player_ids, err = PostgresArrayStringToIntArray(readObject.Players)
-		readObject.AddAvatars()
-		readObject.User.CleanSensitiveFields(current_user == nil || current_user.Id != readObject.Id)
-		if current_user == nil || current_user.Id != readObject.Id {
+		user := result.(*models.UserRead)
+		user.Player_ids, err = PostgresArrayStringToIntArray(user.Players)
+		user.AddAvatars()
+		user.User.CleanSensitiveFields(current_user == nil || current_user.Id != user.Id)
+		if current_user == nil || current_user.Id != user.Id {
 		}
 		if err != nil {
 			revel.ERROR.Print(err)
 			return nil, err
 		}
-		readObject.Organization_ids, err = PostgresArrayStringToIntArray(readObject.Organizations)
+		user.Organization_ids, err = PostgresArrayStringToIntArray(user.Organizations)
 		if err != nil {
 			revel.ERROR.Print(err)
 			return nil, err
 		}
-		readObjects[i] = readObject
+		users[i] = user
 	}
-	return readObjects, nil
+	// // TODO: think this through better
+	// if len(results) > 0 { // only bother if other results were returned
+	// 	for i := 0; i < len(user_ids); i++ {
+	// 		if user_ids[i] == models.OZ_USER_ID {
+	// 			players[len(results)] = GetOzUserRead()
+	// 		}
+	// 	}
+	// }
+	return users, nil
 }
 
 func (c *Users) ReadUser(where string, args ...interface{}) revel.Result {
@@ -99,6 +108,11 @@ func (c *Users) ReadList(ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Users) Read(id int) revel.Result {
+	if id == models.OZ_USER_ID {
+		out := make(map[string]interface{})
+		out["users"] = []*models.UserRead{GetOzUserRead()}
+		return c.RenderJson(out)
+	}
 	return c.ReadUser("WHERE u.id = $1", id)
 }
 
@@ -270,6 +284,8 @@ func (c *Users) Authenticate() revel.Result {
 		return c.RenderError(err)
 	}
 
+	authInfo.Email = strings.ToLower(authInfo.Email)
+
 	user, err := authInfo.Model()
 	if err != nil {
 		c.Response.Status = 401
@@ -357,4 +373,8 @@ func (c *Users) PasswordReset(code string) revel.Result {
 	out := UserAuthenticateOutput{user.Id, user.Api_key}
 
 	return c.RenderJson(out)
+}
+
+func GetOzUserRead() *models.UserRead {
+	return &models.UserRead{models.User{models.OZ_USER_ID, "", "Original", "Zombie", "original zombie", nil, "", "", nil, models.TimeTrackedModel{}}, map[string]string{"hash": "fe4568abcf47619251dce5119dd820f4"}, "", []int{models.OZ_PLAYER_ID}, "", []int{}}
 }

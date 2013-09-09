@@ -71,7 +71,6 @@ FleshRestAdapter.registerTransform 'isodate',
   
 FleshRestAdapter.map 'App.Event',
   tag: { embedded: 'always' }
-  player: { embedded: 'always' }
 
 App.Store = DS.Store.extend
   adapter: FleshRestAdapter
