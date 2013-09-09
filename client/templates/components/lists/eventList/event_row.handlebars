@@ -7,17 +7,14 @@
     {{#linkTo "user.home" tag.tagger.user}}
     <span> 
        {{!-- Make this it's own view later --}}
-          {{#if this.currentPlayer.isHuman}}
-            {{avatar2 tag.tagger.user.avatar size="small" class=" human-border-small"}}
+
+          {{#if tag.tagger.isZombie}}
+            {{avatar2 tag.tagger.user.avatar size="small" class=" zombie-border-small"}}
           {{else}}
-            {{#if this.currentPlayer.isZombie}}
-              {{avatar2 tag.tagger.user.avatar size="small" class=" zombie-border-small"}}
+            {{#if tag.tagger.isStarved}}
+              {{avatar2 tag.tagger.user.avatar size="small" class=" starved-border-small"}}
             {{else}}
-              {{#if this.currentPlayer.isStarved}}
-                {{avatar2 tag.tagger.user.avatar size="small" class=" starved-border-small"}}
-              {{else}}
-                {{avatar2 tag.tagger.user.avatar size="small"}}
-              {{/if}}
+              {{avatar2 tag.tagger.user.avatar size="small"}}
             {{/if}}
           {{/if}}
     </span>
@@ -31,13 +28,13 @@
     {{#linkTo "user.home" tag.taggee.user}}
       <span> 
         {{!-- Make this it's own view later --}}
-          {{#if this.currentPlayer.isHuman}}
+          {{#if tag.taggee.isHuman}}
             {{avatar2 tag.taggee.user.avatar size="small" class=" human-border-small"}}
           {{else}}
-            {{#if this.currentPlayer.isZombie}}
+            {{#if tag.taggee.isZombie}}
               {{avatar2 tag.taggee.user.avatar size="small" class=" zombie-border-small"}}
             {{else}}
-              {{#if this.currentPlayer.isStarved}}
+              {{#if tag.taggee.isStarved}}
                 {{avatar2 tag.taggee.user.avatar size="small" class=" starved-border-small"}}
               {{else}}
                 {{avatar2 tag.taggee.user.avatar size="small"}}
@@ -61,13 +58,13 @@
     {{#linkTo "user.home" player.user}}
       <span> 
         {{!-- Make this it's own view later --}}
-          {{#if this.currentPlayer.isHuman}}
+          {{#if player.isHuman}}
             {{avatar2 player.user.avatar size="small" class=" human-border-small"}}
           {{else}}
-            {{#if this.currentPlayer.isZombie}}
+            {{#if player.isZombie}}
               {{avatar2 player.user.avatar size="small" class=" zombie-border-small"}}
             {{else}}
-              {{#if this.currentPlayer.isStarved}}
+              {{#if player.isStarved}}
                 {{avatar2 player.user.avatar size="small" class=" starved-border-small"}}
               {{else}}
                 {{avatar2 player.user.avatar size="small"}}
