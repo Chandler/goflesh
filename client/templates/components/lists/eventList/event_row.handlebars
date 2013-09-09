@@ -5,7 +5,19 @@
   
   <div class="event-feed-cell">
     {{#linkTo "user.home" tag.tagger.user}}
-    <span {{avatar2 tag.tagger.user.avatar size="small"}}</span>
+    <span> 
+       {{!-- Make this it's own view later --}}
+
+          {{#if tag.tagger.isZombie}}
+            {{avatar2 tag.tagger.user.avatar size="small" class=" zombie-border-small"}}
+          {{else}}
+            {{#if tag.tagger.isStarved}}
+              {{avatar2 tag.tagger.user.avatar size="small" class=" starved-border-small"}}
+            {{else}}
+              {{avatar2 tag.tagger.user.avatar size="small"}}
+            {{/if}}
+          {{/if}}
+    </span>
     {{/linkTo}}
     <span> {{tag.tagger.user.screen_name}} </span>
   </div>
@@ -14,7 +26,22 @@
   
   <div class="event-feed-cell">
     {{#linkTo "user.home" tag.taggee.user}}
-      <span> {{avatar2 tag.taggee.user.avatar size="small"}}</span>
+      <span> 
+        {{!-- Make this it's own view later --}}
+          {{#if tag.taggee.isHuman}}
+            {{avatar2 tag.taggee.user.avatar size="small" class=" human-border-small"}}
+          {{else}}
+            {{#if tag.taggee.isZombie}}
+              {{avatar2 tag.taggee.user.avatar size="small" class=" zombie-border-small"}}
+            {{else}}
+              {{#if tag.taggee.isStarved}}
+                {{avatar2 tag.taggee.user.avatar size="small" class=" starved-border-small"}}
+              {{else}}
+                {{avatar2 tag.taggee.user.avatar size="small"}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+        </span>
     {{/linkTo}}      
     <span> {{tag.taggee.user.screen_name}} </span>
   </div>
@@ -29,7 +56,22 @@
   
   <div class="event-feed-cell">
     {{#linkTo "user.home" player.user}}
-      <span> {{avatar2 player.user.avatar size="small"}}</span>
+      <span> 
+        {{!-- Make this it's own view later --}}
+          {{#if player.isHuman}}
+            {{avatar2 player.user.avatar size="small" class=" human-border-small"}}
+          {{else}}
+            {{#if player.isZombie}}
+              {{avatar2 player.user.avatar size="small" class=" zombie-border-small"}}
+            {{else}}
+              {{#if player.isStarved}}
+                {{avatar2 player.user.avatar size="small" class=" starved-border-small"}}
+              {{else}}
+                {{avatar2 player.user.avatar size="small"}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+        </span>
     {{/linkTo}}
     <span> {{player.user.screen_name}} </span>
   </div>

@@ -4,12 +4,16 @@
       <div class="side-profile">
           {{#if this.currentPlayer.isHuman}}
             {{avatar2 avatar size="large" class="profile_image pull-center human-border"}}
-          {{/if}}
-          {{#if this.currentPlayer.isZombie}}
-            {{avatar2 avatar size="large" class="profile_image pull-center zombie-border"}}
-          {{/if}}
-          {{#if this.currentPlayer.isStarved}}
-            {{avatar2 avatar size="large" class="profile_image pull-center starved-border"}}
+          {{else}}
+            {{#if this.currentPlayer.isZombie}}
+              {{avatar2 avatar size="large" class="profile_image pull-center zombie-border"}}
+            {{else}}
+              {{#if this.currentPlayer.isStarved}}
+                {{avatar2 avatar size="large" class="profile_image pull-center starved-border"}}
+              {{else}}
+                {{avatar2 avatar size="large" class="profile_image pull-center"}}
+              {{/if}}
+            {{/if}}
           {{/if}}
         <div class="page-heading">
           <h1><div class="profile-heading">{{first_name}}  {{last_name}}</div>
