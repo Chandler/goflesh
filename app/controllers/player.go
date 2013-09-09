@@ -47,7 +47,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	// TODO: think this through better. currently doesn't sideload OZ "user" either
 	if len(results) > 0 { // only bother if other results were returned
 		for i := 0; i < len(user_ids); i++ {
-			if user_ids[i] == 0 {
+			if user_ids[i] == models.OZ_USER_ID {
 				players[len(results)] = GetOzPlayerRead(players[0].Game_id)
 			}
 		}
@@ -90,7 +90,7 @@ func (c *Players) Read(id int) revel.Result {
 }
 
 func GetOzPlayerRead(game_id int) *PlayerRead {
-	return &PlayerRead{models.Player{0, 0, game_id, nil, models.TimeTrackedModel{}}, "zombie", ""}
+	return &PlayerRead{models.Player{models.OZ_PLAYER_ID, models.OZ_USER_ID, game_id, nil, models.TimeTrackedModel{}}, "zombie", ""}
 }
 
 /////////////////////////////////////////////////////////////////////

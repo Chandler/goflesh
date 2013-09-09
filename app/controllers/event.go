@@ -79,7 +79,7 @@ func (c *Events) GetTagEvents(ids_string string) DatedSortable {
 		if readObject.Is_oz {
 			tagger := readObject.Tag.Tagger()
 			if tagger.IsZombie() && !tagger.Game().OzsAreRevealed() {
-				readObject.Tagger_id = 0
+				readObject.Tagger_id = models.OZ_PLAYER_ID
 			}
 		}
 		clientObject := ClientTagEvent{fmt.Sprintf("tag-%d", readObject.Id), "tag", readObject.Claimed, readObject.Tag}

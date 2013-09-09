@@ -76,7 +76,7 @@ func FetchUsers(current_user *models.User, where string, args ...interface{}) ([
 	// // TODO: think this through better
 	// if len(results) > 0 { // only bother if other results were returned
 	// 	for i := 0; i < len(user_ids); i++ {
-	// 		if user_ids[i] == 0 {
+	// 		if user_ids[i] == models.OZ_USER_ID {
 	// 			players[len(results)] = GetOzUserRead()
 	// 		}
 	// 	}
@@ -108,7 +108,7 @@ func (c *Users) ReadList(ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Users) Read(id int) revel.Result {
-	if id == 0 {
+	if id == models.OZ_USER_ID {
 		out := make(map[string]interface{})
 		out["users"] = []*models.UserRead{GetOzUserRead()}
 		return c.RenderJson(out)
@@ -376,5 +376,5 @@ func (c *Users) PasswordReset(code string) revel.Result {
 }
 
 func GetOzUserRead() *models.UserRead {
-	return &models.UserRead{models.User{0, "", "Original", "Zombie", "original zombie", nil, "", "", nil, models.TimeTrackedModel{}}, map[string]string{"gravatar": ""}, "", []int{0}, "", []int{}}
+	return &models.UserRead{models.User{models.OZ_USER_ID, "", "Original", "Zombie", "original zombie", nil, "", "", nil, models.TimeTrackedModel{}}, map[string]string{"gravatar": ""}, "", []int{models.OZ_PLAYER_ID}, "", []int{}}
 }

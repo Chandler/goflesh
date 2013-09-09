@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+const (
+	OZ_USER_ID = -1
+)
+
 type User struct {
 	Id          int        `json:"id"`
 	Email       string     `json:"email,omitempty"`
