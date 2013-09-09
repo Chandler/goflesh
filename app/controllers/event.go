@@ -53,22 +53,36 @@ type IdWrapper struct {
 	Id int
 }
 
+type TagEventRead struct {
+	models.Tag
+	Is_oz bool
+}
+
 func (c *Events) GetTagEvents(ids_string string) DatedSortable {
 	query := `
-		SELECT tag.*
+		SELECT tag.*, oz.confirmed is_oz
 		FROM tag
 		INNER JOIN event_tag
 			ON event_tag.tag_id = tag.id
+		LEFT JOIN oz
+			ON oz.id = tag.tagger_id
 		WHERE event_tag.id IN (` + ids_string + `)
     `
-	var list []*models.Tag
+	var list []*TagEventRead
 	_, err := Dbm.Select(&list, query)
 	if err != nil {
 		return DatedSortable{}
 	}
 	clientObjects := make(DatedSortable, len(list))
 	for i, readObject := range list {
-		clientObject := ClientTagEvent{fmt.Sprintf("tag-%d", readObject.Id), "tag", readObject.Claimed, *readObject}
+		// if this player is an oz, blank out if OZ status should not yet be revealed
+		if readObject.Is_oz {
+			tagger := readObject.Tag.Tagger()
+			if tagger.IsZombie() && !tagger.Game().OzsAreRevealed() {
+				readObject.Tagger_id = 0
+			}
+		}
+		clientObject := ClientTagEvent{fmt.Sprintf("tag-%d", readObject.Id), "tag", readObject.Claimed, readObject.Tag}
 		clientObjects[i] = clientObject
 	}
 
