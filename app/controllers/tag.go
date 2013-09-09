@@ -32,7 +32,6 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 	}
 
 	tagger, err := models.PlayerFromId(player_id)
-	revel.WARN.Print(player_id)
 	if err != nil {
 		return c.RenderError(err)
 	}
@@ -117,7 +116,7 @@ func (c *Tags) TagByPhone(code string, phone string) revel.Result {
 
 	if !tagger.IsZombie() {
 		c.Response.Status = 403
-		errJson["error"] = "You cannot tag because you are not a zombie"
+		errJson["error"] = "You cannot tag because you are not a zombie. You are " + tagger.Status()
 		return c.RenderJson(errJson)
 	}
 
