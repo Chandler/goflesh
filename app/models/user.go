@@ -44,6 +44,7 @@ func (user *User) ValidateAndNormalizeUserFields() (statusCode int, err error) {
 	if _, err = mail.ParseAddress(user.Email); err != nil {
 		return 422, errors.New("Email was not properly formatted")
 	}
+	user.Email = strings.ToLower(user.Email)
 
 	// Validate phone
 	if user.Phone == nil || len(*user.Phone) == 0 { // phone number is optional, but must be well-formed if provided

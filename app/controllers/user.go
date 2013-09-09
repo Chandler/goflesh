@@ -12,6 +12,7 @@ import (
 	"github.com/robfig/revel"
 	"html/template"
 	"io/ioutil"
+	"strings"
 )
 
 type Users struct {
@@ -269,6 +270,8 @@ func (c *Users) Authenticate() revel.Result {
 	if err := json.Unmarshal([]byte(data), &authInfo); err != nil {
 		return c.RenderError(err)
 	}
+
+	authInfo.Email = strings.ToLower(authInfo.Email)
 
 	user, err := authInfo.Model()
 	if err != nil {
