@@ -19,7 +19,7 @@ App.PlayerRowView = Ember.ListItemView.extend
 
 
 App.PlayerListView = Ember.ListView.extend
-  height: 400, # change to bigger on Players List Page
+  height: 1000, # change to bigger on Players List Page
   rowHeight: 80,
   adjustLayout: (new_width, new_height) -> 
     @set('width', new_width)
@@ -33,7 +33,7 @@ App.EventRowView = Ember.ListItemView.extend
   ).property()
 
 App.EventListView = Ember.ListView.extend
-  height: 400,
+  height: 800,
   rowHeight: 80,
 
   itemViewClass: App.EventRowView
