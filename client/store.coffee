@@ -71,7 +71,7 @@ FleshRestAdapter.registerTransform 'isodate',
     null
   
   deserialize: (value) ->
-    moment(value).format('MMM Do ha')
+    moment(value).zone(7).format('MMM Do ha')
   
 FleshRestAdapter.map 'App.Event',
   tag: { embedded: 'always' }
