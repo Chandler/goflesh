@@ -22,7 +22,7 @@ App.UserController = BaseObjectController.extend
   userIsCurrentUser: (->
     id = App.Auth.get('user.id')
     return (id && id == @get('content.id'))
-  ).property()
+  ).property('content.id')
 
   currentPlayer: (->
     player = @get('players').get('lastObject')

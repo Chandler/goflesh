@@ -39,10 +39,10 @@ func (c ClientTagEvent) Date() *time.Time {
 }
 
 type ClientPlayerEvent struct {
-	Id       string     `json:"id"`
-	Type     string     `json:"type"`
-	SortDate *time.Time `json:"-"`
-	Player   PlayerRead `json:"player"`
+	Id        string     `json:"id"`
+	Type      string     `json:"type"`
+	SortDate  *time.Time `json:"-"`
+	Player_id int        `json:"player_id"`
 }
 
 func (c ClientPlayerEvent) Date() *time.Time {
@@ -53,22 +53,45 @@ type IdWrapper struct {
 	Id int
 }
 
-func (c *Events) GetTagEvents(ids_string string) DatedSortable {
+type TagEventRead struct {
+	models.Tag
+	Is_oz *bool
+}
+
+func (c *Events) GetTagEvents(ids_string string, filtered_on_player bool, player_ids_to_include_even_if_oz_tagged map[int]bool) DatedSortable {
 	query := `
-		SELECT tag.*
+		SELECT tag.*, oz.confirmed is_oz
 		FROM tag
 		INNER JOIN event_tag
 			ON event_tag.tag_id = tag.id
+		LEFT JOIN oz
+			ON oz.id = tag.tagger_id
 		WHERE event_tag.id IN (` + ids_string + `)
     `
-	var list []*models.Tag
+	var list []*TagEventRead
 	_, err := Dbm.Select(&list, query)
 	if err != nil {
+		revel.ERROR.Print(err)
 		return DatedSortable{}
 	}
-	clientObjects := make(DatedSortable, len(list))
+	clientObjects := make(DatedSortable, 0, len(list))
 	for i, readObject := range list {
-		clientObject := ClientTagEvent{fmt.Sprintf("tag-%d", readObject.Id), "tag", readObject.Claimed, *readObject}
+		// if this player is an OZ, blank out if OZ status should not yet be revealed
+		if readObject.Is_oz != nil && *readObject.Is_oz {
+			tagger := readObject.Tag.Tagger()
+			if tagger.IsZombie() && !tagger.Game().OzsAreRevealed() {
+				readObject.Tagger_id = models.OZ_PLAYER_ID
+				// if we filtered by player_id and this player wasn't on the receiving end of that tag, don't include it at all
+				if filtered_on_player {
+					should_include, in_set := player_ids_to_include_even_if_oz_tagged[readObject.Tag.Taggee_id]
+					if !in_set || !should_include {
+						continue
+					}
+				}
+			}
+		}
+		clientObject := ClientTagEvent{fmt.Sprintf("tag-%d", readObject.Id), "tag", readObject.Claimed, readObject.Tag}
+		clientObjects = clientObjects[:len(clientObjects)+1]
 		clientObjects[i] = clientObject
 	}
 
@@ -90,9 +113,8 @@ func (c *Events) GetPlayerEvents(ids_string string) DatedSortable {
 		return DatedSortable{}
 	}
 	clientObjects := make(DatedSortable, len(list))
-	for i, readObject := range list {
-		playerRead := PlayerRead{*readObject, readObject.Status(), ""}
-		clientObject := ClientPlayerEvent{fmt.Sprintf("joined-%d", readObject.Id), "joined", readObject.Created, playerRead}
+	for i, player := range list {
+		clientObject := ClientPlayerEvent{fmt.Sprintf("joined-%d", player.Id), "joined", player.Created, player.Id}
 		clientObjects[i] = clientObject
 	}
 
@@ -145,7 +167,15 @@ func (c *Events) ReadEvents(player_ids []int, game_ids []int) DatedSortable {
 	var events DatedSortable
 	event_ids = nil
 
-	events = append(events, c.GetTagEvents(event_ids_str)...)
+	filteredOnPlayer := len(player_ids) > 0
+	var include_events_for_player_ids map[int]bool
+	if filteredOnPlayer {
+		include_events_for_player_ids = make(map[int]bool)
+		for _, id := range player_ids {
+			include_events_for_player_ids[id] = true
+		}
+	}
+	events = append(events, c.GetTagEvents(event_ids_str, filteredOnPlayer, include_events_for_player_ids)...)
 	events = append(events, c.GetPlayerEvents(event_ids_str)...)
 
 	sort.Sort(events)

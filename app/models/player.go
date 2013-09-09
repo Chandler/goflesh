@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+const (
+	OZ_PLAYER_ID = -1
+)
+
 type Player struct {
 	Id       int        `json:"id"`
 	User_id  int        `json:"user_id"`

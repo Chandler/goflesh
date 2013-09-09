@@ -57,6 +57,12 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 
 	game := human.Game()
 
+	if !game.IsRunning() {
+		c.Response.Status = 422
+		errJson["error"] = "Tags cannot be registered when the game is closed"
+		return c.RenderJson(errJson)
+	}
+
 	now := time.Now()
 	_, status, err = models.NewTag(game, tagger, human, &now)
 	if err != nil {
@@ -95,6 +101,13 @@ func (c *Tags) TagByPhone(code string, phone string) revel.Result {
 	}
 
 	game := human.Game()
+
+	if !game.IsRunning() {
+		c.Response.Status = 422
+		errJson["error"] = "Tags cannot be registered when the game is closed"
+		return c.RenderJson(errJson)
+	}
+
 	tagger, err := models.PlayerFromUserIdGameId(taggerUser.Id, game.Id)
 	if err != nil {
 		c.Response.Status = 400
