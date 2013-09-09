@@ -49,7 +49,11 @@ FleshRestAdapter = DS.RESTAdapter.extend
   didError: (store, type, record, xhr) ->
     series = xhr.status.toString()[0]
     if (series == "4" or series == "5")
-      errors = xhr.responseText
+      contentType = xhr.getResponseHeader('content-type')
+      if (contentType == "application.json")
+        errors = JSON.parse(xhr.responseText)
+      else
+        errors = xhr.responseText
       store.recordWasInvalid record, errors
     else
       @_super.apply this, arguments_

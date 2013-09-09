@@ -27,7 +27,11 @@ App.GameHomeController =  BaseController.extend
       .done (xhr, status, error) =>
         @set 'errors', "success!" 
       .fail (xhr, status, error) =>
-        @set 'errors', JSON.stringify(xhr.responseText) 
+        contentType = xhr.getResponseHeader('content-type')
+        if (contentType == "application.json")
+          @set 'errors', JSON.parse(xhr.responseText)
+        else
+          @set 'errors', JSON.stringify(xhr.responseText) 
     else
         @set 'errors', "human code empty"
 
