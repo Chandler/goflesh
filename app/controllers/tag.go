@@ -78,10 +78,14 @@ func (c *Tags) TagByPhone(Body string, From string, AccountSid string) revel.Res
   accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
   authToken  := os.Getenv("TWILIO_AUTH_TOKEN")
   from_phone := os.Getenv("TWILIO_FROM_NUMBER")
+
+  revel.WARN.Print(accountSid, authToken, from_phone)
+  revel.WARN.Print(Body, From, AccountSid)
+
   twilio     := gotwilio.NewTwilioClient(accountSid, authToken)
 
 	errJson := make(map[string]string)
-
+ 
   if AccountSid != accountSid {
 		c.Response.Status = 400
 		errJson["error"] = "Not Authorized"
