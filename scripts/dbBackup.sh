@@ -1,1 +1,2 @@
-pg_dump -U postgres -p 5455 -O flesh | gzip --best > $DB_BACKUP_LOCATION/backup-`date +"%s"`.sql.gz
+#!/bin/bash
+pg_dump -U postgres -p 5455 -O flesh | gzip --best > /tmp/backups/backup-`date +"%s"`.sql.gz
