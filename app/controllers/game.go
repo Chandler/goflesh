@@ -157,28 +157,20 @@ func (c Games) Create() revel.Result {
 
 func (c *Games) AllEmailList(game_id int) revel.Result {
 	// TODO: add moderator authentication
-	return c.emailList("", "", game_id)
+	return c.emailList("", game_id)
 }
 
 func (c *Games) HumanEmailList(game_id int) revel.Result {
 	// TODO: add moderator authentication
-	return c.emailList(
-		"LEFT JOIN tag ON u.id = taggee_id LEFT JOIN oz on u.id = oz.id",
-		"AND taggee_id IS NULL AND (oz.id IS NULL OR oz.confirmed = FALSE)",
-		game_id,
-	)
+	return c.emailList("AND p.last_fed IS NULL", game_id)
 }
 
 func (c *Games) ZombieEmailList(game_id int) revel.Result {
 	// TODO: add moderator authentication
-	return c.emailList(
-		"LEFT JOIN tag ON u.id = taggee_id LEFT JOIN oz on u.id = oz.id",
-		"AND (taggee_id IS NOT NULL OR (oz.id IS NOT NULL AND oz.confirmed = TRUE))",
-		game_id,
-	)
+	return c.emailList("AND p.last_fed IS NOT NULL", game_id)
 }
 
-func (c *Games) emailList(join string, where_and string, args ...interface{}) revel.Result {
+func (c *Games) emailList(where_and string, args ...interface{}) revel.Result {
 	query := `
 		SELECT u.email email
 		FROM "game" g
@@ -186,7 +178,6 @@ func (c *Games) emailList(join string, where_and string, args ...interface{}) re
 			ON p.game_id = g.id
 		INNER JOIN "user" u
 			on p.user_id = u.id
-	` + join + `
 		WHERE g.id = $1
 	` + where_and
 
