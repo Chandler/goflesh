@@ -4,6 +4,7 @@ export FLESH_DEPLOY_DIR=$FLESH_SYNC_REPO_DIR/deploy
 export FLESHLOCATION=$FLESH_ROOT_DIR/flesh
 export FLESH_DB_SCHEMA=$FLESH_DEPLOY_DIR/db/schema.sql
 export FLESH_DB_BASEDATA=$FLESH_DEPLOY_DIR/db/base_data.sql
+export DB_BACKUP_LOCATION=/tmp/backups
 export PG_VERSION=9.2
 export PG=/usr/lib/postgresql/$PG_VERSION/bin/
 export GOPATH=$FLESH_ROOT_DIR/gocode
