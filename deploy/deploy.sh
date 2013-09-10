@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #set enviroment keys
-./root/keys/set_env_keys.sh
+/root/keys/set_env_keys.sh
 
 # Assumes other environment variables are set
 
