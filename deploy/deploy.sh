@@ -3,8 +3,11 @@
 #set enviroment keys
 source /root/keys/set_env_keys.sh
 
-# Assumes other environment variables are set
+ curl -sS \
+  -d "auth_token=$HIPCHAT_TOKEN&room_id=$HIPCHAT_ROOM&from=prodbot&color=purple&message=Deploying! user: `whoami`&notify=1" \
+  https://api.hipchat.com/v1/rooms/message
 
+# Assumes other environment variables are set
 set -x
 cd $FLESH_SYNC_REPO_DIR
 git pull origin master:master
