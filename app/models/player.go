@@ -91,7 +91,7 @@ func PlayerFromUserIdGameId(user_id int, game_id int) (*Player, error) {
 	`
 
 	var list []*Player
-	_, err := Dbm.Select(&list, query)
+	_, err := Dbm.Select(&list, query, user_id, game_id)
 	if err != nil {
 		return nil, err
 	}

@@ -6,8 +6,7 @@ module:testrunner
 GET		/												Application.Index
 
 POST	/api/tag/:code									Tags.Tag
-
-POST  /api/sms                          Sms.Index
+POST  /api/sms                        Tags.TagByPhone
 
 
 

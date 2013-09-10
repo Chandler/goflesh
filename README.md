@@ -81,6 +81,9 @@ Configuration that shouldn't be committed (e.g. passwords) go in environment var
       cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages #something close to this
       git clone git://github.com/jashkenas/coffee-script-tmbundle CoffeeScript
       git clone https://github.com/LearnBoost/stylus.git Stylus
+    
+    #mocking a tag via twilio
+      curl -X POST --data "Body=5V4MR&From=12089912446&AccountSid=$TWILIO_ACCOUNT_SID" http://localhost:9000/api/sms
 
 
 ## Useful postgres commands

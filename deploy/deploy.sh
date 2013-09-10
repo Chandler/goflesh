@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Assumes environment variables are set
+#set enviroment keys
+source ./root/keys/set_env_keys.sh
+
+# Assumes other environment variables are set
 
 set -x
 cd $FLESH_SYNC_REPO_DIR

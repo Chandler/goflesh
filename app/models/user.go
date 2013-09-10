@@ -141,7 +141,7 @@ func UserFromPhone(phone string) (*User, error) {
         WHERE phone = $1
     `
 	var list []*User
-	_, err := Dbm.Select(&list, query)
+	_, err := Dbm.Select(&list, query, phone)
 	if err != nil {
 		return nil, err
 	}
@@ -154,8 +154,8 @@ func UserFromPhone(phone string) (*User, error) {
 func (u *User) CleanSensitiveFields(clearEmail bool) {
 	u.Password = ""
 	u.Api_key = ""
-	u.Phone = nil
 	if clearEmail {
+		u.Phone = nil
 		u.Email = ""
 	}
 }
