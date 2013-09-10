@@ -88,7 +88,7 @@ echo "Supervisor set up with username 'admin' and password '$SUPERVISOR_PASSWORD
 
 # set up environment
 echo "# Environment generated at environment setup time:" | tee -a ~/.bashrc ~/.zshrc
-env -u PWD env | xargs -L 1 echo "export" | sed 's/=\(.*\)/="\1"/g' | tee -a ~/.bashrc ~/.zshrc
+env -u PWD env _ | xargs -L 1 echo "export" | sed 's/=\(.*\)/="\1"/g' | tee -a ~/.bashrc ~/.zshrc
 
 # start the server
 cd $FLESH_DEPLOY_DIR
