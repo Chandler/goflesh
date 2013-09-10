@@ -10,7 +10,7 @@ App.GameHomeController =  BaseController.extend
   gameBinding: 'controllers.game'
   playersBinding: 'game.players'
   eventsBinding: 'events'
-  
+
   selectedList: 'eventList'
   
   selectList: (list) ->
@@ -27,7 +27,11 @@ App.GameHomeController =  BaseController.extend
       .done (xhr, status, error) =>
         @set 'errors', "success!" 
       .fail (xhr, status, error) =>
-        @set 'errors', JSON.stringify(xhr.responseText) 
+        contentType = xhr.getResponseHeader('content-type')
+        if (contentType == "application.json")
+          @set 'errors', JSON.parse(xhr.responseText)
+        else
+          @set 'errors', JSON.stringify(xhr.responseText) 
     else
         @set 'errors', "human code empty"
 
@@ -37,3 +41,12 @@ App.GameSettingsController = BaseController.extend
   game: null
   gameBinding: 'controllers.game'
   contentBinding: 'controllers.game.content'
+
+
+
+App.GamePlayersController = BaseController.extend
+  needs: 'game'
+  game: null
+  gameBinding: 'controllers.game'
+  contentBinding: 'controllers.game.content'
+  playersBinding: 'game.players'

@@ -47,9 +47,13 @@ FleshRestAdapter = DS.RESTAdapter.extend
       DS.rejectionHandler
 
   didError: (store, type, record, xhr) ->
-    if xhr.status is (422 or 500)
-      errors = xhr.responseText
-      
+    series = xhr.status.toString()[0]
+    if (series == "4" or series == "5")
+      contentType = xhr.getResponseHeader('content-type')
+      if (contentType == "application.json")
+        errors = JSON.parse(xhr.responseText)
+      else
+        errors = xhr.responseText
       store.recordWasInvalid record, errors
     else
       @_super.apply this, arguments_
@@ -67,11 +71,10 @@ FleshRestAdapter.registerTransform 'isodate',
     null
   
   deserialize: (value) ->
-    moment(value).format('MMM Do ha')
+    moment(value).zone(7).format('MMM Do ha')
   
 FleshRestAdapter.map 'App.Event',
   tag: { embedded: 'always' }
-  player: { embedded: 'always' }
 
 App.Store = DS.Store.extend
   adapter: FleshRestAdapter

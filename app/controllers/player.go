@@ -7,10 +7,6 @@ import (
 	"io/ioutil"
 )
 
-var (
-	errJson map[string]string
-)
-
 type Players struct {
 	AuthController
 }
@@ -19,35 +15,52 @@ type PlayerRead struct {
 	models.Player
 	StatusString string `json:"status"`
 	HumanCode    string `json:"human_code,omitempty"`
+	Is_oz        bool   `json:"-"`
 }
 
 func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 	query := `
-	    SELECT p.*
+	    SELECT p.*, coalesce(oz.confirmed, false) is_oz
 	    FROM player p
+	    LEFT JOIN oz
+	    	ON p.id = oz.id
     ` + where
-	type readObjectType PlayerRead
 
 	c.Auth()
 
-	results, err := Dbm.Select(&readObjectType{}, query, args...)
+	results, err := Dbm.Select(&PlayerRead{}, query, args...)
 	if err != nil {
 		return c.RenderError(err)
 	}
 	user_ids := make([]int, len(results))
-	players := make([]*readObjectType, len(results))
+	players := make([]*PlayerRead, len(results)+1)
 	for i, result := range results {
-		readObject := result.(*readObjectType)
+		readObject := result.(*PlayerRead)
 		readObject.StatusString = readObject.Status()
 		if c.User != nil && c.User.Id == readObject.Player.User_id {
 			human_code := readObject.Player.HumanCode()
 			readObject.HumanCode = human_code.Code
+		}
+		// hide OZs if they should be hidden
+		if readObject.Is_oz &&
+			!(c.User != nil && c.User.Id == readObject.Player.User_id) &&
+			!readObject.Player.Game().OzsAreRevealed() {
+			readObject.Last_fed = nil
+			readObject.StatusString = "human"
 		}
 		user_ids[i] = readObject.Player.User_id
 		if err != nil {
 			return c.RenderJson(err)
 		}
 		players[i] = readObject
+	}
+	// TODO: think this through better. currently doesn't sideload OZ "user" either
+	if len(results) > 0 { // only bother if other results were returned
+		for i := 0; i < len(user_ids); i++ {
+			if user_ids[i] == models.OZ_USER_ID {
+				players[len(results)] = GetOzPlayerRead(players[0].Game_id)
+			}
+		}
 	}
 
 	templateStr := IntArrayToString(user_ids)
@@ -77,7 +90,17 @@ func (c *Players) ReadList(game_id int, ids []int) revel.Result {
 /////////////////////////////////////////////////////////////////////
 
 func (c *Players) Read(id int) revel.Result {
+	if id == models.OZ_PLAYER_ID {
+		out := make(map[string]interface{})
+		out["players"] = []*PlayerRead{GetOzPlayerRead(0)}
+		out["users"] = []*models.UserRead{GetOzUserRead()}
+		return c.RenderJson(out)
+	}
 	return c.ReadPlayer("WHERE p.id = $1", id)
+}
+
+func GetOzPlayerRead(game_id int) *PlayerRead {
+	return &PlayerRead{models.Player{models.OZ_PLAYER_ID, models.OZ_USER_ID, game_id, nil, models.TimeTrackedModel{}}, "zombie", "", true}
 }
 
 /////////////////////////////////////////////////////////////////////

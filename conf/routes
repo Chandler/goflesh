@@ -8,7 +8,7 @@ GET		/												Application.Index
 POST	/api/tag/:code									Tags.Tag
 
 POST  /api/sms                          Sms.Index
-GET  /api/sms                          Sms.Index
+
 
 
 GET		/api/organizations								Organizations.ReadList

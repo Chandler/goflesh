@@ -40,12 +40,15 @@
     </div>
      <div class="row field">
       {{view Ember.TextField
-        type="text"
+        type="password"
         placeholder="password"
         valueBinding="user.password"
       }}
     </div>
-    <div class="btn btn-large btn-block  row signup-btn" {{action "edit"}}>Save Changes</div>
+    <div class="btn btn-large btn-block row signup-btn" {{action "edit"}}>Save Changes</div>
+    <div class="row cancel">
+      {{#linkTo 'user.home' this}} Cancel {{/linkTo}}
+    </div>
   </div>
     <span class="clearfix"></span>
 </div>

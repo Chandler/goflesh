@@ -197,14 +197,13 @@ func (c *Games) emailList(join string, where_and string, args ...interface{}) re
 		return c.RenderError(err)
 	}
 
-	var emails []string
+	var emails string
 
 	for rows.Next() {
 		var email string
 		rows.Scan(&email)
-		emails = append(emails, email)
+		emails = emails + "," + email
 	}
-	jsn := make(map[string][]string)
-	jsn["emails"] = emails
-	return c.RenderJson(jsn)
+
+	return c.RenderText(emails)
 }

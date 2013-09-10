@@ -49,8 +49,14 @@ BaseMixin = Ember.Mixin.create
 
   #assumes edit forms were bound to model, need to commit the changes
   edit: ->
-    @get('store').get('defaultTransaction').commit()
-
+    record = @recordToSave()
+    record.save()
+    record.one 'didError', =>
+      @set 'errors', e.get('errors')
+    record.one 'becameError', =>
+      @set 'errors', e.get('errors')
+    record.one 'becameInvalid', (e) =>
+      @set 'errors', e.get('errors')
 
   save: ->
     @clearErrors()

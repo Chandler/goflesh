@@ -1,0 +1,82 @@
+{{#if tag}}
+<div class="event-feed-row">
+  <div class="event-time event-feed-cell" title=""{{tag.claimed}}</div>
+  <div  {{bindAttr class=":event-color :event-feed-cell type"}}> </div>
+  
+  <div class="event-feed-cell">
+    {{#linkTo "user.home" tag.tagger.user}}
+    <span> 
+       {{!-- Make this it's own view later --}}
+
+          {{#if tag.tagger.isZombie}}
+            {{avatar2 tag.tagger.user.avatar size="small" class=" zombie-border-small"}}
+          {{else}}
+            {{#if tag.tagger.isStarved}}
+              {{avatar2 tag.tagger.user.avatar size="small" class=" starved-border-small"}}
+            {{else}}
+              {{avatar2 tag.tagger.user.avatar size="small"}}
+            {{/if}}
+          {{/if}}
+    </span>
+    {{/linkTo}}
+    <span> {{tag.tagger.user.screen_name}} </span>
+  </div>
+  
+  <span class="event-description event-feed-cell"> tagged </span>
+  
+  <div class="event-feed-cell">
+    {{#linkTo "user.home" tag.taggee.user}}
+      <span> 
+        {{!-- Make this it's own view later --}}
+          {{#if tag.taggee.isHuman}}
+            {{avatar2 tag.taggee.user.avatar size="small" class=" human-border-small"}}
+          {{else}}
+            {{#if tag.taggee.isZombie}}
+              {{avatar2 tag.taggee.user.avatar size="small" class=" zombie-border-small"}}
+            {{else}}
+              {{#if tag.taggee.isStarved}}
+                {{avatar2 tag.taggee.user.avatar size="small" class=" starved-border-small"}}
+              {{else}}
+                {{avatar2 tag.taggee.user.avatar size="small"}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+        </span>
+    {{/linkTo}}      
+    <span> {{tag.taggee.user.screen_name}} </span>
+  </div>
+</div>
+{{/if}}
+
+{{#if player}}
+<div class="event-feed-row">
+  <span class="event-time event-feed-cell" title="">{{player.created}}</span>
+  <!--   http://emberjs.com/guides/templates/binding-element-class-names/-->
+  <div  {{bindAttr class=":event-color :event-feed-cell type"}}> </div>
+  
+  <div class="event-feed-cell">
+    {{#linkTo "user.home" player.user}}
+      <span> 
+        {{!-- Make this it's own view later --}}
+          {{#if player.isHuman}}
+            {{avatar2 player.user.avatar size="small" class=" human-border-small"}}
+          {{else}}
+            {{#if player.isZombie}}
+              {{avatar2 player.user.avatar size="small" class=" zombie-border-small"}}
+            {{else}}
+              {{#if player.isStarved}}
+                {{avatar2 player.user.avatar size="small" class=" starved-border-small"}}
+              {{else}}
+                {{avatar2 player.user.avatar size="small"}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+        </span>
+    {{/linkTo}}
+    <span> {{player.user.screen_name}} </span>
+  </div>
+  
+  <span class="event-description event-feed-cell"> Joined the game</span>
+
+</div>
+{{/if}}

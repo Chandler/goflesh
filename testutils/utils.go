@@ -73,12 +73,16 @@ func GenerateTestData() {
 			InsertTestOz()
 		}
 		revel.INFO.Print("Confirming random OZs")
-		for i := 0; i < 1; i++ {
+		for i := 0; i < 3; i++ {
 			ConfirmRandomOz()
 		}
 		revel.INFO.Print("Simulating tags by OZs")
-		for i := 0; i < 5; i++ {
+		for i := 0; i < 6; i++ {
 			TagByRandomOzs()
+		}
+		revel.INFO.Print("Simulating tags by non-OZ zombies")
+		for i := 0; i < 19; i++ {
+			TagByRandomTaggedZombie()
 		}
 	}
 }
@@ -175,7 +179,7 @@ func InsertTestUser() *models.User {
 	screen_name_long := first_name + sep + last_name
 	screen_name := screen_name_long[:int(math.Min(20, float64(len(screen_name_long))))]
 	email := screen_name + "@gmail.com"
-	user, statusCode, err := models.NewUser(email, first_name, last_name, screen_name, "208 555-5555", "password")
+	user, statusCode, err := models.NewUser(email, first_name, last_name, screen_name, "", "password")
 	if err != nil {
 		revel.WARN.Print(statusCode, err)
 	}
@@ -365,7 +369,7 @@ func SelectTestHuman(and string, args ...interface{}) *models.Player {
     LEFT OUTER JOIN tag
     	ON player.id = taggee_id
     LEFT OUTER JOIN oz
-    	on player.id = oz.id
+    	ON player.id = oz.id
     WHERE taggee_id IS NULL
     AND (oz.id IS NULL
     	 OR oz.confirmed = FALSE)
@@ -374,6 +378,20 @@ func SelectTestHuman(and string, args ...interface{}) *models.Player {
     LIMIT 1
     `
 	players, _ := controllers.Dbm.Select(models.Player{}, query, args...)
+	player := players[0].(*models.Player)
+	return player
+}
+
+func SelectRandomTaggedZombie() *models.Player {
+	query := `
+    SELECT player.*
+    FROM "player"
+    INNER JOIN tag
+    	ON player.id = taggee_id
+    ORDER BY random()
+    LIMIT 1
+    `
+	players, _ := controllers.Dbm.Select(models.Player{}, query)
 	player := players[0].(*models.Player)
 	return player
 }
@@ -402,7 +420,22 @@ func TagByRandomOzs() {
 	}
 	now := time.Now()
 	game, _ := models.GameFromId(human.Game_id)
-	_, err := models.NewTag(game, oz_player, human, &now)
+	_, _, err := models.NewTag(game, oz_player, human, &now)
+	if err != nil {
+		revel.WARN.Print(err)
+	}
+}
+
+func TagByRandomTaggedZombie() {
+	oz := SelectRandomTaggedZombie()
+	oz_player, _ := models.PlayerFromId(oz.Id)
+	human := SelectTestHuman("AND player.game_id = $1", oz_player.Game_id)
+	if human == nil {
+		return
+	}
+	now := time.Now()
+	game, _ := models.GameFromId(human.Game_id)
+	_, _, err := models.NewTag(game, oz_player, human, &now)
 	if err != nil {
 		revel.WARN.Print(err)
 	}

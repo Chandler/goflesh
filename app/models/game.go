@@ -45,3 +45,7 @@ func (g *Game) TimeToReveal() *time.Time {
 	time := g.Running_start_time.Add(undercoverTime)
 	return &time
 }
+
+func (g *Game) OzsAreRevealed() bool {
+	return time.Now().After(*g.TimeToReveal())
+}

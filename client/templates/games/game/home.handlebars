@@ -1,14 +1,22 @@
 {{#if errorMessages}}
   <div class="alert alert-error">{{errorMessages}}</div>
 {{/if}}
-<div class="register-tag">
-  {{#if game.showRegisterTag}}
-    {{view App.RegisterTagView}}
-  {{/if}}
-</div>
+
 <br>
-<div class="row game-stats transparent-cover">
-  <div class="span8 player-list-module">
-      {{ view App.GamePageListView contentBinding="content"}}
-  </div>
+<div class="game-stats">
+	<div class="row transparent-cover">
+	  <div class="span4 player-list-module">
+	  	<div class="register-tag">
+      {{#if App.Auth.signedIn}}
+			  {{#if game.showRegisterTag}}
+			    {{view App.RegisterTagView}}
+			  {{/if}}
+			{{/if}}
+		</div>
+	  </div>
+	  <div class="span8">
+	  	<h3>Events</h3>
+	      {{ view App.EventListView contentBinding="events"}}
+	  </div>
+	</div>
 </div>

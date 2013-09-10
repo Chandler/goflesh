@@ -39,7 +39,8 @@
           <hr>
           <div class="grids">
             <div class="avatar-grid">
-              <h3 class="list-view">{{players.length}} Players</h3>
+            
+              <h3 class="list-view">{{players.length}} Players</h3> <div class="see-all">{{#linkTo "game.players"}} See All {{/linkTo}}</div>
               {{#each players}}
                 <div class="grid-pic"> 
                   {{#linkTo 'user.home' user}} {{avatar2 user.avatar size="small"}} {{/linkTo}}                  

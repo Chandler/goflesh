@@ -29,17 +29,13 @@ App.PlayerListView = Ember.ListView.extend
 
 App.EventRowView = Ember.ListItemView.extend
   templateName: (->
-    rowTemplate = @get('context.type')
-    "eventList/" + rowTemplate
+    "eventList/event_row"
   ).property()
 
-
 App.EventListView = Ember.ListView.extend
-  height: 1000,
+  height: 800,
   rowHeight: 80,
-  adjustLayout: (new_width, new_height) -> 
-    @set('width', new_width)
-    @set('height', new_height)
+
   itemViewClass: App.EventRowView
 
 
