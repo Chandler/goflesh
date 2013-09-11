@@ -33,7 +33,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 		return c.RenderError(err)
 	}
 	user_ids := make([]int, len(results))
-	players := make([]*PlayerRead, len(results)+1)
+	players := make([]*PlayerRead, 0, len(results)+1)
 	for i, result := range results {
 		readObject := result.(*PlayerRead)
 		readObject.StatusString = readObject.Status()
@@ -52,6 +52,7 @@ func (c *Players) ReadPlayer(where string, args ...interface{}) revel.Result {
 		if err != nil {
 			return c.RenderJson(err)
 		}
+		players = players[:len(players)+1]
 		players[i] = readObject
 	}
 	// TODO: think this through better. currently doesn't sideload OZ "user" either
