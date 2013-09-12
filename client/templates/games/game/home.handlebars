@@ -2,13 +2,22 @@
   <div class="alert alert-error">{{errorMessages}}</div>
 {{/if}}
 
-<div class="register-tag"> 
-  {{#if App.Auth.signedIn}}
-	  {{#if game.showRegisterTag}}
-	    {{view App.RegisterTagView}}
-	  {{/if}}
-	{{/if}}
-</div>
-<div class="game-page-list-container">
-	{{view App.EventListView contentBinding="events"}}
+<br>
+<div class="game-stats">
+	<div class="row transparent-cover">
+	  <div class="span4 player-list-module">
+	  	<div class="register-tag">
+      {{#if App.Auth.signedIn}}
+			  {{#if game.showRegisterTag}}
+			    {{view App.RegisterTagView}}
+			  {{/if}}
+			{{/if}}
+		</div>
+	  </div>
+	  <div class="span8">
+		<div class="game-page-list-container">
+			{{view App.EventListView contentBinding="events"}}
+		</div>
+	  </div>
+	</div>
 </div>
