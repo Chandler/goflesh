@@ -1,82 +1,55 @@
 {{#if tag}}
-<div class="event-feed-row">
-  <div class="event-time event-feed-cell" title=""{{tag.claimed}}</div>
-  <div  {{bindAttr class=":event-color :event-feed-cell type"}}> </div>
-  
-  <div class="event-feed-cell">
-    {{#linkTo "user.home" tag.tagger.user}}
-    <span> 
-       {{!-- Make this it's own view later --}}
+<div class="event-feed-row tag-event">
+  <div class="shaddow"></div>
+  <div class="top-inner-row">
 
-          {{#if tag.tagger.isZombie}}
-            {{avatar2 tag.tagger.user.avatar size="small" class=" zombie-border-small"}}
-          {{else}}
-            {{#if tag.tagger.isStarved}}
-              {{avatar2 tag.tagger.user.avatar size="small" class=" starved-border-small"}}
-            {{else}}
-              {{avatar2 tag.tagger.user.avatar size="small"}}
-            {{/if}}
-          {{/if}}
-    </span>
-    {{/linkTo}}
-    <span> {{tag.tagger.user.screen_name}} </span>
-  </div>
-  
-  <span class="event-description event-feed-cell"> tagged </span>
-  
-  <div class="event-feed-cell">
-    {{#linkTo "user.home" tag.taggee.user}}
-      <span> 
-        {{!-- Make this it's own view later --}}
-          {{#if tag.taggee.isHuman}}
-            {{avatar2 tag.taggee.user.avatar size="small" class=" human-border-small"}}
-          {{else}}
-            {{#if tag.taggee.isZombie}}
-              {{avatar2 tag.taggee.user.avatar size="small" class=" zombie-border-small"}}
-            {{else}}
-              {{#if tag.taggee.isStarved}}
-                {{avatar2 tag.taggee.user.avatar size="small" class=" starved-border-small"}}
-              {{else}}
-                {{avatar2 tag.taggee.user.avatar size="small"}}
-              {{/if}}
-            {{/if}}
-          {{/if}}
-        </span>
-    {{/linkTo}}      
-    <span> {{tag.taggee.user.screen_name}} </span>
-  </div>
+  </div> 
+  <div class="middle-inner-row">
+    <div class="tag-photo"> 
+      <div {{bindAttr class="player.status"}}> 
+        {{avatar2 tag.tagger.user.avatar size="small" class="border-small"}}
+      </div>
+    </div>
+    <div class="tag-action">
+      <div class="tag-text">tagged</div>
+      <div class="tag-underline"></div>
+    </div>
+      <div class="tag-photo"> 
+      <div {{bindAttr class="player.status"}}> 
+        {{avatar2 tag.taggee.user.avatar size="small" class="border-small"}}
+      </div>
+    </div>
+  </div> 
+  <div class="bottom-inner-row">
+    <span class="tagger-name"> {{tag.tagger.user.screen_name}}</span>
+    <span class="taggee-name"> {{tag.taggee.user.screen_name}}</span>
+  </div> 
 </div>
 {{/if}}
 
+
 {{#if player}}
-<div class="event-feed-row">
-  <span class="event-time event-feed-cell" title="">{{player.created}}</span>
-  <!--   http://emberjs.com/guides/templates/binding-element-class-names/-->
-  <div  {{bindAttr class=":event-color :event-feed-cell type"}}> </div>
-  
-  <div class="event-feed-cell">
-    {{#linkTo "user.home" player.user}}
-      <span> 
-        {{!-- Make this it's own view later --}}
-          {{#if player.isHuman}}
-            {{avatar2 player.user.avatar size="small" class=" human-border-small"}}
-          {{else}}
-            {{#if player.isZombie}}
-              {{avatar2 player.user.avatar size="small" class=" zombie-border-small"}}
-            {{else}}
-              {{#if player.isStarved}}
-                {{avatar2 player.user.avatar size="small" class=" starved-border-small"}}
-              {{else}}
-                {{avatar2 player.user.avatar size="small"}}
-              {{/if}}
-            {{/if}}
-          {{/if}}
-        </span>
-    {{/linkTo}}
-    <span> {{player.user.screen_name}} </span>
-  </div>
-  
-  <span class="event-description event-feed-cell"> Joined the game</span>
+<div class="event-feed-row join-event">
+  <div class="shaddow"></div>
+  <div class="top-inner-row">
+
+  </div> 
+  <div class="middle-inner-row">
+    <div class="join-photo"> 
+      <div {{bindAttr class="join-photo player.status"}}> 
+        {{avatar2 player.user.avatar size="small" class="border-small"}}
+      </div>
+    </div>
+    <div class="join-action">
+      <div class="join-text">joined the game</div>
+      <div class="join-underline"></div>
+    </div>
+    <div class="join-arrow">
+    </div>
+  </div> 
+  <div class="bottom-inner-row">
+    <span> {{player.user.screen_name}}</span>
+  </div> 
 
 </div>
 {{/if}}
