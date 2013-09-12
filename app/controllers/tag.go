@@ -3,11 +3,8 @@ package controllers
 import (
 	"flesh/app/models"
 	"flesh/app/routes"
-	"flesh/app/utils"
 	"github.com/robfig/revel"
 	"time"
-	"os"
-	"github.com/sfreiberg/gotwilio"
 )
 
 type Tags struct {
@@ -73,93 +70,62 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 	return c.Redirect(routes.Players.Read(human.Id))
 }
 
-func (c *Tags) TagByPhone(Body string, From string, AccountSid string) revel.Result {
+type jsn map[string]string
 
-  accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
-  authToken  := os.Getenv("TWILIO_AUTH_TOKEN")
-  from_phone := os.Getenv("TWILIO_FROM_NUMBER")
+func (j *jsn) SetError(message string) {
+	(*j)["error"] = message
+}
 
-  revel.WARN.Print(accountSid, authToken, from_phone)
-  revel.WARN.Print(Body, From, AccountSid)
+func (j *jsn) SetSuccess() {
+	(*j)["success"] = "true"
+}
 
-  twilio     := gotwilio.NewTwilioClient(accountSid, authToken)
+func TagByPhone(body string, taggerUser *models.User) (string, int, map[string]string) {
+	msgJson := make(jsn)
 
-	errJson := make(map[string]string)
- 
-  if AccountSid != accountSid {
-		c.Response.Status = 400
-		errJson["error"] = "Not Authorized"
-		return c.RenderJson(errJson)
-	}
-
-
-
-	phone, err := utils.NormalizePhoneToE164(From)
+	human, status, err := models.PlayerFromHumanCode(body)
 	if err != nil {
-		c.Response.Status = 400
-		errJson["error"] = "Invalid phone number. Phone number must be passed as a string in E.164 format"
-		return c.RenderJson(errJson)
-	}
-  
-  revel.WARN.Print(phone)
-	
-	taggerUser, err := models.UserFromPhone(phone)
-	if err != nil {
-		c.Response.Status = 422
-		errJson["error"] = "No user is registered with this phone number"
-    twilio.SendSMS(from_phone, phone, errJson["error"], "", "")
-		return c.RenderJson(errJson)
-	}
-
-	human, status, err := models.PlayerFromHumanCode(Body)
-	if err != nil {
-		c.Response.Status = status
-		errJson["error"] = "Human code invalid"
-		twilio.SendSMS(from_phone, phone, errJson["error"], "", "")
-		return c.RenderJson(errJson)
+		errorMessage := "Human code invalid"
+		msgJson.SetError(errorMessage)
+		return errorMessage, 422, msgJson
 	}
 
 	if !human.IsHuman() {
-		c.Response.Status = 403
-		errJson["error"] = "You cannot tag a non-human"
-		twilio.SendSMS(from_phone, phone, errJson["error"], "", "")
-		return c.RenderJson(errJson)
+		errorMessage := "You cannot tag a non-human"
+		msgJson.SetError(errorMessage)
+		return errorMessage, 403, msgJson
 	}
 
 	game := human.Game()
 
 	if !game.IsRunning() {
-		c.Response.Status = 422
-		errJson["error"] = "Tags cannot be registered when the game is closed"
-		twilio.SendSMS(from_phone, phone, errJson["error"], "", "")
-		return c.RenderJson(errJson)
+		errorMessage := "Tags cannot be registered when the game is closed"
+		msgJson.SetError(errorMessage)
+		return errorMessage, 422, msgJson
 	}
 
 	tagger, err := models.PlayerFromUserIdGameId(taggerUser.Id, game.Id)
-	revel.WARN.Print(tagger,taggerUser.Id, game.Id)
+	revel.WARN.Print(tagger, taggerUser.Id, game.Id)
 	if err != nil {
-		c.Response.Status = 400
-		errJson["error"] = "You cannot tag players when you aren't in the same game!"
-		twilio.SendSMS(from_phone, phone, errJson["error"], "", "")
-		return c.RenderJson(errJson)
+		errorMessage := "You cannot tag players when you aren't in the same game!"
+		msgJson.SetError(errorMessage)
+		return errorMessage, 400, msgJson
 	}
 
 	if !tagger.IsZombie() {
-		c.Response.Status = 403
-		errJson["error"] = "You cannot tag because you are not a zombie. You are " + tagger.Status()
-		twilio.SendSMS(from_phone, phone, errJson["error"], "", "")
-		return c.RenderJson(errJson)
+		errorMessage := "You cannot tag because you are not a zombie. You are " + tagger.Status()
+		msgJson.SetError(errorMessage)
+		return errorMessage, 403, msgJson
 	}
 
 	now := time.Now()
 	_, status, err = models.NewTag(game, tagger, human, &now)
 	if err != nil {
-		c.Response.Status = status
-  	twilio.SendSMS(from_phone, phone, err.Error(), "", "")
-		return c.RenderError(err)
+		msgJson.SetError(err.Error())
+		return err.Error(), status, msgJson
 	}
 
 	success := human.User().Screen_name + " successfully tagged!"
-  twilio.SendSMS(from_phone, phone, success, "", "")
-	return c.RenderText(success)
+	msgJson.SetSuccess()
+	return success, 200, msgJson
 }
