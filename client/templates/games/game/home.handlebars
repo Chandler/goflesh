@@ -2,16 +2,12 @@
   <div class="alert alert-error">{{errorMessages}}</div>
 {{/if}}
 
+<div class="register-tag"> 
   {{#if App.Auth.signedIn}}
 	  {{#if game.showRegisterTag}}
 	    {{view App.RegisterTagView}}
 	  {{/if}}
 	{{/if}}
-
-<div class="register-tag"> 
-	  {{#if game.showRegisterTag}}
-	    {{view App.RegisterTagView}}
-	  {{/if}}
 </div>
 <div class="game-page-list-container">
 	{{view App.EventListView contentBinding="events"}}
