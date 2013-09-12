@@ -5,11 +5,7 @@ module:testrunner
 
 GET		/												Application.Index
 
-POST	/api/tag/:code									Tags.Tag
-GET  /api/sms                        Tags.TagByPhone
-POST  /api/sms                        Tags.TagByPhone
-
-
+POST	/api/sms										SmsController.SmsRouter
 
 GET		/api/organizations								Organizations.ReadList
 GET		/api/organizations/:id/							Organizations.Read
