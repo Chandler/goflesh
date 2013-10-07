@@ -2,7 +2,11 @@
   <div class="row-fluid">
     <span class="span4 pad-span">
       <div class="side-profile">
-        {{avatar profile class="profile_image pull-center"}}
+        {{#if idaho}}
+          <img class=" avatar profile_image pull-center" src="http://i.imgur.com/y9yAWbD.jpg">
+        {{else}}
+          {{avatar profile class="avatar profile_image pull-center"}}
+        {{/if}}
         <div class="page-heading">
           <h1><div class="profile-heading">
             {{name}}

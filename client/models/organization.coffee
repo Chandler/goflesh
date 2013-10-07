@@ -6,6 +6,11 @@ App.Organization = DS.Model.extend
   users: DS.hasMany 'App.User'
   games: DS.hasMany 'App.Game',
     inverse: 'organization'
+
+  idaho: (->
+    return @get('id') == "2"
+  ).property()
+  
     
 App.Organization.toString = -> 
   "Organization"

@@ -2,7 +2,11 @@
 {{#linkTo 'organization.home' this class="org-name"}}
   <div>
   <span class="org-image">
-  {{avatar small}}
+    {{#if idaho}}
+    <img class=" avatar profile_image pull-center" src="http://i.imgur.com/y9yAWbD.jpg">
+    {{else}}
+      {{avatar small}}
+    {{/if}}
   </span>
   <span class="org-data">
     <span>
