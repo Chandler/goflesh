@@ -19,7 +19,14 @@
   <div class="row-fluid">
     <span class="span4 pad-span">
       <div class="side-profile">
-      {{#linkTo 'organization.home' organization}} {{avatar profile class="profile_image pull-center"}} {{/linkTo}}
+      {{#linkTo 'organization.home' organization}} 
+       {{#if organization.idaho}}
+          <img class=" avatar profile_image pull-center" src="http://i.imgur.com/y9yAWbD.jpg">
+        {{else}}
+          {{avatar profile class="avatar profile_image pull-center"}}
+        {{/if}}
+      {{/linkTo}}
+
         <div class="page-heading">
           <h1><div class="profile-heading">{{name}}<div></h1>
             <div class="profile-sub-heading">
