@@ -9,7 +9,8 @@ Utilities =
     #random for now
     random = Math.random().toString(16).slice(2)
     hash = random + random + random + random
-    "<img class=\" avatar " + options.hash.class +  "\" src=\"http://i.imgur.com/bITe0Cis.png\"/>"
+    # http://i.imgur.com/bITe0Cis.png
+    "<img class=\" avatar " + options.hash.class +  "\" src=\"http://i.imgur.com/y9yAWbD.png\"/>"
 
   avatar2Tag: (key, size, klass) ->
     sizes =
@@ -23,4 +24,6 @@ Utilities =
   #for when we switch to avatar io
   # avatarIOTag: (key, size, klass) ->
   #   "<img class=\" avatar " + klass +  "\" src=\"http://avatars.io/5219420f20885b315500004c/" + key + "?size=" + size + "\"/>"
+
+
 
