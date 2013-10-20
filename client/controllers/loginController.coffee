@@ -10,7 +10,11 @@ App.LoginController = BaseController.extend
         password: @password
 
     App.Auth.on 'signInSuccess', =>
-      @transitionToRoute('user.home', App.User.find(App.Auth.get('userId')))
+      user_id = App.Auth.get('userId');
+      user = App.User.find(user_id);
+      App.Player.find({user_id: [user_id]})
+      @transitionToRoute('user.home', user)
+
       
     App.Auth.on 'signInError',(e) =>
       App.Auth.destroySession()

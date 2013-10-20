@@ -25,8 +25,7 @@ App.UserController = BaseObjectController.extend
   ).property('content.id')
 
   currentPlayer: (->
-    player = @get('players').get('lastObject')
-    player
+    @get('players').get('lastObject')
   ).property('players.@each')
 
 App.UsersController = Ember.ObjectController.extend
