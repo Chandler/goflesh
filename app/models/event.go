@@ -63,34 +63,34 @@ type EventPlayer struct {
 
 func CreateTagEvent(tag *Tag) error {
 	// create the base event
-	event := Event{0, TimeTrackedModel{}}
-	err := Dbm.Insert(&event)
+	event := &Event{0, TimeTrackedModel{}}
+	err := Dbm.Insert(event)
 	if err != nil {
 		return err
 	}
 
 	// create the Tag event
-	tagEvent := EventTag{event.Id, tag.Id}
-	err = Dbm.Insert(&tagEvent)
+	tagEvent := &EventTag{event.Id, tag.Id}
+	err = Dbm.Insert(tagEvent)
 	if err != nil {
 		return err
 	}
 
 	// record players involved in this event
-	tagger_m2m := EventToPlayer{0, event.Id, tag.Tagger_id, EVENT_ROLE_TAGGER}
-	err = Dbm.Insert(&tagger_m2m)
+	tagger_m2m := &EventToPlayer{0, event.Id, tag.Tagger_id, EVENT_ROLE_TAGGER}
+	err = Dbm.Insert(tagger_m2m)
 	if err != nil {
 		return err
 	}
-	taggee_m2m := EventToPlayer{0, event.Id, tag.Taggee_id, EVENT_ROLE_TAGGEE}
-	err = Dbm.Insert(&taggee_m2m)
+	taggee_m2m := &EventToPlayer{0, event.Id, tag.Taggee_id, EVENT_ROLE_TAGGEE}
+	err = Dbm.Insert(taggee_m2m)
 	if err != nil {
 		return err
 	}
 
 	// record game associated with this event
-	game_m2m := EventToGame{0, event.Id, tag.Tagger().Game_id}
-	err = Dbm.Insert(&game_m2m)
+	game_m2m := &EventToGame{0, event.Id, tag.Tagger().Game_id}
+	err = Dbm.Insert(game_m2m)
 	if err != nil {
 		return err
 	}
