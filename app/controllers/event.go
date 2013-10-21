@@ -138,8 +138,12 @@ func (c *Events) ReadEvents(player_ids []int, game_ids []int) DatedSortable {
 		where = addWhereClause(where, "event_to_player.player_id = ANY('{"+IntArrayToString(player_ids)+"}') ")
 	}
 	if len(game_ids) > 0 {
-		inner_join += "INNER JOIN event_to_game ON event.id = event_to_game.event_id "
-		where = addWhereClause(where, "event_to_game.game_id = ANY('{"+IntArrayToString(game_ids)+"}') ")
+		// inner_join += "INNER JOIN event_to_game ON event.id = event_to_game.event_id "
+		// where = addWhereClause(where, "event_to_game.game_id = ANY('{"+IntArrayToString(game_ids)+"}') ")
+
+		// TODO: fix event_to_game inserts so this isn't necessary
+		inner_join += "INNER JOIN event_to_player ON event.id = event_to_player.event_id INNER JOIN player ON event_to_player.player_id = player.id "
+		where = addWhereClause(where, "player.game_id = ANY('{"+IntArrayToString(game_ids)+"}') ")
 	}
 
 	// don't allow unfiltered events access
