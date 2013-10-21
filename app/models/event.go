@@ -1,5 +1,7 @@
 package models
 
+import "fmt"
+
 var (
 	// TODO: fetch these values from the database at startup instead of hard-coding them
 	// EventRole ID values
@@ -68,6 +70,8 @@ func CreateTagEvent(tag *Tag) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("Creating tag event. Event id: %v", event.Id)
 
 	// create the Tag event
 	tagEvent := &EventTag{event.Id, tag.Id}
