@@ -50,7 +50,7 @@ func (c *Tags) Tag(player_id int, code string) revel.Result {
 	human, status, err := models.PlayerFromHumanCode(code)
 	if err != nil {
 		c.Response.Status = status
-		c.RenderError(err)
+		return c.RenderError(err)
 	}
 
 	game := human.Game()
