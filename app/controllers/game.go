@@ -6,6 +6,7 @@ import (
 	"flesh/app/models"
 	"github.com/robfig/revel"
 	"io/ioutil"
+	"time"
 )
 
 type Games struct {
@@ -16,6 +17,16 @@ type GameRead struct {
 	models.Game
 	Players    string `json:"-"`
 	Player_ids []int  `json:"player_ids"`
+}
+
+type BasicGameStatsRead struct {
+	NumHumans  int   `json:"num_humans"`
+	NumZombies int   `json:"num_zombies"`
+	TagTimes   []int `json:"tag_times"`
+}
+
+type date_wrapper struct {
+	Value time.Time
 }
 
 func (c *Games) ReadGame(where string, args ...interface{}) revel.Result {
@@ -197,4 +208,59 @@ func (c *Games) emailList(where_and string, args ...interface{}) revel.Result {
 	}
 
 	return c.RenderText(emails)
+}
+
+/////////////////////////////////////////////////////////////////////
+
+func (c *Games) ReadBasicStats(game_id int) revel.Result {
+	game, err := models.GameFromId(game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	player_count := `
+		SELECT count(1)
+		FROM player
+		WHERE player.game_id = $1
+	`
+
+	nPlayer, err := Dbm.SelectInt(player_count, game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	zombies := `
+		SELECT count(1)
+		FROM player
+		WHERE player.game_id = $1
+		AND player.last_fed < $2 
+	`
+
+	nZombies, err := Dbm.SelectInt(zombies, game_id, time.Now().Add(-game.TimeToStarve()))
+	if err != nil {
+		return c.RenderError(err)
+	}
+
+	tag_list := `
+		SELECT claimed "value"
+		FROM tag
+		INNER JOIN player
+			ON tag.tagger_id = player.id
+		WHERE player.game_id = $1
+	`
+	var wrapped_tag_timestamps []*date_wrapper
+	_, err = Dbm.Select(&wrapped_tag_timestamps, tag_list, game_id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	tag_timestamps := make([]string, len(wrapped_tag_timestamps))
+	for i, timestamp := range wrapped_tag_timestamps {
+		tag_timestamps[i] = timestamp.Value.String()
+	}
+
+	out := make(map[string]interface{})
+	out["num_humans"] = nPlayer - nZombies
+	out["num_zombies"] = nZombies
+	out["tag_list"] = tag_timestamps
+	return c.RenderJson(out)
 }
