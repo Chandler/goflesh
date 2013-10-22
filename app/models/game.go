@@ -41,7 +41,7 @@ func (g *Game) TimeToStarve() time.Duration {
 
 func (g *Game) TimeToReveal() *time.Time {
 	// TODO: move this into a game-specific setting in the DB
-	undercoverTime, _ := time.ParseDuration("24h")
+	undercoverTime, _ := time.ParseDuration("55h")
 	time := g.Running_start_time.Add(undercoverTime)
 	return &time
 }
