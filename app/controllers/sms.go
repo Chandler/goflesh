@@ -59,6 +59,7 @@ func (c *SmsController) SmsRouter(Body string, From string, AccountSid string) r
 	textingUser, err := models.UserFromPhone(phone)
 	if err != nil {
 		message := "No user is registered with this phone number. Please sign up with your phone number online and try again."
+		revel.ERROR.Print(message, " from: ", phone)
 		errJson.SetError(message)
 		twilio.SendSMS(responderPhone, phone, message, "", "")
 		c.Response.Status = 422
