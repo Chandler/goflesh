@@ -35,7 +35,7 @@ func (g *Game) IsRunning() bool {
 
 func (g *Game) TimeToStarve() time.Duration {
 	// TODO: move this into a game-specific setting in the DB
-	duration, _ := time.ParseDuration("72h")
+	duration, _ := time.ParseDuration("720h") //Setting really high to turn off starving for current idaho game 10/23/2013
 	return duration
 }
 
